@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">米途旅游网</title>
+    <script type="text/javascript" th:src="@{/js/jquery-3.1.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}"/>
+</head>
+<body>
+<header>
+    <section class="container">
+        <nav th:if="${session.USER_INFO == null}">
+            <span>您好，欢迎访问米途旅游！</span>
+            <a th:href="@{/login}">登录</a>
+            <a class="default" th:href="@{/registration}">注册</a>
+        </nav>
+        <nav th:if="${session.USER_INFO != null}">
+            <span>您好，<span th:text="${session.USER_INFO.username}"></span>！</span>
+            <a class="default" href="javascript:void(0)" onclick="logout()">退出</a>
+        </nav>
+        <nav class="pull-right">
+            <a href="javascript:void(0)">我的米途</a>
+            <span>咨询电话:4007-972-156</span>
+        </nav>
+    </section>
+</header>
+<section class="container brand">
+    <div class="logo">
+        <img th:src="@{/img/logo.png}" title="米途旅游"/>
+    </div>
+    <div class="search-box pull-right">
+        <input type="text" class="search-box-input" placeholder="国色天香童话世界"/>
+        <a class="btn btn-primary search-box-btn" href="javascript:void(0)">搜索</a>
+    </div>
+</section>
+<nav class="menu-nav">
+    <section class="container">
+        <ul>
+            <li><a th:href="@{/index}">首页</a></li>
+            <li><a th:href="@{/scenery}">景点</a></li>
+            <li><a th:href="@{/hotel}">酒店</a></li>
+            <li><a th:href="@{/food}">美食</a></li>
+            <li><a th:href="@{/feedback}">反馈</a></li>
+        </ul>
+    </section>
+</nav>
+<div class="container" layout:fragment="content"></div>
+<footer>
+    <div class="container">
+        <ul>
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">联系我们</a></li>
+            <li><a href="#">人才招聘</a></li>
+            <li><a href="#">商家入驻</a></li>
+            <li><a href="#">广告服务</a></li>
+            <li><a href="#">友情链接</a></li>
+        </ul>
+        <p>copyright &copy; 2016 米途metoo.com 版权所有</p>
+    </div>
+</footer>
+</body>
+</html>

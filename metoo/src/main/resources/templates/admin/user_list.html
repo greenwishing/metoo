@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>用户列表</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>编号</th>
+        <th>用户名</th>
+        <th>用户类型</th>
+        <th>创建时间</th>
+        <th>操作</th>
+    </tr>
+    <tr th:each="userDTO:${userDTOs}">
+        <td th:text="${userDTO.id}">Id</td>
+        <td th:text="${userDTO.username}">Username</td>
+        <td th:text="${userDTO.type.label}">Type</td>
+        <td th:text="${userDTO.creationTime}">Creation time</td>
+        <td>
+            <a th:href="@{edit(id=${userDTO.id})}">编辑</a>
+            <a th:href="@{remove(id=${userDTO.id})}">删除</a>
+        </td>
+    </tr>
+</table>
+<a th:href="@{add}">Add</a>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorator="decorators/homepage" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+	<title>反馈</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<form onsubmit="return false;">
+            <div class="form-group">
+                <label class="control-label col-2" for="type">反馈类型</label>
+                <div class="col-10">
+                    <select class="form-control" id="type" name="type" onchange="chooseType()">
+                        <option value="0">请选择</option>
+                        <option value="1">景点</option>
+                        <option value="2">酒店</option>
+                        <option value="3">美食</option>
+                        <option value="4">其他</option>
+                    </select>
+                    <p class="help-block">反馈类型</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-2" for="desc">问题描述</label>
+                <div class="col-10">
+                    <textarea class="form-control" id="desc" name="desc" cols="5"></textarea>
+                    <p class="help-block">内容的字数请控制在10-200字之间</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-10 col-offset-2">
+                    <p class="form-control-static">请留下您的联系方式，以便米途客服与您联系</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-2" for="name">您的姓名</label>
+                <div class="col-10">
+                    <input class="form-control" id="name" name="name"/>
+                    <p class="help-block">姓名</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-2" for="telephone">手机号码</label>
+                <div class="col-10">
+                    <input class="form-control" id="telephone" name="telephone"/>
+                    <p class="help-block">11位数字，且以13，14，15，17，18开头</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-2" for="email">电子邮箱</label>
+                <div class="col-10">
+                    <input class="form-control" id="email" name="email"/>
+                    <p class="help-block">手机号、邮箱可选填一项</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-2" for="code">验证码</label>
+                <div class="col-10">
+                    <div class="input-group">
+                        <input class="form-control form-control-code" id="code" name="code"/>
+                        <span class="input-group-img">
+                            <img id="code_pic" th:src="@{/code}" onclick="refreshCode(this)" alt="点击刷新验证码"/>
+                        </span>
+                    </div>
+                    <p class="help-block">手机号、邮箱可选填一项</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-10 col-offset-2">
+                    <button class="btn btn-primary">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

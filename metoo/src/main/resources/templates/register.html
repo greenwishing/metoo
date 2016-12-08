@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>新用户注册</title>
+    <script type="text/javascript" th:src="@{/js/jquery-3.1.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}"/>
+</head>
+<body>
+<section class="container brand">
+    <div class="logo">
+        <img th:src="@{/img/logo.png}" title="米途旅游"/>
+    </div>
+    <div class="pull-right">
+        <h3>欢迎注册</h3>
+    </div>
+</section>
+<div class="login-body">
+    <div class="container">
+        <form id="register_form" method="post" action="/register" onsubmit="return false;">
+            <div class="form-group">
+                <label class="control-label col-4" for="email">邮箱</label>
+                <div class="col-8">
+                    <input class="form-control" id="email" name="email" type="text" placeholder="邮箱"/>
+                    <div class="help-block">用于登录，或找回密码</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-4" for="password">登录密码</label>
+                <div class="col-8">
+                    <input class="form-control" id="password" name="password" type="password" placeholder="登录密码"/>
+                    <div class="help-block">6-20位字符，建议使用数字、字母和符号</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-4" for="confirmPassword">确认密码</label>
+                <div class="col-8">
+                    <input class="form-control" id="confirmPassword" name="confirmPassword" type="password" placeholder="确认密码"/>
+                    <div class="help-block">请再次输入登录密码</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-4" for="username">用户名</label>
+                <div class="col-8">
+                    <input class="form-control" id="username" name="username" type="text" placeholder="用户名"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-4" for="code">验证码</label>
+                <div class="col-8">
+                    <div class="input-group">
+                        <input class="form-control form-control-code" id="code" name="code" type="text" placeholder="验证码"/>
+                        <span class="input-group-img">
+                            <img id="code_pic" th:src="@{/code}" onclick="refreshCode(this)" alt="点击刷新验证码"/>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-8 col-offset-4">
+                    <label for="check" class="agreement"><input type="checkbox" name="check" id="check"/> 我已同意并阅读<a href="#">《米途旅游网协议》</a></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-8 col-offset-4">
+                    <button class="btn btn-highlight btn-large" onclick="$('#register_form').submitWithAjax()">同意协议并申请</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<footer>
+    <div class="container">
+        <p>copyright &copy; 2016 米途metoo.com 版权所有</p>
+    </div>
+</footer>
+</body>
+</html>

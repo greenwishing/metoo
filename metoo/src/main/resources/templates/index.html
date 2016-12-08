@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorator="decorators/homepage" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+    <head>
+        <title>首页</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <section class="slider" id="slider">
+                <ul>
+                    <li>
+                        <a th:href="@{/scenery/{id}(id=1)}">
+                            <div class="slide-item" style="background-image: url(/img/ads1.jpg)"></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/scenery/{id}(id=1)}">
+                            <div class="slide-item" style="background-image: url(img/ads2.jpg)"></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/scenery/{id}(id=1)}">
+                            <div class="slide-item" style="background-image: url(img/ads3.png)"></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/scenery/{id}(id=1)}">
+                            <div class="slide-item" style="background-image: url(img/ads4.jpg)"></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/scenery/{id}(id=1)}">
+                            <div class="slide-item" style="background-image: url(img/ads5.jpg)"></div>
+                        </a>
+                    </li>
+                </ul>
+                <ol><li></li><li></li><li></li><li></li><li></li></ol>
+                <script type="text/javascript">
+                    window.slider = new Slider().start();
+                </script>
+            </section>
+            <section>
+                <h4 class="text-highlight">人气榜单</h4>
+                <div class="row">
+                    <div class="col-3">
+                        <a class="box box-scale" th:href="@{/scenery/{id}(id=1)}">
+                            <div class="box-pic">
+                                <img th:src="@{/img/info4.jpg}" title="自选峨眉山乐活酒店峨眉山/红珠山森林温泉/峨眉山灵秀温泉"/>
+                                <div class="box-pic-desc">自选峨眉山乐活酒店峨眉山/红珠山森林温泉/峨眉山灵秀温泉</div>
+                                <em class="box-pic-tag">自由行</em>
+                            </div>
+                            <div class="box-title">
+                                <span>乐山</span>
+                                <span class="pull-right text-primary text-large"><span class="price-cn">389</span><small>起</small></span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-3">
+                        <a class="box box-scale" th:href="@{/scenery/{id}(id=1)}">
+                            <div class="box-pic">
+                                <img th:src="@{/img/info2.jpg}" title="都江堰-青城山探秘纯玩1日游 经典特卖"/>
+                                <div class="box-pic-desc">&lt;都江堰-青城山探秘纯玩1日游&gt;经典特卖</div>
+                                <em class="box-pic-tag">跟团游</em>
+                            </div>
+                            <div class="box-title">
+                                <span>成都<b>→</b>成都</span>
+                                <span class="pull-right text-primary text-large"><span class="price-cn">299</span><small>起</small></span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-3">
+                        <a class="box box-scale" th:href="@{/scenery/{id}(id=1)}">
+                            <div class="box-pic">
+                                <img th:src="@{/img/info4.jpg}" title="自选峨眉山乐活酒店峨眉山/红珠山森林温泉/峨眉山灵秀温泉"/>
+                                <div class="box-pic-desc">自选峨眉山乐活酒店峨眉山/红珠山森林温泉/峨眉山灵秀温泉</div>
+                                <em class="box-pic-tag">自由行</em>
+                            </div>
+                            <div class="box-title">
+                                <span>乐山</span>
+                                <span class="pull-right text-primary text-large"><span class="price-cn">389</span><small>起</small></span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-3">
+                        <a class="box box-scale" th:href="@{/scenery/{id}(id=1)}">
+                            <div class="box-pic">
+                                <img th:src="@{/img/info2.jpg}" title="都江堰-青城山探秘纯玩1日游 经典特卖"/>
+                                <div class="box-pic-desc">&lt;都江堰-青城山探秘纯玩1日游&gt;经典特卖</div>
+                                <em class="box-pic-tag">跟团游</em>
+                            </div>
+                            <div class="box-title">
+                                <span>成都<b>→</b>成都</span>
+                                <span class="pull-right text-primary text-large"><span class="price-cn">299</span><small>起</small></span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </body>
+</html>

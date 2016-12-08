@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>编辑用户</title>
+</head>
+<body>
+<form th:action="@{save}" th:object="${userDTO}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <input type="text" th:field="*{email}"/>
+    <select th:field="*{type}">
+        <option th:each="userType:${userTypes}"
+                th:value="${userType.value}" th:selected="${userType.value eq type}"
+                th:text="${userType.label}">User Type</option>
+    </select>
+    <input type="text" th:field="*{username}"/>
+    <button>保存</button>
+</form>
+</body>
+</html>
