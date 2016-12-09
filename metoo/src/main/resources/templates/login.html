@@ -33,9 +33,6 @@
         </div>
     </section>
     <div class="login-body">
-        <div class="help-block" th:if="${param.action eq '1'}">你已退出登录</div>
-        <div class="help-block" th:if="${param.action eq '2'}">会员过期，请重新登录</div>
-        <div class="help-block" th:if="${param.action eq '3'}">用户名或密码错误</div>
         <div class="container row">
             <div class="col-6">
                 <div class="login-banner">
@@ -44,7 +41,7 @@
             </div>
             <div class="col-6">
                 <div class="box box-info">
-                    <form id="login_form" method="post" action="/login">
+                    <form id="login_form" method="post" action="/login" onsubmit="return false;">
                         <div class="form-group">
                             <label class="control-label col-2" for="email">邮箱</label>
                             <div class="col-10">
@@ -70,9 +67,9 @@
                         </div>
                         <div class="form-group">
                             <div class="col-10 col-offset-2">
-                                <button class="btn btn-highlight btn-large" type="submit">登录</button>
-                                <a th:href="@{/register}"><b>立即注册</b></a>
-                                <a th:href="@{/forgot_password}">忘记密码？</a>
+                                <button class="btn btn-highlight btn-large" onclick="$('#login_form').submitWithAjax()">登录</button>
+                                <a href="/register"><b>立即注册</b></a>
+                                <a href="/forgot_password">忘记密码？</a>
                             </div>
                         </div>
                     </form>

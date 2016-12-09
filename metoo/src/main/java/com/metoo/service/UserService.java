@@ -1,7 +1,6 @@
 package com.metoo.service;
 
 import com.metoo.dto.UserDTO;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
@@ -9,7 +8,7 @@ import java.util.List;
  * User: Zhang xiaomei
  * Date: 2016/11/24
  */
-public interface UserService extends UserDetailsService {
+public interface UserService {
     List<UserDTO> loadUsers();
 
     void saveUser(UserDTO userDTO);

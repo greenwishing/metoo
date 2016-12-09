@@ -9,18 +9,17 @@ import com.metoo.utils.MD5Utils;
 import com.metoo.utils.VerifyCodeUtils;
 import com.metoo.web.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +27,7 @@ import java.util.Map;
  * User: Zhang xiaomei
  * Date: 2016/11/23
  */
-@RestController
+@Controller
 public class IndexController {
 
     @Autowired
@@ -73,6 +72,12 @@ public class IndexController {
         }
         session.setAttribute(SESSION_LOGIN_INFO_KEY, loginUser);
         return JsonResult.success("redirectUrl", StringUtils.hasLength(redirectUrl) ? redirectUrl : "/index");
+    }
+
+    @RequestMapping("/logout")
+    public ModelAndView logout(HttpSession session) {
+        session.removeAttribute(SESSION_LOGIN_INFO_KEY);
+        return null;
     }
 
     @RequestMapping(value = "/register",method = RequestMethod.GET)
