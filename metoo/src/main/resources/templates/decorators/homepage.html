@@ -10,13 +10,13 @@
 <body>
 <header>
     <section class="container">
-        <nav th:if="${session.USER_INFO == null}">
+        <nav th:if="${session.METOO_USER == null}">
             <span>您好，欢迎访问米途旅游！</span>
             <a th:href="@{/login}">登录</a>
             <a class="default" th:href="@{/registration}">注册</a>
         </nav>
-        <nav th:if="${session.USER_INFO != null}">
-            <span>您好，<span th:text="${session.USER_INFO.username}"></span>！</span>
+        <nav th:if="${session.METOO_USER != null}">
+            <span>您好，<span th:text="${session.METOO_USER.username}"></span>！</span>
             <a class="default" href="javascript:void(0)" onclick="logout()">退出</a>
         </nav>
         <nav class="pull-right">
