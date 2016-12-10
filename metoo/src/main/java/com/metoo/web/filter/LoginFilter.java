@@ -14,6 +14,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -55,7 +56,8 @@ public abstract class LoginFilter extends MetooFilter {
         if (user == null) {
             throw new MetooLoginException(ErrorMap.EMAIL_NOT_FOUND);
         }
-        String cachedCode = SessionCodeHolder.get(email);
+        HttpSession session = request.getSession();
+        String cachedCode = SessionCodeHolder.get(session.getId());
         if (!code.equalsIgnoreCase(cachedCode)) {
             throw new MetooLoginException(ErrorMap.INVALID_CODE);
         }
