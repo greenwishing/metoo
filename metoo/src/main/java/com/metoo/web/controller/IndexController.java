@@ -1,17 +1,17 @@
 package com.metoo.web.controller;
 
+import com.metoo.cache.SessionCodeHolder;
+import com.metoo.cache.SessionEmailHolder;
 import com.metoo.dto.UserDTO;
 import com.metoo.exception.ErrorMap;
 import com.metoo.exception.MetooException;
 import com.metoo.service.MailService;
 import com.metoo.service.UserService;
-import com.metoo.utils.MD5Utils;
 import com.metoo.utils.VerifyCodeUtils;
 import com.metoo.web.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,49 +35,16 @@ public class IndexController {
     @Autowired
     private MailService mailService;
 
-    private static final String SESSION_LOGIN_INFO_KEY = "USER_INFO";
-    private static final Map<String, String> SESSION_CODE_CACHE = new HashMap<>();
     private static final Map<String, String> SESSION_MAIL_CACHE = new HashMap<>();
+
+    @RequestMapping({"/", "/index"})
+    public ModelAndView index() {
+        return new ModelAndView("index");
+    }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login_form() {
         return new ModelAndView("login");
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView login(HttpSession session, UserDTO userDTO, String redirectUrl) {
-        String email = userDTO.getEmail();
-        if (!StringUtils.hasLength(email)) {
-            return JsonResult.error(ErrorMap.INVALID_CODE);
-        }
-        UserDTO loginUser =  userService.loadUserByEmail(email);
-        if (loginUser == null) {
-            return JsonResult.error("邮箱未注册，请检查您输入的邮箱是否有误");
-        }
-        String password = userDTO.getPassword();
-        if (!StringUtils.hasLength(password)) {
-            return JsonResult.error("请输入登录密码");
-        }
-        String code = userDTO.getCode();
-        if (!StringUtils.hasLength(code)) {
-            return JsonResult.error("请输入验证码");
-        }
-        String cachedCode = SESSION_CODE_CACHE.get(session.getId());
-        if (!code.equalsIgnoreCase(cachedCode)) {
-            return JsonResult.error("验证码输入不正确");
-        }
-        String md5Password = MD5Utils.encode(password);
-        if (!md5Password.equals(loginUser.getPassword())) {
-            return JsonResult.error("密码输入不正确");
-        }
-        session.setAttribute(SESSION_LOGIN_INFO_KEY, loginUser);
-        return JsonResult.success("redirectUrl", StringUtils.hasLength(redirectUrl) ? redirectUrl : "/index");
-    }
-
-    @RequestMapping("/logout")
-    public ModelAndView logout(HttpSession session) {
-        session.removeAttribute(SESSION_LOGIN_INFO_KEY);
-        return null;
     }
 
     @RequestMapping(value = "/register",method = RequestMethod.GET)
@@ -115,10 +82,11 @@ public class IndexController {
         if (!StringUtils.hasLength(code)) {
             return JsonResult.error("请输入验证码");
         }
-        String cachedCode = SESSION_CODE_CACHE.get(session.getId());
+        String cachedCode = SessionCodeHolder.get(session.getId());
         if (!code.equalsIgnoreCase(cachedCode)) {
             return JsonResult.error("验证码输入不正确");
         }
+        SessionCodeHolder.remove(session.getId());
         userService.saveUser(userDTO);
         return JsonResult.success("redirectUrl", "/login");
     }
@@ -134,7 +102,7 @@ public class IndexController {
             return JsonResult.error("请输入验证码");
         }
         HttpSession session = request.getSession();
-        String cachedCode = SESSION_CODE_CACHE.get(session.getId());
+        String cachedCode = SessionCodeHolder.get(session.getId());
         if (!code.equalsIgnoreCase(cachedCode)) {
             return JsonResult.error("验证码输入不正确");
         }
@@ -165,7 +133,7 @@ public class IndexController {
         if (token == null) {
             throw new MetooException(ErrorMap.EXPIRED_LINK);
         }
-        String email = SESSION_MAIL_CACHE.get(token);
+        String email = SessionEmailHolder.get(token);
         if (email == null) {
             throw new MetooException(ErrorMap.EXPIRED_LINK);
         }
@@ -180,7 +148,7 @@ public class IndexController {
         if (token == null) {
             return JsonResult.error(ErrorMap.EXPIRED_LINK);
         }
-        String email = SESSION_MAIL_CACHE.get(token);
+        String email = SessionEmailHolder.get(session.getId());
         if (email == null) {
             return JsonResult.error(ErrorMap.EXPIRED_LINK);
         }
@@ -203,51 +171,11 @@ public class IndexController {
         try {
             ServletOutputStream os = response.getOutputStream();
             String code = VerifyCodeUtils.generateVerifyCode(4);
-            SESSION_CODE_CACHE.put(request.getSession().getId(), code);
+            SessionCodeHolder.put(request.getSession().getId(), code);
             VerifyCodeUtils.outputImage(80, 34, os, code);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @RequestMapping({"/", "/index"})
-    public ModelAndView index(HttpSession session) {
-        return new ModelAndView("index");
-    }
-
-    @RequestMapping("/scenery")
-    public ModelAndView scenery() {
-        return new ModelAndView("scenery");
-    }
-
-    @RequestMapping("/scenery/{id}")
-    public ModelAndView scenery_detail(@PathVariable Integer id) {
-        return new ModelAndView("scenery_detail");
-    }
-
-    @RequestMapping("/hotel")
-    public ModelAndView hotel() {
-        return new ModelAndView("hotel");
-    }
-
-    @RequestMapping("/hotel/{id}")
-    public ModelAndView hotel_detail(@PathVariable Integer id) {
-        return new ModelAndView("hotel_detail");
-    }
-
-    @RequestMapping("/food")
-    public ModelAndView food() {
-        return new ModelAndView("food");
-    }
-
-    @RequestMapping("/food/{id}")
-    public ModelAndView food_detail(@PathVariable Integer id) {
-        return new ModelAndView("food_detail");
-    }
-
-    @RequestMapping("/feedback")
-    public ModelAndView feedback() {
-        return new ModelAndView("feedback");
     }
 }

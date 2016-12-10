@@ -227,6 +227,34 @@ function logout() {
     };
 })(jQuery);
 
+(function($){
+    $.fn.submitForm = function() {
+        var $form = $(this);
+        var valid = true;
+		$form.find(':input[data-required]').each(function(){
+            var $filed = $(this);
+            var $formGroup = $filed.closest('.form-group');
+            var $tips = $formGroup.find('.help-block');
+            if (isEmpty($filed.val())) {
+                var label = $filed.attr('placeholder') || $formGroup.find('.control-label').html() || '';
+                if (!$tips.length) {
+                    var $inputGroup = $filed.closest('.input-group');
+                    $tips = $('<p class="help-block text-highlight"></p>').insertAfter($inputGroup.length ? $inputGroup : $filed);
+                }
+                $tips.html('请输入' + label + '！');
+                $filed.focus();
+                valid = false;
+                return false;
+            } else {
+                if ($tips.length) {
+                    $tips.empty().hide();
+                }
+            }
+        });
+        return valid;
+    };
+})(jQuery);
+
 function refreshCode(el) {
 	$(el).attr({src: '/code?t=' + new Date().getTime()});
 }

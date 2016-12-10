@@ -12,8 +12,16 @@ public class MetooException extends RuntimeException {
         super();
     }
 
+    public MetooException(String message) {
+        super(message);
+    }
+
+    public MetooException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
+
     public MetooException(ErrorMap error) {
-        super(error.getMessage());
+        this(error.getMessage());
         this.error = error;
     }
 
@@ -24,11 +32,6 @@ public class MetooException extends RuntimeException {
 
     public MetooException(Throwable throwable) {
         super(throwable);
-    }
-
-    protected MetooException(ErrorMap error, Throwable throwable, boolean b, boolean b1) {
-        super(error.getMessage(), throwable, b, b1);
-        this.error = error;
     }
 
     @Override
@@ -44,5 +47,9 @@ public class MetooException extends RuntimeException {
     @Override
     public String toString() {
         return getMessage();
+    }
+
+    public ErrorMap getError() {
+        return error;
     }
 }

@@ -4,6 +4,7 @@ import com.metoo.core.domain.user.User;
 import com.metoo.core.domain.user.UserType;
 import com.metoo.utils.JodaUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * User: Zhang xiaomei
  * Date: 2016/11/24
  */
-public class UserDTO {
+public class UserDTO implements Serializable {
 
     private Long id;
     private String email;

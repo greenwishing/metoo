@@ -20,8 +20,4 @@ public class MetooFormException extends MetooException {
     public MetooFormException(Throwable throwable) {
         super(throwable);
     }
-
-    public MetooFormException(ErrorMap error, Throwable throwable, boolean b, boolean b1) {
-        super(error, throwable, b, b1);
-    }
 }
