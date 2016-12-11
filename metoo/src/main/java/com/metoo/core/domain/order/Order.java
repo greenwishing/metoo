@@ -6,12 +6,14 @@ import com.metoo.core.domain.product.Product;
 import com.metoo.core.domain.user.User;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 /**
  * 订单
+ *
+ * 订单编号使用自增ID  2016/12/11
  *
  * User: Zhang xiaomei
  * Date: 2016/12/6
@@ -44,6 +46,13 @@ public abstract class Order extends Domain {
     protected Product product;
 
     /**
+     * 订单状态
+     */
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status = OrderStatus.NEW;
+
+    /**
      * 预订日期
      */
     @Column(name = "booking_date")
@@ -69,4 +78,54 @@ public abstract class Order extends Domain {
     @Column(name = "telephone")
     protected String telephone;
 
+    public Order() {
+    }
+
+    public Order(Merchant merchant, User user, Product product) {
+        this.merchant = merchant;
+        this.user = user;
+        this.product = product;
+    }
+
+    public void update(LocalDate bookingDate, String username, String telephone) {
+        this.bookingDate = bookingDate;
+        this.username = username;
+        this.telephone = telephone;
+    }
+
+    public void updateStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+    public Merchant getMerchant() {
+        return merchant;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public LocalDate getBookingDate() {
+        return bookingDate;
+    }
+
+    public DateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
 }
