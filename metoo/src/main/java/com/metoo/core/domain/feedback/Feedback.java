@@ -62,4 +62,47 @@ public class Feedback extends Domain {
      */
     @Column(name = "email")
     private String email;
+
+    public Feedback() {
+    }
+
+    public Feedback(User user, MerchantBusinessType businessType) {
+        this.user = user;
+        this.businessType = businessType;
+    }
+
+    public void update(String description, String username, String telephone, String email) {
+        this.description = description;
+        this.username = username;
+        this.telephone = telephone;
+        this.email = email;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public DateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public MerchantBusinessType getBusinessType() {
+        return businessType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }

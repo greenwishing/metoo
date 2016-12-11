@@ -1,6 +1,6 @@
 package com.metoo.service;
 
-import com.metoo.dto.UserDTO;
+import com.metoo.dto.user.UserDTO;
 
 import java.util.List;
 

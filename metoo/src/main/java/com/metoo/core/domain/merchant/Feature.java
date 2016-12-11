@@ -1,5 +1,8 @@
 package com.metoo.core.domain.merchant;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 特点
  * User: Zhang xiaomei
@@ -64,9 +67,14 @@ public enum Feature {
         return String.format(HTML_TPL, getClassName(), getLabel());
     }
 
-    public static void main(String[] args) {
+    public static List<Feature> listOf(Integer featureValue) {
+        List<Feature> features = new ArrayList<>();
+        if (featureValue == null) return features;
         for (Feature feature : Feature.values()) {
-            System.out.println(feature.getHtml());
+            if ((feature.val & featureValue) == feature.val) {
+                features.add(feature);
+            }
         }
+        return features;
     }
 }

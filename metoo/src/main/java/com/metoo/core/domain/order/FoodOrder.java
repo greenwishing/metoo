@@ -19,4 +19,12 @@ public class FoodOrder extends Order {
      */
     @Column(name = "quantity")
     private Integer quantity;
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
 }

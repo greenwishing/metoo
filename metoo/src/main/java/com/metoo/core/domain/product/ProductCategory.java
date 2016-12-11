@@ -27,4 +27,20 @@ public class ProductCategory extends Domain {
      */
     @Column(name = "description")
     private String description;
+
+    public ProductCategory() {
+    }
+
+    public void update(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

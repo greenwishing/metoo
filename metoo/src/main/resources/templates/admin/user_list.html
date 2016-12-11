@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" layout:decorator="decorators/admin" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head>
     <meta charset="UTF-8"/>
     <title>用户列表</title>
 </head>
 <body>
-<table>
+<div layout:fragment="content">
+<table class="table">
+    <thead>
     <tr>
         <th>编号</th>
         <th>用户名</th>
@@ -13,17 +15,21 @@
         <th>创建时间</th>
         <th>操作</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="userDTO:${userDTOs}">
         <td th:text="${userDTO.id}">Id</td>
         <td th:text="${userDTO.username}">Username</td>
         <td th:text="${userDTO.type.label}">Type</td>
         <td th:text="${userDTO.creationTime}">Creation time</td>
         <td>
-            <a th:href="@{edit(id=${userDTO.id})}">编辑</a>
-            <a th:href="@{remove(id=${userDTO.id})}">删除</a>
+            <a th:href="@{{id}(id=userDTO.id)}">编辑</a>
+            <a th:href="@{remove/{id}(id=${userDTO.id})}">删除</a>
         </td>
     </tr>
+    </tbody>
 </table>
-<a th:href="@{add}">Add</a>
+<a href="add">Add</a>
+</div>
 </body>
 </html>

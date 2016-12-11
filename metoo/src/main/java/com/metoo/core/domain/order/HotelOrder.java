@@ -25,4 +25,17 @@ public class HotelOrder extends Order {
      */
     @Column(name = "days")
     private Integer days;
+
+    public void update(Integer quantity, Integer days) {
+        this.quantity = quantity;
+        this.days = days;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public Integer getDays() {
+        return days;
+    }
 }

@@ -2,7 +2,7 @@ package com.metoo.service.impl;
 
 import com.metoo.core.domain.user.User;
 import com.metoo.core.domain.user.UserRepository;
-import com.metoo.dto.UserDTO;
+import com.metoo.dto.user.UserDTO;
 import com.metoo.service.UserService;
 import com.metoo.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;

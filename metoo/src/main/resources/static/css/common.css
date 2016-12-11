@@ -34,7 +34,7 @@ a:hover, a:focus, a.default:hover, a.default:focus {
     text-decoration: underline;
 }
 
-ul, ol {
+ul, ol, li {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -103,6 +103,30 @@ header nav span + span,
 header nav a + span,
 header nav span + a {
     margin-left: 10px;
+}
+
+.menu-top li {
+    float: left;
+    display: inline-block;
+}
+
+.menu-top li a {
+    display: inline-block;
+    padding: 0 15px;
+    text-decoration: none;
+    color: #428bca;
+}
+
+.menu-top li:not(.active) a:hover,
+.menu-top li:not(.active) a:active {
+    text-decoration: none;
+    background-color: #f8f8f8;
+    color: #428bca;
+}
+
+.menu-top li.active a {
+    background-color: #428bca;
+    color: #fff;
 }
 
 .container {
@@ -1163,8 +1187,9 @@ textarea.form-control {
 
 header:after,
 .container:after,
-.search-box:after,
+.menu-top ul:after,
 .menu-nav ul:after,
+.search-box:after,
 .slider:after,
 .row:after,
 .box:after,

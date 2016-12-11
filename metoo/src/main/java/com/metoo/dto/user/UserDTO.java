@@ -1,4 +1,4 @@
-package com.metoo.dto;
+package com.metoo.dto.user;
 
 import com.metoo.core.domain.user.User;
 import com.metoo.core.domain.user.UserType;
@@ -31,7 +31,7 @@ public class UserDTO implements Serializable {
         this.id = user.getId();
         this.email = user.getEmail();
         this.type = user.getType();
-        this.creationTime = JodaUtils.dateTimeToDateString(user.getCreationTime());
+        this.creationTime = JodaUtils.dateTimeToString(user.getCreationTime());
         this.username = user.getUsername();
         this.password = user.getPassword();
     }

@@ -69,4 +69,55 @@ public class Merchant extends Domain {
      */
     @Column(name = "contact_phone")
     private String contactPhone;
+
+    public Merchant() {
+    }
+
+    public void update(String name, MerchantBusinessType businessType, Integer level, String picture, String introduction, String specialty, Integer features, String address, String contactPhone) {
+        this.name = name;
+        this.businessType = businessType;
+        this.level = level;
+        this.picture = picture;
+        this.introduction = introduction;
+        this.specialty = specialty;
+        this.features = features;
+        this.address = address;
+        this.contactPhone = contactPhone;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public MerchantBusinessType getBusinessType() {
+        return businessType;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public String getSpecialty() {
+        return specialty;
+    }
+
+    public Integer getFeatures() {
+        return features;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
 }

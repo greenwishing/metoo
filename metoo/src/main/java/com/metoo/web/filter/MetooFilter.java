@@ -35,7 +35,7 @@ public abstract class MetooFilter implements Filter {
 
     protected boolean requires(HttpServletRequest request, HttpServletResponse response) {
         String uri = request.getRequestURI();
-        return uri.endsWith(request.getContextPath() + processesUrl);
+        return uri.startsWith(request.getContextPath() + processesUrl);
     }
 
     @Override

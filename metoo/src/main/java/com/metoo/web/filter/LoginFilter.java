@@ -2,12 +2,11 @@ package com.metoo.web.filter;
 
 import com.metoo.cache.SessionCodeHolder;
 import com.metoo.core.domain.user.UserType;
-import com.metoo.dto.UserDTO;
+import com.metoo.dto.user.UserDTO;
 import com.metoo.exception.ErrorMap;
 import com.metoo.exception.MetooLoginException;
 import com.metoo.service.UserService;
 import com.metoo.utils.MD5Utils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.ServletRequestUtils;
 
 import javax.servlet.FilterChain;

@@ -2,7 +2,7 @@ package com.metoo.web.controller;
 
 import com.metoo.cache.SessionCodeHolder;
 import com.metoo.cache.SessionEmailHolder;
-import com.metoo.dto.UserDTO;
+import com.metoo.dto.user.UserDTO;
 import com.metoo.exception.ErrorMap;
 import com.metoo.exception.MetooException;
 import com.metoo.service.MailService;
@@ -45,6 +45,11 @@ public class IndexController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login_form() {
         return new ModelAndView("login");
+    }
+
+    @RequestMapping(value = "/admin/login", method = RequestMethod.GET)
+    public ModelAndView admin_login_form() {
+        return new ModelAndView("admin/login");
     }
 
     @RequestMapping(value = "/register",method = RequestMethod.GET)

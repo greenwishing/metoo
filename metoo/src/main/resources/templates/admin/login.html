@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8"/>
-	<title>会员登录</title>
+	<title>管理员登录</title>
     <script type="text/javascript" src="/js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="/js/common.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/common.css"/>
@@ -30,7 +30,7 @@
             <img src="/img/logo.png" title="米途旅游"/>
         </div>
         <div class="pull-right">
-            <h3>用户登录</h3>
+            <h3>管理员登录</h3>
         </div>
     </section>
     <div class="login-body">
@@ -42,7 +42,7 @@
             </div>
             <div class="col-6">
                 <div class="box box-info">
-                    <form id="login-form" method="post" action="/login" onsubmit="return $('#login-form').submitForm();">
+                    <form id="login-form" method="post" action="/admin/login" onsubmit="return $('#login-form').submitForm();">
                         <div class="form-group">
                             <label class="control-label col-2" for="email">邮　箱</label>
                             <div class="col-10">

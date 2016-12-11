@@ -56,4 +56,42 @@ public abstract class Product extends Domain {
     @Column(name = "marketing_price")
     private BigDecimal marketingPrice;
 
+    public Product() {
+    }
+
+    protected Product(Merchant merchant, ProductCategory category) {
+        this.merchant = merchant;
+        this.category = category;
+    }
+
+    public void update(String name, String description, BigDecimal price, BigDecimal marketingPrice) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.marketingPrice = marketingPrice;
+    }
+
+    public Merchant getMerchant() {
+        return merchant;
+    }
+
+    public ProductCategory getCategory() {
+        return category;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public BigDecimal getMarketingPrice() {
+        return marketingPrice;
+    }
 }

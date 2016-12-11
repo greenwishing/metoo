@@ -1,17 +1,19 @@
 
-// 初始化当前菜单
-$(function(){
-    var $list = $('.menu-nav').find('li');
-    $list.removeClass('active');
-    $list.each(function(){
-        var $li = $(this);
-        var href = $li.find('a[href]').attr('href');
-        if (href && location.pathname.indexOf(href) == 0) {
-            $li.addClass('active');
-            return false;
-        }
-    });
-});
+// menu control
+(function($){
+	$.fn.menuControl = function() {
+		var $list = $(this).find('li');
+		$list.removeClass('active');
+		$list.each(function(){
+			var $li = $(this);
+			var href = $li.find('a[href]').attr('href');
+			if (href && location.pathname.indexOf(href) == 0) {
+				$li.addClass('active');
+				return false;
+			}
+		});
+	}
+})(jQuery);
 
 // 搜索框动画
 $(function(){

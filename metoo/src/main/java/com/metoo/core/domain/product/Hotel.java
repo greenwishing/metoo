@@ -16,11 +16,24 @@ public class Hotel extends Product {
      * 是否有早餐
      */
     @Column(name = "breakfast")
-    private Boolean breakfast = false;
+    private boolean hasBreakfast = false;
 
     /**
      * 是否有窗
      */
     @Column(name = "window")
-    private Boolean window = false;
+    private boolean hasWindow = false;
+
+    public void update(boolean hasBreakfast, boolean hasWindow) {
+        this.hasBreakfast = hasBreakfast;
+        this.hasWindow = hasWindow;
+    }
+
+    public boolean isHasBreakfast() {
+        return hasBreakfast;
+    }
+
+    public boolean isHasWindow() {
+        return hasWindow;
+    }
 }

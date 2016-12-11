@@ -1,11 +1,17 @@
 package com.metoo.core.domain.product;
 
+import com.metoo.core.domain.merchant.Merchant;
+import com.metoo.utils.JsonUtils;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import net.sf.json.util.JSONUtils;
 import org.hibernate.annotations.Type;
+import org.joda.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import java.time.LocalDate;
+import java.util.List;
 
 /**
  * User: Zhang xiaomei
@@ -38,4 +44,26 @@ public class Food extends Product {
      */
     @Column(name = "article")
     private String article;
+
+    public Food(Merchant merchant, ProductCategory category) {
+        super(merchant, category);
+    }
+
+    public void update(LocalDate expiryDate, List<ProductNotice> notices, String article) {
+        this.expiryDate = expiryDate;
+        this.notices = JsonUtils.toJsonString(notices);
+        this.article = article;
+    }
+
+    public LocalDate getExpiryDate() {
+        return expiryDate;
+    }
+
+    public String getNotices() {
+        return notices;
+    }
+
+    public String getArticle() {
+        return article;
+    }
 }
