@@ -2,7 +2,7 @@
 <html lang="en" layout:decorator="decorators/admin" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head>
     <meta charset="UTF-8"/>
-    <title>用户</title>
+    <title>商户</title>
 </head>
 <body>
 <div layout:fragment="content">
@@ -10,21 +10,19 @@
     <thead>
     <tr>
         <th>编号</th>
-        <th>用户名</th>
-        <th>用户类型</th>
-        <th>创建时间</th>
+        <th>名称</th>
+        <th>类型</th>
         <th>操作</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="userDTO:${userDTOs}">
-        <td th:text="${userDTO.id}">Id</td>
-        <td th:text="${userDTO.username}">Username</td>
-        <td th:text="${userDTO.type.label}">Type</td>
-        <td th:text="${userDTO.creationTime}">Creation time</td>
+    <tr th:each="merchantDTO:${merchantDTOs}">
+        <td th:text="${merchantDTO.id}">Id</td>
+        <td th:text="${merchantDTO.name}">Name</td>
+        <td th:text="${merchantDTO.businessType.label}">Business type</td>
         <td>
-            <a th:href="@{edit(id=${userDTO.id})}">编辑</a>
-            <a th:href="@{remove(id=${userDTO.id})}">删除</a>
+            <a th:href="@{edit(id=${merchantDTO.id})}">编辑</a>
+            <a th:href="@{remove(id=${merchantDTO.id})}">删除</a>
         </td>
     </tr>
     </tbody>

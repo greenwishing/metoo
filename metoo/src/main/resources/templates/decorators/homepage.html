@@ -16,17 +16,23 @@
 <header>
     <section class="container">
         <nav th:if="${session.METOO_USER == null}">
-            <span>您好，欢迎访问米途旅游！</span>
-            <a th:href="@{/login}">登录</a>
-            <a class="default" th:href="@{/registration}">注册</a>
+            <ul>
+                <li><span>您好，欢迎访问米途旅游！</span></li>
+                <li><a th:href="@{/login}">登录</a></li>
+                <li><a class="default" th:href="@{/registration}">注册</a></li>
+            </ul>
         </nav>
         <nav th:if="${session.METOO_USER != null}">
-            <span>您好，<span th:text="${session.METOO_USER.username}"></span>！</span>
-            <a class="default" href="javascript:void(0)" onclick="logout()">退出</a>
+            <ul>
+                <li><span>您好，<span th:text="${session.METOO_USER.username}"></span>！</span></li>
+                <li><a class="default" href="javascript:void(0)" onclick="logout()">退出</a></li>
+            </ul>
         </nav>
         <nav class="pull-right">
-            <a href="javascript:void(0)">我的米途</a>
-            <span>咨询电话:4007-972-156</span>
+            <ul>
+                <li><a href="javascript:void(0)">我的米途</a></li>
+                <li><span>咨询电话:4007-972-156</span></li>
+            </ul>
         </nav>
     </section>
 </header>

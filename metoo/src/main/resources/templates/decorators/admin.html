@@ -12,27 +12,23 @@
     </script>
     <link rel="stylesheet" type="text/css" href="/css/common.css"/>
 </head>
-<body>
+<body role="admin">
 <header>
     <section class="container">
+        <nav>米途旅游</nav>
         <nav class="menu-top">
             <ul>
-                <li><a href="/admin/order">订单</a></li>
-                <li><a href="/admin/scenery">景点</a></li>
-                <li><a href="/admin/hotel">酒店</a></li>
-                <li><a href="/admin/food">美食</a></li>
-                <li><a href="/admin/user">用户</a></li>
-                <li><a href="/admin/feedback">反馈</a></li>
+                <li><a href="/admin/order/list">订单</a></li>
+                <li><a href="/admin/merchant/list">商户</a></li>
+                <li><a href="/admin/user/list">用户</a></li>
+                <li><a href="/admin/feedback/list">反馈</a></li>
             </ul>
         </nav>
-        <nav class="pull-right" th:if="${session.METOO_USER == null}">
-            <span>您好，欢迎访问米途旅游！</span>
-            <a href="/login">登录</a>
-            <a class="default" th:href="@{/registration}">注册</a>
-        </nav>
         <nav class="pull-right" th:if="${session.METOO_USER != null}">
-            <span>您好，<span th:text="${session.METOO_USER.username}"></span>！</span>
-            <a class="default" href="javascript:void(0)" onclick="logout()">退出</a>
+            <ul>
+                <li><span>您好，<span th:text="${session.METOO_USER.username}"></span>！</span></li>
+                <li><a class="default" href="javascript:void(0)" onclick="logout()">退出</a></li>
+            </ul>
         </nav>
     </section>
 </header>

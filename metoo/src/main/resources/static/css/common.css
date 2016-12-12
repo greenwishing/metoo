@@ -91,28 +91,31 @@ header {
     padding-right: 15px;
     background: #fff;
     margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
 }
 
 header nav {
     display: inline-block;
-    line-height: 2.4;
+    vertical-align: middle;
+    line-height: 1.4;
 }
 
-header nav a + a,
-header nav span + span,
-header nav a + span,
-header nav span + a {
-    margin-left: 10px;
+header nav + nav {
+    margin-left: 15px;
 }
 
-.menu-top li {
+header nav li {
     float: left;
     display: inline-block;
 }
 
-.menu-top li a {
+header nav li > a,
+header nav li > span {
     display: inline-block;
-    padding: 0 15px;
+    padding: 10px 15px;
+}
+
+.menu-top li a {
     text-decoration: none;
     color: #428bca;
 }
@@ -1132,7 +1135,7 @@ textarea.form-control {
     width: 100%;
     border-spacing: 0;
     border-collapse: collapse;
-    border: 1px solid #ddd;
+    color: #666;
 }
 
 .table>thead>tr>th,
@@ -1141,24 +1144,37 @@ textarea.form-control {
     border-bottom: 1px solid #ddd;
 }
 
-.table>tbody>tr>th {
+.table-detail {
+    border: 1px solid #ddd;
+}
+
+.table-detail>tbody>tr>th {
     border-right: 1px solid #ddd;
 }
 
 .table>thead>tr>th,
 .table>tbody>tr>th,
 .table>tbody>tr>td {
+    text-align: left;
     font-weight: normal;
     padding: 8px 10px;
 }
 
 .table>thead>tr>th {
     vertical-align: bottom;
+    color: #333;
+    text-shadow: 1px 1px 1px rgba(255,255,255,.3);
 }
 
 .table>tbody>tr>th {
     background-color: #f0f0f0;
     font-size: 16px;
+    color: #555;
+    text-shadow: 1px 1px 1px rgba(255,255,255,.3);
+}
+
+[role="admin"] > .container {
+    min-height: 450px;
 }
 
 .text-left {

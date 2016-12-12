@@ -119,4 +119,21 @@ public class MerchantDTO {
     public void setContactPhone(String contactPhone) {
         this.contactPhone = contactPhone;
     }
+
+    public static List<MerchantDTO> toDTOs(List<Merchant> merchants) {
+        List<MerchantDTO> merchantDTOs = new ArrayList<>();
+        for (Merchant merchant : merchants) {
+            MerchantDTO merchantDTO = new MerchantDTO(merchant);
+            merchantDTOs.add(merchantDTO);
+        }
+        return merchantDTOs;
+    }
+
+    public void update(Merchant merchant) {
+        Integer features = 0;
+        for (Feature feature : this.features) {
+            features += feature.getVal();
+        }
+        merchant.update(name, businessType, level, picture, introduction, specialty, features, address, contactPhone);
+    }
 }

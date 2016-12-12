@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorator="decorators/admin" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>编辑商户</title>
+</head>
+<body>
+<div layout:fragment="content">
+<form th:action="@{save}" th:object="${merchantDTO}" method="post">
+    <div class="form-group">
+        <label class="control-label col-2">名称</label>
+        <div class="col-10">
+            <input class="form-control" type="text" th:field="*{name}"/>
+        </div>
+    </div>
+    <div class="form-group" th:if="${id == null}">
+        <label class="control-label col-2">业务类型</label>
+        <div class="col-10">
+            <select class="form-control" th:field="*{businessType}">
+                <option th:each="businessType:${businessTypes}"
+                        th:value="${businessType.value}" th:selected="${businessType.value eq businessType}"
+                        th:text="${businessType.label}">Business type</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group" th:if="${id != null}">
+        <label class="control-label col-2">业务类型</label>
+        <div class="col-10">
+            <p class="control-label-static" th:text="${businessType.label}"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-2">服务</label>
+        <div class="col-10">
+            <label th:each="feature:${features}">
+                <input type="checkbox" name="active" th:value="${feature.value}"/>
+                <span th:text="${feature.label}"></span>
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-2">介绍</label>
+        <div class="col-10">
+            <textarea class="form-control" cols="3" th:field="*{introduction}"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-2">特色</label>
+        <div class="col-10">
+            <textarea class="form-control" cols="3" th:field="*{specialty}"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-2">地址</label>
+        <div class="col-10">
+            <textarea class="form-control" cols="1" th:field="*{address}"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-2">联系电话</label>
+        <div class="col-10">
+            <input class="form-control" type="text" th:field="*{contactPhone}"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-10 col-offset-2">
+            <input type="hidden" th:field="*{id}"/>
+            <button class="btn btn-primary">保存</button>
+            <a class="btn btn-default" href="javascript:history.back();">返回</a>
+        </div>
+    </div>
+</form>
+</div>
+</body>
+</html>
