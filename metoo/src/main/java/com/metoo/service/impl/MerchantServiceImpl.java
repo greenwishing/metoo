@@ -2,7 +2,9 @@ package com.metoo.service.impl;
 
 import com.metoo.core.domain.merchant.Merchant;
 import com.metoo.core.domain.merchant.MerchantRepository;
+import com.metoo.core.domain.product.Product;
 import com.metoo.dto.merchant.MerchantDTO;
+import com.metoo.dto.product.ProductDTO;
 import com.metoo.service.MerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,5 +49,11 @@ public class MerchantServiceImpl implements MerchantService {
     @Override
     public void removeMerchantById(Long id) {
         merchantRepository.delete(id);
+    }
+
+    @Override
+    public List<ProductDTO> loadMerchantProducts(Long merchantId, Class productClass) {
+        List<Product> products = merchantRepository.loadMerchantProducts(merchantId, productClass.getSimpleName());
+        return ProductDTO.toDTOs(products);
     }
 }

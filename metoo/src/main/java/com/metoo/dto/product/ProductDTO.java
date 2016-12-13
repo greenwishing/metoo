@@ -165,4 +165,13 @@ public class ProductDTO {
     public void setHasWindow(boolean hasWindow) {
         this.hasWindow = hasWindow;
     }
+
+    public static List<ProductDTO> toDTOs(List<Product> products) {
+        List<ProductDTO> productDTOs = new ArrayList<>();
+        for (Product product : products) {
+            ProductDTO productDTO = new ProductDTO(product);
+            productDTOs.add(productDTO);
+        }
+        return productDTOs;
+    }
 }

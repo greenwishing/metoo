@@ -6,30 +6,35 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <table class="table">
-        <thead>
-        <tr>
-            <th>订单编号</th>
-            <th>商家</th>
-            <th>用户</th>
-            <th>商品</th>
-            <th>预订数量</th>
-            <th>下单时间</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="orderDTO:${orderDTOs}">
-            <td th:text="${orderDTO.id}">Id</td>
-            <td th:text="${orderDTO.username}">Username</td>
-            <td th:text="${orderDTO.type.label}">Type</td>
-            <td th:text="${orderDTO.creationTime}">Creation time</td>
-            <td>
-                <a th:href="@{detail(id=${orderDTO.id})}">查看</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div th:if="${not #lists.isEmpty(orderDTOs)}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>订单编号</th>
+                <th>商家</th>
+                <th>用户</th>
+                <th>商品</th>
+                <th>预订数量</th>
+                <th>下单时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="orderDTO:${orderDTOs}">
+                <td th:text="${orderDTO.id}">Id</td>
+                <td th:text="${orderDTO.username}">Username</td>
+                <td th:text="${orderDTO.type.label}">Type</td>
+                <td th:text="${orderDTO.creationTime}">Creation time</td>
+                <td>
+                    <a th:href="@{detail(id=${orderDTO.id})}">查看</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${#lists.isEmpty(orderDTOs)}">
+        <p class="text-center">没有数据</p>
+    </div>
 </div>
 </body>
 </html>

@@ -6,30 +6,37 @@
 </head>
 <body>
 <div layout:fragment="content">
-<table class="table">
-    <thead>
-    <tr>
-        <th>编号</th>
-        <th>用户名</th>
-        <th>用户类型</th>
-        <th>创建时间</th>
-        <th>操作</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="userDTO:${userDTOs}">
-        <td th:text="${userDTO.id}">Id</td>
-        <td th:text="${userDTO.username}">Username</td>
-        <td th:text="${userDTO.type.label}">Type</td>
-        <td th:text="${userDTO.creationTime}">Creation time</td>
-        <td>
-            <a th:href="@{edit(id=${userDTO.id})}">编辑</a>
-            <a th:href="@{remove(id=${userDTO.id})}">删除</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<a class="btn btn-primary" href="add">Add</a>
+    <p class="text-right">
+        <a class="btn btn-primary" href="add">Add</a>
+    </p>
+    <div th:if="${not #lists.isEmpty(userDTOs)}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>用户名</th>
+                <th>用户类型</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="userDTO:${userDTOs}">
+                <td th:text="${userDTO.id}">Id</td>
+                <td th:text="${userDTO.username}">Username</td>
+                <td th:text="${userDTO.type.label}">Type</td>
+                <td th:text="${userDTO.creationTime}">Creation time</td>
+                <td>
+                    <a th:href="@{edit(id=${userDTO.id})}">编辑</a>
+                    <a th:href="@{remove(id=${userDTO.id})}">删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${#lists.isEmpty(userDTOs)}">
+        <p class="text-center">没有数据</p>
+    </div>
 </div>
 </body>
 </html>

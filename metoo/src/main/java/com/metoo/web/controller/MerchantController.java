@@ -3,6 +3,7 @@ package com.metoo.web.controller;
 import com.metoo.core.domain.merchant.Feature;
 import com.metoo.core.domain.merchant.MerchantBusinessType;
 import com.metoo.dto.merchant.MerchantDTO;
+import com.metoo.dto.product.ProductDTO;
 import com.metoo.service.MerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,9 +33,13 @@ public class MerchantController {
         return new ModelAndView("admin/merchant_list", model);
     }
 
-    @RequestMapping("/admin/merchant/detail")
-    public ModelAndView detail(@RequestParam Long id) {
-        return new ModelAndView("admin/merchant_detail");
+    @RequestMapping("detail")
+    public ModelAndView detail(@RequestParam Long id, ModelMap model) {
+        MerchantDTO merchantDTO = merchantService.loadById(id);
+        model.put("merchantDTO", merchantDTO);
+        List<ProductDTO> productDTOs = merchantService.loadMerchantProducts(id, merchantDTO.getBusinessType().getProductClass());
+        model.put("productDTOs", productDTOs);
+        return new ModelAndView("admin/merchant_detail", model);
     }
 
     @RequestMapping("add")

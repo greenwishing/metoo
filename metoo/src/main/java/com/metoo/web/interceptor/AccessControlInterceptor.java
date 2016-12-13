@@ -30,7 +30,7 @@ public class AccessControlInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String requestURI = request.getRequestURI();
+        /*String requestURI = request.getRequestURI();
         if (requestURI.startsWith("/admin/")) {
             if (requestURI.startsWith("/admin/login")) {
                 return true;
@@ -45,7 +45,7 @@ public class AccessControlInterceptor extends HandlerInterceptorAdapter {
                 }
                 return false;
             }
-        }
+        }*/
         return true;
     }
 }

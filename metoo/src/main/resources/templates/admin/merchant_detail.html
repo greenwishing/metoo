@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorator="decorators/admin" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>商户</title>
+</head>
+<body class="modal-open">
+<div layout:fragment="content">
+    <div th:if="${merchantDTO != null}">
+        <div>
+            <div class="form-group">
+                <label class="control-label col-2">名称</label>
+                <div class="col-4">
+                    <div class="form-control-static text-desc" th:text="${merchantDTO.name}"></div>
+                </div>
+                <label class="control-label col-2">业务类型</label>
+                <div class="col-4">
+                    <div class="form-control-static text-desc" th:text="${merchantDTO.businessType.label}"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-2">介绍</label>
+                <div class="col-10">
+                    <div class="form-control-static text-desc" th:text="${merchantDTO.introduction}">Introduction</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-2">特色</label>
+                <div class="col-10">
+                    <div class="form-control-static text-desc" th:text="${merchantDTO.specialty}">Specialty</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-2">地址</label>
+                <div class="col-10">
+                    <div class="form-control-static text-desc" th:text="${merchantDTO.address}">Address</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-2">联系电话</label>
+                <div class="col-10">
+                    <div class="form-control-static text-desc" th:text="${merchantDTO.contactPhone}">Contact phone</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-2">服务</label>
+                <div class="col-10">
+                    <div class="form-control-static text-desc" th:each="feature:${merchantDTO.features}"><span th:class="${feature.className}" th:title="${feature.label}"></span></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p class="text-right">
+                <a class="btn btn-primary" href="add_product">Add product</a>
+            </p>
+            <div th:if="${not #lists.isEmpty(productDTOs)}">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>名称</th>
+                        <th>类型</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="productDTO:${productDTOs}">
+                        <td th:text="${productDTO.id}">Id</td>
+                        <td th:text="${productDTO.name}">Name</td>
+                        <td th:text="${productDTO.category.name}">Category name</td>
+                        <td>
+                            <a th:href="@{edit(id=${productDTO.id})}">编辑</a>
+                            <a th:href="@{remove(id=${productDTO.id})}">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:if="${#lists.isEmpty(productDTOs)}">
+                <p class="text-center">没有数据</p>
+            </div>
+        </div>
+    </div>
+    <div th:if="${merchantDTO == null}">
+        <p class="text-center">无效的商户</p>
+    </div>
+    <div id="myModal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"><span>×</span></button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>Text in a modal</h4>
+                    <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+
+                    <h4>Popover in a modal</h4>
+                    <p>This <a href="#" role="button" class="btn btn-default popover-test" title="" data-content="And here's some amazing content. It's very engaging. right?" data-original-title="A Title">button</a> should trigger a popover on click.</p>
+
+                    <h4>Tooltips in a modal</h4>
+                    <p><a href="#" class="tooltip-test" title="" data-original-title="Tooltip">This link</a> and <a href="#" class="tooltip-test" title="" data-original-title="Tooltip">that link</a> should have tooltips on hover.</p>
+
+                    <hr/>
+
+                    <h4>Overflowing text to show scroll behavior</h4>
+                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+</div>
+</body>
+</html>

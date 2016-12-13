@@ -77,4 +77,12 @@ public enum Feature {
         }
         return features;
     }
+
+    public static Integer countValue(List<Feature> features) {
+        int featureValue = 0;
+        for (Feature feature : features) {
+            featureValue += feature.val;
+        }
+        return featureValue;
+    }
 }

@@ -6,28 +6,36 @@
 </head>
 <body>
 <div layout:fragment="content">
-<table class="table">
-    <thead>
-    <tr>
-        <th>编号</th>
-        <th>名称</th>
-        <th>类型</th>
-        <th>操作</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="merchantDTO:${merchantDTOs}">
-        <td th:text="${merchantDTO.id}">Id</td>
-        <td th:text="${merchantDTO.name}">Name</td>
-        <td th:text="${merchantDTO.businessType.label}">Business type</td>
-        <td>
-            <a th:href="@{edit(id=${merchantDTO.id})}">编辑</a>
-            <a th:href="@{remove(id=${merchantDTO.id})}">删除</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<a class="btn btn-primary" href="add">Add</a>
+    <p class="text-right">
+        <a class="btn btn-primary" href="add">Add</a>
+    </p>
+    <div th:if="${not #lists.isEmpty(merchantDTOs)}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>名称</th>
+                <th>类型</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="merchantDTO:${merchantDTOs}">
+                <td th:text="${merchantDTO.id}">Id</td>
+                <td th:text="${merchantDTO.name}">Name</td>
+                <td th:text="${merchantDTO.businessType.label}">Business type</td>
+                <td>
+                    <a th:href="@{edit(id=${merchantDTO.id})}">编辑</a>
+                    <a th:href="@{detail(id=${merchantDTO.id})}">管理</a>
+                    <a th:href="@{remove(id=${merchantDTO.id})}">删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${#lists.isEmpty(merchantDTOs)}">
+        <p class="text-center">没有数据</p>
+    </div>
 </div>
 </body>
 </html>

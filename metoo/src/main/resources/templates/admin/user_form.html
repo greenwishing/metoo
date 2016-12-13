@@ -8,19 +8,19 @@
 <div layout:fragment="content">
 <form th:action="@{save}" th:object="${userDTO}" method="post">
     <div class="form-group">
-        <label class="control-label col-2">邮箱</label>
+        <label class="control-label col-2">邮箱<span class="data-required"></span></label>
         <div class="col-10">
             <input class="form-control" type="text" th:field="*{email}"/>
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-2">用户名</label>
+        <label class="control-label col-2">用户名<span class="data-required"></span></label>
         <div class="col-10">
             <input class="form-control" type="text" th:field="*{username}"/>
         </div>
     </div>
     <div class="form-group" th:if="${id == null}">
-        <label class="control-label col-2">用户类型</label>
+        <label class="control-label col-2">用户类型<span class="data-required"></span></label>
         <div class="col-10">
             <select class="form-control" th:field="*{type}">
                 <option th:each="userType:${userTypes}"

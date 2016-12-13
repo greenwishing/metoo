@@ -8,13 +8,13 @@
 <div layout:fragment="content">
 <form th:action="@{save}" th:object="${merchantDTO}" method="post">
     <div class="form-group">
-        <label class="control-label col-2">名称</label>
+        <label class="control-label col-2">名称<span class="data-required"></span></label>
         <div class="col-10">
             <input class="form-control" type="text" th:field="*{name}"/>
         </div>
     </div>
     <div class="form-group" th:if="${id == null}">
-        <label class="control-label col-2">业务类型</label>
+        <label class="control-label col-2">业务类型<span class="data-required"></span></label>
         <div class="col-10">
             <select class="form-control" th:field="*{businessType}">
                 <option th:each="businessType:${businessTypes}"
@@ -33,7 +33,7 @@
         <label class="control-label col-2">服务</label>
         <div class="col-10">
             <label th:each="feature:${features}">
-                <input type="checkbox" name="active" th:value="${feature.value}"/>
+                <input type="checkbox" name="features" th:value="${feature.value}"/>
                 <span th:text="${feature.label}"></span>
             </label>
         </div>
