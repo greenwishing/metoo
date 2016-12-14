@@ -1,6 +1,7 @@
 package com.metoo.service;
 
 import com.metoo.dto.merchant.MerchantDTO;
+import com.metoo.dto.product.ProductCategoryDTO;
 import com.metoo.dto.product.ProductDTO;
 
 import java.util.List;
@@ -19,4 +20,12 @@ public interface MerchantService {
     void removeMerchantById(Long id);
 
     List<ProductDTO> loadMerchantProducts(Long merchantId, Class productClass);
+
+    List<ProductCategoryDTO> loadProductCategories(Long merchantId);
+
+    void saveOrUpdateProduct(ProductDTO productDTO);
+
+    ProductDTO loadProductById(Long id);
+
+    void removeProductById(Long id);
 }

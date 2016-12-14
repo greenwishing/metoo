@@ -14,6 +14,12 @@ public enum ErrorMap {
     EMAIL_NOT_FOUND(-1004, "邮箱未注册"),
     INVALID_PASSWORD(-1005, "密码错误"),
     INVALID_USER_TYPE(-1006, "账户类型错误"),
+    INVALID_BUSINESS_TYPE(-1007, "业务类型错误"),
+
+    INVALID_MERCHANT_ID(-2001, "不合法的商户"),
+    INVALID_PRODUCT_CATEGORY_ID(-2002, "不合法的商品分类"),
+    INVALID_PRICE(-2003, "不合法的价格"),
+    INVALID_MARKETING_PRICE(-2004, "不合法的市场价格"),
 
     ;
 

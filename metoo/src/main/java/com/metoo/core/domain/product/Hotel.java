@@ -1,5 +1,7 @@
 package com.metoo.core.domain.product;
 
+import com.metoo.core.domain.merchant.Merchant;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -11,6 +13,14 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("Hotel")
 public class Hotel extends Product {
+
+    public Hotel() {
+        super();
+    }
+
+    public Hotel(Merchant merchant) {
+        super(merchant);
+    }
 
     /**
      * 是否有早餐

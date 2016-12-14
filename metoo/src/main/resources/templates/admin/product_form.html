@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>编辑商品</title>
+    <script type="text/javascript">
+        function removeRow(el) {
+            $(el).remove();
+        }
+    </script>
+</head>
+<body>
+<div>
+<form id="product-form" th:action="@{saveProduct}" th:object="${productDTO}" method="post" onsubmit="return false;">
+    <div class="form-group">
+        <label class="control-label col-2">名称<span class="data-required"></span></label>
+        <div class="col-10">
+            <input class="form-control" type="text" th:field="*{name}"/>
+        </div>
+    </div>
+    <label class="control-label col-2">分类<span class="data-required"></span></label>
+    <div class="col-10">
+        <select class="form-control" th:field="*{category.id}">
+            <option th:each="categoryDTO:${categoryDTOs}"
+                    th:value="${categoryDTO.id}" th:selected="*{category.id} eq ${categoryDTO.id}"
+                    th:text="${categoryDTO.name}">Category name</option>
+        </select>
+    </div>
+    <div class="form-group" th:if="*{merchant.businessType.value eq 'FOOD'}">
+        <label class="control-label col-2">有效期至</label>
+        <div class="col-10">
+            <input class="form-control" type="text" th:field="*{expiryDate}"/>
+        </div>
+    </div>
+    <div class="form-group" th:if="*{merchant.businessType.value eq 'FOOD'}">
+        <label class="control-label col-2">购买须知</label>
+        <div class="col-10">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>标题</th>
+                    <th>内容</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="notice:${notices}">
+                    <td><input class="form-control" type="text" th:field="*{notice.title}"/></td>
+                    <td><input class="form-control" type="text" th:field="*{notice.content}"/></td>
+                    <td><a href="javascript:void(0)" onclick="removeRow(this)">删除</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <input class="form-control" type="text" th:field="*{notices}"/>
+        </div>
+    </div>
+    <div class="form-group" th:if="*{merchant.businessType.value eq 'FOOD'}">
+        <label class="control-label col-2">图文介绍</label>
+        <div class="col-10">
+            <textarea class="form-control" cols="3" th:field="*{article}"></textarea>
+        </div>
+    </div>
+    <div class="form-group" th:if="*{merchant.businessType.value eq 'HOTEL'}">
+        <div class="col-10 col-offset-2">
+            <label><input type="checkbox" th:field="*{hasBreakfast}"/> 包早餐</label>
+            <label><input type="checkbox" th:field="*{hasWindow}"/> 有窗</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-2">简介</label>
+        <div class="col-10">
+            <textarea class="form-control" cols="3" th:field="*{description}"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-2">价格</label>
+        <div class="col-10">
+            <input class="form-control" type="text" th:field="*{price}"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-2">市场价格</label>
+        <div class="col-10">
+            <input class="form-control" type="text" th:field="*{marketingPrice}"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-10 col-offset-2">
+            <input type="hidden" th:field="*{id}"/>
+            <input type="hidden" th:field="*{merchant.id}"/>
+            <button class="btn btn-primary" type="button" onclick="$('#product-form').submitWithAjax()">保存</button>
+            <a class="btn btn-default" href="javascript:void(0);" onclick="$.metoo.closeDialog(this)">取消</a>
+        </div>
+    </div>
+</form>
+</div>
+</body>
+</html>

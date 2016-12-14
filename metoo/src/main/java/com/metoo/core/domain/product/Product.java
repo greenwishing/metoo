@@ -56,11 +56,14 @@ public abstract class Product extends Domain {
     @Column(name = "marketing_price")
     private BigDecimal marketingPrice;
 
-    public Product() {
+    protected Product() {
     }
 
-    protected Product(Merchant merchant, ProductCategory category) {
+    protected Product(Merchant merchant) {
         this.merchant = merchant;
+    }
+
+    public void updateCategory(ProductCategory category) {
         this.category = category;
     }
 

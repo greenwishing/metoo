@@ -2,9 +2,6 @@ package com.metoo.core.domain.product;
 
 import com.metoo.core.domain.merchant.Merchant;
 import com.metoo.utils.JsonUtils;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.util.JSONUtils;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 
@@ -45,8 +42,12 @@ public class Food extends Product {
     @Column(name = "article")
     private String article;
 
-    public Food(Merchant merchant, ProductCategory category) {
-        super(merchant, category);
+    public Food() {
+        super();
+    }
+
+    public Food(Merchant merchant) {
+        super(merchant);
     }
 
     public void update(LocalDate expiryDate, List<ProductNotice> notices, String article) {

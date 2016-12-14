@@ -2,16 +2,21 @@ package com.metoo.web.controller;
 
 import com.metoo.core.domain.merchant.Feature;
 import com.metoo.core.domain.merchant.MerchantBusinessType;
+import com.metoo.core.domain.product.ProductCategory;
 import com.metoo.dto.merchant.MerchantDTO;
+import com.metoo.dto.product.ProductCategoryDTO;
 import com.metoo.dto.product.ProductDTO;
+import com.metoo.exception.MetooException;
 import com.metoo.service.MerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.List;
 
@@ -70,4 +75,39 @@ public class MerchantController {
         merchantService.removeMerchantById(id);
         return new ModelAndView("redirect:list");
     }
+
+    @RequestMapping("addProduct")
+    public ModelAndView productAddForm(@RequestParam Long merchantId, ModelMap model) {
+        MerchantDTO merchantDTO = merchantService.loadById(merchantId);
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setMerchant(merchantDTO);
+        model.put("productDTO", productDTO);
+        List<ProductCategoryDTO> categoryDTOs = merchantService.loadProductCategories(merchantId);
+        model.put("categoryDTOs", categoryDTOs);
+        return new ModelAndView("admin/product_form");
+    }
+
+    @RequestMapping("editProduct")
+    public ModelAndView productEditForm(@RequestParam Long id, ModelMap model) {
+        ProductDTO productDTO = merchantService.loadProductById(id);
+        model.put("productDTO", productDTO);
+        Long merchantId = productDTO.getMerchant().getId();
+        List<ProductCategoryDTO> categoryDTOs = merchantService.loadProductCategories(merchantId);
+        model.put("categoryDTOs", categoryDTOs);
+        return new ModelAndView("admin/product_form");
+    }
+
+    @RequestMapping("saveProduct")
+    public ModelAndView saveProduct(@ModelAttribute ProductDTO productDTO) {
+        merchantService.saveOrUpdateProduct(productDTO);
+        return new ModelAndView(new MappingJackson2JsonView(), "success", true);
+    }
+
+    @RequestMapping("removeProduct")
+    public ModelAndView removeProduct(@RequestParam Long id) {
+        merchantService.removeProductById(id);
+        return null;
+    }
+
+
 }

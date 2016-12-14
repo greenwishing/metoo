@@ -5,6 +5,7 @@ import com.metoo.core.domain.product.*;
 import com.metoo.dto.merchant.MerchantDTO;
 import com.metoo.utils.JodaUtils;
 import com.metoo.utils.JsonUtils;
+import com.metoo.utils.NumberUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +47,8 @@ public class ProductDTO {
         this.category = new ProductCategoryDTO(category);
         this.name = product.getName();
         this.description = product.getDescription();
-        this.price = product.getDescription();
-        this.marketingPrice = product.getDescription();
+        this.price = NumberUtils.toRealString(product.getPrice());
+        this.marketingPrice = NumberUtils.toRealString(product.getMarketingPrice());
 
         if (product instanceof Food) {
             Food food = (Food) product;

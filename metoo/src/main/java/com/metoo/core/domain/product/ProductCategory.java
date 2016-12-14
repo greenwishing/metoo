@@ -1,10 +1,9 @@
 package com.metoo.core.domain.product;
 
 import com.metoo.core.domain.Domain;
+import com.metoo.core.domain.merchant.Merchant;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 商品分类
@@ -15,6 +14,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "product_category")
 public class ProductCategory extends Domain {
+
+    @JoinColumn(name = "merchant_id")
+    @ManyToOne(targetEntity = Merchant.class)
+    private Merchant merchant;
 
     /**
      * 分类名称
@@ -31,9 +34,17 @@ public class ProductCategory extends Domain {
     public ProductCategory() {
     }
 
+    public ProductCategory(Merchant merchant) {
+        this.merchant = merchant;
+    }
+
     public void update(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+    public Merchant getMerchant() {
+        return merchant;
     }
 
     public String getName() {

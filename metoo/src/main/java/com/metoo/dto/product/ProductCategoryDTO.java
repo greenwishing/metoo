@@ -1,6 +1,11 @@
 package com.metoo.dto.product;
 
+import com.metoo.core.domain.merchant.Merchant;
 import com.metoo.core.domain.product.ProductCategory;
+import com.metoo.dto.merchant.MerchantDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: Zhang xiaomei
@@ -9,6 +14,7 @@ import com.metoo.core.domain.product.ProductCategory;
 public class ProductCategoryDTO {
 
     private Long id;
+    private MerchantDTO merchant = new MerchantDTO();
     private String name;
     private String description;
 
@@ -17,6 +23,8 @@ public class ProductCategoryDTO {
 
     public ProductCategoryDTO(ProductCategory category) {
         this.id = category.getId();
+        Merchant merchant = category.getMerchant();
+        this.merchant = new MerchantDTO(merchant);
         this.name = category.getName();
         this.description = category.getDescription();
     }
@@ -27,6 +35,14 @@ public class ProductCategoryDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public MerchantDTO getMerchant() {
+        return merchant;
+    }
+
+    public void setMerchant(MerchantDTO merchant) {
+        this.merchant = merchant;
     }
 
     public String getName() {
@@ -43,5 +59,14 @@ public class ProductCategoryDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public static List<ProductCategoryDTO> toDTOs(List<ProductCategory> categories) {
+        List<ProductCategoryDTO> categoryDTOs = new ArrayList<>();
+        for (ProductCategory category : categories) {
+            ProductCategoryDTO categoryDTO = new ProductCategoryDTO(category);
+            categoryDTOs.add(categoryDTO);
+        }
+        return categoryDTOs;
     }
 }

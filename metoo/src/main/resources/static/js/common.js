@@ -1,4 +1,9 @@
-
+(function($){
+    $.metoo = $.metoo || {
+            version: '0.0.1'
+        };
+    $.noop = $.noop || function () {};
+})(jQuery);
 // menu control
 (function($){
 	$.fn.menuControl = function() {
@@ -166,6 +171,145 @@ Slider.prototype = {
 
 };
 
+/**
+ * 弹出窗口
+ * $.metoo.dialog({title: '窗口标题', content: '窗口内容'});
+ */
+(function($){
+    $.metoo.dialog = function(options) {
+        options = $.extend({
+            title: '标题',
+            content: null,
+            url: null,
+            className: '',
+            buttons: []
+        }, options || {});
+        var $dialog = $('<div class="modal">\n' +
+            '<div class="modal-backdrop"></div>\n' +
+            '<div class="modal-dialog">\n' +
+            '<div class="modal-content">\n' +
+            '<div class="modal-header">\n<button type="button" class="close"><span>×</span></button>\n<h4 class="modal-title"></h4>\n</div>\n' +
+            '<div class="modal-body"></div>\n' +
+            '</div>\n' +
+            '</div>\n' +
+            '</div>');
+        $dialog.find('.modal-title').html(options.title);
+        if (options.className) {
+            $dialog.addClass(options.className)
+        }
+        if (options.buttons.length) {
+            var $footer = $('<div class="modal-footer"></div>');
+            var buttons = options.buttons.map(function (button) {
+                return '<button type="button" class="btn ' + button.type + '">' + button.label + '</button>';
+            }).join('\n');
+            $footer.append(buttons);
+            $dialog.find('.modal-content').append($footer);
+            $dialog.on('click', '.btn', function () {
+                var button = options.buttons[$(this).index()];
+                var cb = button.onClick || $.noop;
+                cb.call();
+                $.metoo.closeDialog($dialog);
+            });
+        }
+        if (options.content) {
+            $dialog.find('.modal-body').html(options.content);
+        } else if (options.url) {
+            $.get(options.url, function(result){
+                $dialog.find('.modal-body').html(result);
+            });
+        }
+        $('body').append($dialog);
+        $dialog.on('click', '.close', function(){
+            $.metoo.closeDialog($dialog);
+        });
+        if (typeof $dialog.fadeIn === 'function') {
+            $dialog.fadeIn('fast');
+        } else {
+            $dialog.show('fast');
+        }
+    };
+
+    $.metoo.closeDialog = function($dialog) {
+        if (!($dialog instanceof jQuery)) {
+            $dialog = $($dialog);
+        }
+        if (!$dialog.is('.modal')) {
+            $dialog = $dialog.closest('.modal');
+        }
+        if ($dialog) {
+            $dialog.off('click');
+            if (typeof $dialog.fadeOut === 'function') {
+                $dialog.fadeOut('fast', function () {
+                    $dialog.remove();
+                    $dialog = null;
+                });
+            } else {
+                $dialog.remove();
+                $dialog = null;
+            }
+        }
+    }
+})(jQuery);
+
+/**
+ * 提示信息框
+ * $.metoo.alert('提示信息！', {
+ * ok: function(){
+ *   // ok callback
+ * }})
+ * 或
+ * $.metoo.alert('提示信息！', function(){
+ *   // ok callback
+ * })
+ */
+(function($){
+    $.metoo.alert = function(message, options) {
+        if (typeof options == "function") {
+            options = {ok: options};
+        }
+        options = $.extend({}, {ok: $.noop}, options || {});
+        $.metoo.dialog({title: '提示', content: message || '提示信息', buttons: [{
+            label: '确定',
+            type: 'btn-primary',
+            onClick: options.ok
+        }]})
+    }
+})(jQuery);
+
+/**
+ * 确认对话框
+ * $.metoo.confirm('确定要这样做吗？', {
+ * ok: function(){
+ *   // ok callback
+ * },
+ * cancel: function(){
+ *   // cancel callback
+ * }
+ * })
+ */
+(function($){
+    $.metoo.confirm = function(message, options) {
+        options = $.extend({}, {ok: $.noop, cancel: $.noop}, options || {});
+        $.metoo.dialog({title: '提示', content: message || '提示信息', buttons: [{
+            label: '确定',
+            type: 'btn-primary',
+            onClick: options.ok
+        }, {
+            label: '取消',
+            type: 'btn-default',
+            onClick: options.cancel
+        }]})
+    }
+})(jQuery);
+
+// 异步请求
+(function($){
+    $.metoo.ajax = function(options) {
+        options = $.extend({}, options || {});
+        $.ajax(options);
+    }
+})(jQuery);
+
 function isEmpty(text) {
     return !text || null == text || "" == text || "null" == text || "undefined" == text;
 }
@@ -206,22 +350,21 @@ function logout() {
                         if (!isEmpty(url)) {
                             forward(url);
                         } else {
-                            if (alert('操作成功！')) {
-                                reload();
-                            }
+                            reload();
                         }
                     }
                 } else {
                     if (typeof options.error == 'function') {
                         options.error.apply(this, [result]);
                     } else {
-						alert(result.message);
-						if (result.code == -1001) {
-                            forward('/login?redirectUrl=' + encodeURIComponent(location.href));
-						} else if (result.code == -1002) {
-							$('#code').val('');
-							refreshCode($('#code_pic'));
-						}
+                        $.metoo.alert(result.message, function(){
+                            if (result.code == -1001) {
+                                forward('/login?redirectUrl=' + encodeURIComponent(location.href));
+                            } else if (result.code == -1002) {
+                                $('#code').val('');
+                                refreshCode($('#code_pic'));
+                            }
+                        });
                     }
                 }
             }
