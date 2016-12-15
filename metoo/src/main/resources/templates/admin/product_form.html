@@ -4,8 +4,28 @@
     <meta charset="UTF-8"/>
     <title>编辑商品</title>
     <script type="text/javascript">
+        function addNotice() {
+            var template = $('#tpl-notice').html();
+            $('#notice-list').append(template);
+            refreshAliasName();
+        }
         function removeRow(el) {
-            $(el).remove();
+            $(el).closest('tr').remove();
+            refreshAliasName();
+        }
+        function refreshAliasName() {
+            var index = 0;
+            var $list = $('#notice-list');
+            var prefix = $list.attr('data-prefix');
+            $list.find('tr').each(function(){
+                var $tr = $(this);
+                $tr.find(':input[alias]').each(function(){
+                    var $input = $(this);
+                    var alias = $input.attr('alias');
+                    $input.attr({'name': prefix + '[' + index + '].' + alias});
+                });
+                index++;
+            });
         }
     </script>
 </head>
@@ -35,23 +55,22 @@
     <div class="form-group" th:if="*{merchant.businessType.value eq 'FOOD'}">
         <label class="control-label col-2">购买须知</label>
         <div class="col-10">
-            <table class="table">
+            <table class="table table-form">
                 <thead>
                 <tr>
                     <th>标题</th>
                     <th>内容</th>
-                    <th>操作</th>
+                    <th><a href="javascript:void(0)" onclick="addNotice()">添加</a></th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr th:each="notice:${notices}">
-                    <td><input class="form-control" type="text" th:field="*{notice.title}"/></td>
-                    <td><input class="form-control" type="text" th:field="*{notice.content}"/></td>
+                <tbody id="notice-list" data-prefix="notices">
+                <tr th:each="notice,stat:${productDTO.notices}">
+                    <td><input class="form-control" type="text" alias="title" th:attr="name=${'notices['+stat.index+'].title'},value=${notice.title}"/></td>
+                    <td><input class="form-control" type="text" alias="content" th:attr="name=${'notices['+stat.index+'].content'},value=${notice.content}"/></td>
                     <td><a href="javascript:void(0)" onclick="removeRow(this)">删除</a></td>
                 </tr>
                 </tbody>
             </table>
-            <input class="form-control" type="text" th:field="*{notices}"/>
         </div>
     </div>
     <div class="form-group" th:if="*{merchant.businessType.value eq 'FOOD'}">
@@ -93,6 +112,13 @@
         </div>
     </div>
 </form>
+<script type="text/html" id="tpl-notice">
+    <tr>
+        <td><input class="form-control" type="text" alias="title"/></td>
+        <td><input class="form-control" type="text" alias="content"/></td>
+        <td><a href="javascript:void(0)" onclick="removeRow(this)">删除</a></td>
+    </tr>
+</script>
 </div>
 </body>
 </html>

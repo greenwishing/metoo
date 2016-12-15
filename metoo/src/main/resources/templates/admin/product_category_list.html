@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>商品分类</title>
+    <script type="text/javascript">
+        function reloadProductCategory() {
+            $.metoo.reloadDialog($('#product-category-dialog-ref'));
+        }
+        function saveProductCategory(el) {
+            $('#product-category-form').submitWithAjax({success: function(result){
+                $.metoo.closeDialog($(el));
+                reloadProductCategory();
+            }});
+        }
+        function removeProductCategory(el) {
+            $.metoo.confirm('确定要删除此商品分类？', {ok: function(){
+                var productCategoryId = $(el).attr('data-id');
+                $.metoo.ajax({
+                    url: 'removeProductCategory?id=' + productCategoryId,
+                    success: function(result) {
+                        if (result.success) {
+                            reload();
+                        } else {
+                            $.metoo.alert(result.message);
+                        }
+                    }
+                })
+            }})
+        }
+    </script>
+</head>
+<body>
+<div>
+    <p class="text-right">
+        <a class="btn btn-primary" href="javascript:void(0)" id="product-category-dialog-ref" onclick="addProductCategory(this)" th:attr="data-id=${merchantId}">添加</a>
+    </p>
+    <div th:if="${not #lists.isEmpty(productCategoryDTOs)}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>名称</th>
+                <th>描述</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="productCategoryDTO:${productCategoryDTOs}">
+                <td th:text="${productCategoryDTO.id}">Id</td>
+                <td th:text="${productCategoryDTO.name}">Name</td>
+                <td th:text="${productCategoryDTO.description}">Description</td>
+                <td>
+                    <a href="javascript:void(0)" onclick="editProductCategory(this)" th:attr="data-id=${productCategoryDTO.id}">编辑</a>
+                    <a href="javascript:void(0)" onclick="removeProductCategory(this)" th:attr="data-id=${productCategoryDTO.id}">删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${#lists.isEmpty(productCategoryDTOs)}">
+        <p class="text-center">没有数据</p>
+    </div>
+</div>
+</body>
+</html>

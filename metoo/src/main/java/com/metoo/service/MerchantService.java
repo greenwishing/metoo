@@ -28,4 +28,10 @@ public interface MerchantService {
     ProductDTO loadProductById(Long id);
 
     void removeProductById(Long id);
+
+    ProductCategoryDTO loadProductCategoryById(Long id);
+
+    void saveOrUpdateProductCategory(ProductCategoryDTO productCategoryDTO);
+
+    void removeProductCategoryById(Long id);
 }

@@ -21,6 +21,10 @@ public enum ErrorMap {
     INVALID_PRICE(-2003, "不合法的价格"),
     INVALID_MARKETING_PRICE(-2004, "不合法的市场价格"),
 
+    ALREADY_IN_USE_MERCHANT(-3001, "商户正在被使用，无法删除"),
+    ALREADY_IN_USE_PRODUCT(-3002, "商品正在被使用，无法删除"),
+    ALREADY_IN_USE_PRODUCT_CATEGORY(-3003, "商品分类正在被使用，无法删除"),
+
     ;
 
     private Integer code;

@@ -193,6 +193,7 @@ Slider.prototype = {
             '</div>\n' +
             '</div>\n' +
             '</div>');
+        $dialog.data({url: options.url});
         $dialog.find('.modal-title').html(options.title);
         if (options.className) {
             $dialog.addClass(options.className)
@@ -218,7 +219,7 @@ Slider.prototype = {
                 $dialog.find('.modal-body').html(result);
             });
         }
-        $('body').append($dialog);
+        $('body').append($dialog).addClass('modal-open');
         $dialog.on('click', '.close', function(){
             $.metoo.closeDialog($dialog);
         });
@@ -240,13 +241,36 @@ Slider.prototype = {
             $dialog.off('click');
             if (typeof $dialog.fadeOut === 'function') {
                 $dialog.fadeOut('fast', function () {
-                    $dialog.remove();
-                    $dialog = null;
+                    _remove();
                 });
             } else {
-                $dialog.remove();
-                $dialog = null;
+                _remove();
             }
+        }
+        function _remove() {
+            $dialog.remove();
+            $dialog = null;
+            var $body = $('body');
+            if (!$body.find('.modal').length) {
+                $body.removeClass('modal-open');
+            }
+        }
+    };
+
+    $.metoo.reloadDialog = function($dialog, options) {
+        if (!($dialog instanceof jQuery)) {
+            $dialog = $($dialog);
+        }
+        if (!$dialog.is('.modal')) {
+            $dialog = $dialog.closest('.modal');
+        }
+        options = $.extend({}, {url: $dialog.data('url'), content: null}, options || {});
+        if (options.content) {
+            $dialog.find('.modal-body').html(options.content);
+        } else if (options.url) {
+            $.get(options.url, function(result){
+                $dialog.find('.modal-body').html(result);
+            });
         }
     }
 })(jQuery);

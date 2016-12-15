@@ -8,6 +8,25 @@
             var merchantId = $(el).attr('data-id');
             $.metoo.dialog({title: '添加商品分类', url: 'addProductCategory?merchantId=' + merchantId});
         }
+        function editProductCategory(el) {
+            var productCategoryId = $(el).attr('data-id');
+            $.metoo.dialog({title: '编辑商品分类', url: 'editProductCategory?id=' + productCategoryId});
+        }
+        function removeProductCategory(el) {
+            $.metoo.confirm('确定要删除此商品分类？', {ok: function(){
+                var productCategoryId = $(el).attr('data-id');
+                $.metoo.ajax({
+                    url: 'removeProductCategory?id=' + productCategoryId,
+                    success: function() {
+                        $.metoo.closeDialog(el);
+                    }
+                });
+            }});
+        }
+        function productCategory(el) {
+            var merchantId = $(el).attr('data-id');
+            $.metoo.dialog({title: '商品分类', url: 'productCategory?merchantId=' + merchantId});
+        }
         function addProduct(el) {
             var merchantId = $(el).attr('data-id');
             $.metoo.dialog({title: '添加商品', url: 'addProduct?merchantId=' + merchantId});
@@ -21,10 +40,14 @@
                 var productId = $(el).attr('data-id');
                 $.metoo.ajax({
                     url: 'removeProduct?id=' + productId,
-                    success: function() {
-                        reload();
+                    success: function(result) {
+                        if (result.success) {
+                            reload();
+                        } else {
+                            $.metoo.alert(result.message);
+                        }
                     }
-                });
+                })
             }});
         }
     </script>
@@ -76,8 +99,8 @@
         </div>
         <div>
             <p class="text-right">
-                <a class="btn btn-default" href="javascript:void(0)" onclick="addProductCategory(this)" th:attr="data-id=${merchantDTO.id}">添加商品分类</a>
-                <a class="btn btn-default" href="javascript:void(0)" onclick="addProduct(this)" th:attr="data-id=${merchantDTO.id}">添加商品</a>
+                <a class="btn btn-default" href="javascript:void(0)" onclick="productCategory(this)" th:attr="data-id=${merchantDTO.id}">商品分类</a>
+                <a class="btn btn-primary" href="javascript:void(0)" onclick="addProduct(this)" th:attr="data-id=${merchantDTO.id}">添加商品</a>
             </p>
             <div th:if="${not #lists.isEmpty(productDTOs)}">
                 <table class="table">

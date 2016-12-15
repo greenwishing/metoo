@@ -58,6 +58,10 @@ public class MerchantServiceImpl implements MerchantService {
 
     @Override
     public void removeMerchantById(Long id) {
+        Long merchantInUse = merchantRepository.checkMerchantInUse(id);
+        if (merchantInUse > 0) {
+            throw new MetooFormException(ErrorMap.ALREADY_IN_USE_MERCHANT);
+        }
         merchantRepository.delete(id);
     }
 
@@ -134,5 +138,35 @@ public class MerchantServiceImpl implements MerchantService {
     @Override
     public void removeProductById(Long id) {
         productRepository.delete(id);
+    }
+
+    @Override
+    public ProductCategoryDTO loadProductCategoryById(Long id) {
+        ProductCategory category = productCategoryRepository.findOne(id);
+        return new ProductCategoryDTO(category);
+    }
+
+    @Override
+    public void saveOrUpdateProductCategory(ProductCategoryDTO productCategoryDTO) {
+        Long id = productCategoryDTO.getId();
+        ProductCategory category;
+        if (id != null) {
+            category = productCategoryRepository.findOne(id);
+        } else {
+            Long merchantId = productCategoryDTO.getMerchant().getId();
+            Merchant merchant = merchantRepository.findOne(merchantId);
+            category = new ProductCategory(merchant);
+        }
+        category.update(productCategoryDTO.getName(), productCategoryDTO.getDescription());
+        productCategoryRepository.save(category);
+    }
+
+    @Override
+    public void removeProductCategoryById(Long id) {
+        Long productInUse = productRepository.checkProductCategoryInUse(id);
+        if (productInUse > 0) {
+            throw new MetooFormException(ErrorMap.ALREADY_IN_USE_PRODUCT_CATEGORY);
+        }
+        productCategoryRepository.delete(id);
     }
 }

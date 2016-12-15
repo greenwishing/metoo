@@ -73,7 +73,7 @@ public class MerchantController {
     @RequestMapping("remove")
     public ModelAndView deleteMerchant(@RequestParam Long id) {
         merchantService.removeMerchantById(id);
-        return new ModelAndView("redirect:list");
+        return new ModelAndView(new MappingJackson2JsonView(), "success", true);
     }
 
     @RequestMapping("addProduct")
@@ -106,7 +106,42 @@ public class MerchantController {
     @RequestMapping("removeProduct")
     public ModelAndView removeProduct(@RequestParam Long id) {
         merchantService.removeProductById(id);
-        return null;
+        return new ModelAndView(new MappingJackson2JsonView(), "success", true);
+    }
+
+    @RequestMapping("productCategory")
+    public ModelAndView productCategory(@RequestParam Long merchantId, ModelMap model) {
+        List<ProductCategoryDTO> productCategoryDTOs = merchantService.loadProductCategories(merchantId);
+        model.put("merchantId", merchantId);
+        model.put("productCategoryDTOs", productCategoryDTOs);
+        return new ModelAndView("admin/product_category_list");
+    }
+
+    @RequestMapping("addProductCategory")
+    public ModelAndView productCategoryAddForm(@RequestParam Long merchantId, ModelMap model) {
+        ProductCategoryDTO productCategoryDTO = new ProductCategoryDTO();
+        productCategoryDTO.getMerchant().setId(merchantId);
+        model.put("productCategoryDTO", productCategoryDTO);
+        return new ModelAndView("admin/product_category_form");
+    }
+
+    @RequestMapping("editProductCategory")
+    public ModelAndView productCategoryEditForm(@RequestParam Long id, ModelMap model) {
+        ProductCategoryDTO productCategoryDTO = merchantService.loadProductCategoryById(id);
+        model.put("productCategoryDTO", productCategoryDTO);
+        return new ModelAndView("admin/product_category_form");
+    }
+
+    @RequestMapping("saveProductCategory")
+    public ModelAndView saveProductCategory(@ModelAttribute ProductCategoryDTO productCategoryDTO) {
+        merchantService.saveOrUpdateProductCategory(productCategoryDTO);
+        return new ModelAndView(new MappingJackson2JsonView(), "success", true);
+    }
+
+    @RequestMapping("removeProductCategory")
+    public ModelAndView removeProductCategory(@RequestParam Long id) {
+        merchantService.removeProductCategoryById(id);
+        return new ModelAndView(new MappingJackson2JsonView(), "success", true);
     }
 
 
