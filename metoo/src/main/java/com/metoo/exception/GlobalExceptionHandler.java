@@ -26,6 +26,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = MetooFormException.class)
     @ResponseBody
     public ErrorResult<String> jsonErrorHandler(HttpServletRequest request, MetooFormException e) throws Exception {
-        return new ErrorResult<>(ErrorMap.ERROR, request.getRequestURL().toString(), null);
+        return new ErrorResult<>(e.getError(), request.getRequestURL().toString(), null);
     }
 }
