@@ -24,6 +24,7 @@ public enum ErrorMap {
     ALREADY_IN_USE_MERCHANT(-3001, "商户正在被使用，无法删除"),
     ALREADY_IN_USE_PRODUCT(-3002, "商品正在被使用，无法删除"),
     ALREADY_IN_USE_PRODUCT_CATEGORY(-3003, "商品分类正在被使用，无法删除"),
+    ALREADY_IN_USE_USER(-3003, "用户正在被使用，无法删除"),
 
     ;
 

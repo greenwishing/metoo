@@ -3,6 +3,21 @@
 <head>
     <meta charset="UTF-8"/>
     <title>用户</title>
+    <script type="text/javascript">
+        function removeUser(el) {
+            var userId = $(el).attr('data-id');
+            $.metoo.ajax({
+                url: 'remove?id=' + userId,
+                success: function(result) {
+                    if (result.success) {
+                        reload();
+                    } else {
+                        $.metoo.alert(result.message);
+                    }
+                }
+            })
+        }
+    </script>
 </head>
 <body>
 <div layout:fragment="content">
@@ -28,7 +43,7 @@
                 <td th:text="${userDTO.creationTime}">Creation time</td>
                 <td>
                     <a th:href="@{edit(id=${userDTO.id})}">编辑</a>
-                    <a th:href="@{remove(id=${userDTO.id})}">删除</a>
+                    <a href="javascript:void(0)" onclick="removeUser(this)" th:attr="data-id=${userDTO.id}">删除</a>
                 </td>
             </tr>
             </tbody>

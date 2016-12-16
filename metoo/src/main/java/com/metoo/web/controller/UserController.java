@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class UserController {
     @RequestMapping("remove")
     public ModelAndView deleteUser(@RequestParam Long id) {
         userService.removeUserById(id);
-        return new ModelAndView("redirect:list");
+        return new ModelAndView(new MappingJackson2JsonView(), "success", true);
     }
 
 }
