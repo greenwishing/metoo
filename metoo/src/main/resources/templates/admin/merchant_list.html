@@ -3,23 +3,6 @@
 <head>
     <meta charset="UTF-8"/>
     <title>商户</title>
-    <script type="text/javascript">
-        function removeMerchant(el) {
-            $.metoo.confirm('确定要删除此商户？', {ok: function(){
-                var merchantId = $(el).attr('data-id');
-                $.metoo.ajax({
-                    url: 'remove?id=' + merchantId,
-                    success: function(result) {
-                        if (result.success) {
-                            reload();
-                        } else {
-                            $.metoo.alert(result.message);
-                        }
-                    }
-                })
-            }})
-        }
-    </script>
 </head>
 <body>
 <div layout:fragment="content">
@@ -33,6 +16,7 @@
                 <th>编号</th>
                 <th>名称</th>
                 <th>类型</th>
+                <th>状态</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -41,10 +25,12 @@
                 <td th:text="${merchantDTO.id}">Id</td>
                 <td th:text="${merchantDTO.name}">Name</td>
                 <td th:text="${merchantDTO.businessType.label}">Business type</td>
+                <td th:text="${merchantDTO.status.label}">Status</td>
                 <td>
                     <a th:href="@{edit(id=${merchantDTO.id})}">编辑</a>
                     <a th:href="@{detail(id=${merchantDTO.id})}">管理</a>
-                    <a href="javascript:void(0)" onclick="removeMerchant(this)" th:attr="data-id=${merchantDTO.id}">删除</a>
+                    <a href="javascript:void(0)" onclick="$(this).toggleStatus({action: 'toggleMerchant'})"
+                       th:attr="data-id=${merchantDTO.id}" th:text="${merchantDTO.status.toggle.label}">Toggle status</a>
                 </td>
             </tr>
             </tbody>

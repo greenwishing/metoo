@@ -17,7 +17,7 @@ public interface UserService {
 
     void saveOrUpdateUser(UserDTO userDTO);
 
-    void removeUserById(Long id);
+    void toggleUserStatus(Long id);
 
     UserDTO loadUserByEmail(String email);
 

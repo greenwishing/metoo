@@ -2,15 +2,15 @@ package com.metoo.dto.feedback;
 
 import com.metoo.core.domain.feedback.Feedback;
 import com.metoo.core.domain.merchant.MerchantBusinessType;
+import com.metoo.dto.StatefulDTO;
 import com.metoo.dto.user.UserDTO;
 
 /**
  * User: Zhang xiaomei
  * Date: 2016/12/11
  */
-public class FeedbackDTO {
+public class FeedbackDTO extends StatefulDTO {
 
-    private Long id;
     private UserDTO user = new UserDTO();
     private String creationTime;
     private MerchantBusinessType businessType;
@@ -20,18 +20,11 @@ public class FeedbackDTO {
     private String email;
 
     public FeedbackDTO() {
+        super();
     }
 
     public FeedbackDTO(Feedback feedback) {
-        this.id = feedback.getId();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        super(feedback);
     }
 
     public UserDTO getUser() {

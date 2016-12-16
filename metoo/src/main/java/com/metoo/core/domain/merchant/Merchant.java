@@ -1,6 +1,6 @@
 package com.metoo.core.domain.merchant;
 
-import com.metoo.core.domain.Domain;
+import com.metoo.core.domain.common.StatefulDomain;
 
 import javax.persistence.*;
 
@@ -12,7 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "merchant")
-public class Merchant extends Domain {
+public class Merchant extends StatefulDomain {
 
     /**
      * 名称

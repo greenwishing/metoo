@@ -2,9 +2,9 @@ package com.metoo.dto.user;
 
 import com.metoo.core.domain.user.User;
 import com.metoo.core.domain.user.UserType;
+import com.metoo.dto.StatefulDTO;
 import com.metoo.utils.JodaUtils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +12,8 @@ import java.util.List;
  * User: Zhang xiaomei
  * Date: 2016/11/24
  */
-public class UserDTO implements Serializable {
+public class UserDTO extends StatefulDTO {
 
-    private Long id;
     private String email;
     private UserType type;
     private String creationTime;
@@ -28,20 +27,12 @@ public class UserDTO implements Serializable {
     }
 
     public UserDTO(User user) {
-        this.id = user.getId();
+        super(user);
         this.email = user.getEmail();
         this.type = user.getType();
         this.creationTime = JodaUtils.dateTimeToString(user.getCreationTime());
         this.username = user.getUsername();
         this.password = user.getPassword();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUsername() {

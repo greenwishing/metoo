@@ -1,6 +1,6 @@
 package com.metoo.core.domain.product;
 
-import com.metoo.core.domain.Domain;
+import com.metoo.core.domain.common.StatefulDomain;
 import com.metoo.core.domain.merchant.Merchant;
 
 import javax.persistence.*;
@@ -13,7 +13,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "product_category")
-public class ProductCategory extends Domain {
+public class ProductCategory extends StatefulDomain {
 
     @JoinColumn(name = "merchant_id")
     @ManyToOne(targetEntity = Merchant.class)

@@ -1,11 +1,10 @@
 package com.metoo.service.impl;
 
+import com.metoo.core.domain.common.DomainUtils;
 import com.metoo.core.domain.order.OrderRepository;
 import com.metoo.core.domain.user.User;
 import com.metoo.core.domain.user.UserRepository;
 import com.metoo.dto.user.UserDTO;
-import com.metoo.exception.ErrorMap;
-import com.metoo.exception.MetooFormException;
 import com.metoo.service.UserService;
 import com.metoo.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,12 +61,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removeUserById(Long id) {
-        Integer used = orderRepository.checkUserUsed(id);
-        if (used > 0) {
-            throw new MetooFormException(ErrorMap.ALREADY_IN_USE_USER);
-        }
-        userRepository.delete(id);
+    public void toggleUserStatus(Long id) {
+        DomainUtils.toggleStatus(userRepository, id);
     }
 
     @Override

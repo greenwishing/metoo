@@ -1,6 +1,6 @@
 package com.metoo.core.domain.order;
 
-import com.metoo.core.domain.Domain;
+import com.metoo.core.domain.common.Domain;
 import com.metoo.core.domain.merchant.Merchant;
 import com.metoo.core.domain.product.Product;
 import com.metoo.core.domain.user.User;

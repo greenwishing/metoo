@@ -1,6 +1,6 @@
 package com.metoo.core.domain.feedback;
 
-import com.metoo.core.domain.Domain;
+import com.metoo.core.domain.common.StatefulDomain;
 import com.metoo.core.domain.merchant.MerchantBusinessType;
 import com.metoo.core.domain.user.User;
 import org.hibernate.annotations.Type;
@@ -16,7 +16,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "feedback")
-public class Feedback extends Domain {
+public class Feedback extends StatefulDomain {
 
     /**
      * 用户，用户登录则有值，否则为空

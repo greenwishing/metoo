@@ -334,6 +334,32 @@ Slider.prototype = {
     }
 })(jQuery);
 
+
+/**
+ * 通用修改状态函数
+ */
+(function($){
+    $.fn.toggleStatus = function(options) {
+        options = $.extend({}, {action: 'toggle', scope: 'page'}, options || {});
+        var $el = $(this);
+        var id = $el.attr('data-id');
+        $.metoo.ajax({
+            url: options.action + '?id=' + id,
+            success: function(result) {
+                if (result.success) {
+                    if (options.scope == 'page') {
+                        reload();
+                    } else if (options.scope == 'dialog') {
+                        $.metoo.reloadDialog($el);
+                    }
+                } else {
+                    $.metoo.alert(result.message);
+                }
+            }
+        });
+    }
+})(jQuery);
+
 function isEmpty(text) {
     return !text || null == text || "" == text || "null" == text || "undefined" == text;
 }

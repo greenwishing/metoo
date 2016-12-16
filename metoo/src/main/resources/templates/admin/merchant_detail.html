@@ -12,17 +12,6 @@
             var productCategoryId = $(el).attr('data-id');
             $.metoo.dialog({title: '编辑商品分类', url: 'editProductCategory?id=' + productCategoryId});
         }
-        function removeProductCategory(el) {
-            $.metoo.confirm('确定要删除此商品分类？', {ok: function(){
-                var productCategoryId = $(el).attr('data-id');
-                $.metoo.ajax({
-                    url: 'removeProductCategory?id=' + productCategoryId,
-                    success: function() {
-                        $.metoo.closeDialog(el);
-                    }
-                });
-            }});
-        }
         function productCategory(el) {
             var merchantId = $(el).attr('data-id');
             $.metoo.dialog({title: '商品分类', url: 'productCategory?merchantId=' + merchantId});
@@ -34,21 +23,6 @@
         function editProduct(el) {
             var productId = $(el).attr('data-id');
             $.metoo.dialog({title: '编辑商品', url: 'editProduct?id=' + productId});
-        }
-        function removeProduct(el) {
-            $.metoo.confirm('确定要删除此商品？', {ok: function(){
-                var productId = $(el).attr('data-id');
-                $.metoo.ajax({
-                    url: 'removeProduct?id=' + productId,
-                    success: function(result) {
-                        if (result.success) {
-                            reload();
-                        } else {
-                            $.metoo.alert(result.message);
-                        }
-                    }
-                })
-            }});
         }
     </script>
 </head>
@@ -109,6 +83,7 @@
                         <th>编号</th>
                         <th>名称</th>
                         <th>类型</th>
+                        <th>状态</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -117,9 +92,11 @@
                         <td th:text="${productDTO.id}">Id</td>
                         <td th:text="${productDTO.name}">Name</td>
                         <td th:text="${productDTO.category.name}">Category name</td>
+                        <td th:text="${productDTO.status.label}">Status</td>
                         <td>
                             <a href="javascript:void(0)" onclick="editProduct(this)" th:attr="data-id=${productDTO.id}">编辑</a>
-                            <a href="javascript:void(0)" onclick="removeProduct(this)" th:attr="data-id=${productDTO.id}">删除</a>
+                            <a href="javascript:void(0)" onclick="$(this).toggleStatus({action: 'toggleProduct'})"
+                               th:attr="data-id=${productDTO.id}" th:text="${productDTO.status.toggle.label}">Toggle status</a>
                         </td>
                     </tr>
                     </tbody>

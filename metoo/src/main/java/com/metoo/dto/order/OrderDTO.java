@@ -4,6 +4,7 @@ import com.metoo.core.domain.merchant.Merchant;
 import com.metoo.core.domain.order.*;
 import com.metoo.core.domain.product.Product;
 import com.metoo.core.domain.user.User;
+import com.metoo.dto.DTO;
 import com.metoo.dto.merchant.MerchantDTO;
 import com.metoo.dto.product.ProductDTO;
 import com.metoo.dto.user.UserDTO;
@@ -16,9 +17,8 @@ import java.util.List;
  * User: Zhang xiaomei
  * Date: 2016/12/11
  */
-public class OrderDTO {
+public class OrderDTO extends DTO {
 
-    private Long id;
     private String type;
     private MerchantDTO merchant = new MerchantDTO();
     private UserDTO user = new UserDTO();
@@ -60,14 +60,6 @@ public class OrderDTO {
         this.bookingDate = JodaUtils.localDateToString(order.getBookingDate());
         this.username = order.getUsername();
         this.telephone = order.getTelephone();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getType() {

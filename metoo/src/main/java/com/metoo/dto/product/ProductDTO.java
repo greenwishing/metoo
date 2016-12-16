@@ -2,6 +2,7 @@ package com.metoo.dto.product;
 
 import com.metoo.core.domain.merchant.Merchant;
 import com.metoo.core.domain.product.*;
+import com.metoo.dto.StatefulDTO;
 import com.metoo.dto.merchant.MerchantDTO;
 import com.metoo.utils.JodaUtils;
 import com.metoo.utils.JsonUtils;
@@ -14,9 +15,8 @@ import java.util.List;
  * User: Zhang xiaomei
  * Date: 2016/12/11
  */
-public class ProductDTO {
+public class ProductDTO extends StatefulDTO {
 
-    private Long id;
     private String type;
     private MerchantDTO merchant = new MerchantDTO();
     private ProductCategoryDTO category = new ProductCategoryDTO();
@@ -38,7 +38,7 @@ public class ProductDTO {
     }
 
     public ProductDTO(Product product) {
-        this.id = product.getId();
+        super(product);
         Merchant merchant = product.getMerchant();
         ProductCategory category = product.getCategory();
 
@@ -61,14 +61,6 @@ public class ProductDTO {
             this.hasBreakfast = hotel.isHasBreakfast();
             this.hasWindow = hotel.isHasWindow();
         }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getType() {

@@ -52,9 +52,9 @@ public class UserController {
         return new ModelAndView("redirect:list");
     }
 
-    @RequestMapping("remove")
-    public ModelAndView deleteUser(@RequestParam Long id) {
-        userService.removeUserById(id);
+    @RequestMapping("toggle")
+    public ModelAndView toggleUserStatus(@RequestParam Long id) {
+        userService.toggleUserStatus(id);
         return new ModelAndView(new MappingJackson2JsonView(), "success", true);
     }
 

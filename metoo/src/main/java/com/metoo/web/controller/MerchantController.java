@@ -1,19 +1,17 @@
 package com.metoo.web.controller;
 
+import com.metoo.core.domain.common.Status;
 import com.metoo.core.domain.merchant.Feature;
 import com.metoo.core.domain.merchant.MerchantBusinessType;
-import com.metoo.core.domain.product.ProductCategory;
 import com.metoo.dto.merchant.MerchantDTO;
 import com.metoo.dto.product.ProductCategoryDTO;
 import com.metoo.dto.product.ProductDTO;
-import com.metoo.exception.MetooException;
 import com.metoo.service.MerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -70,9 +68,9 @@ public class MerchantController {
         return new ModelAndView("redirect:list");
     }
 
-    @RequestMapping("remove")
-    public ModelAndView deleteMerchant(@RequestParam Long id) {
-        merchantService.removeMerchantById(id);
+    @RequestMapping("toggleMerchant")
+    public ModelAndView toggleMerchantStatus(@RequestParam Long id) {
+        merchantService.toggleMerchantStatus(id);
         return new ModelAndView(new MappingJackson2JsonView(), "success", true);
     }
 
@@ -103,9 +101,9 @@ public class MerchantController {
         return new ModelAndView(new MappingJackson2JsonView(), "success", true);
     }
 
-    @RequestMapping("removeProduct")
+    @RequestMapping("toggleProduct")
     public ModelAndView removeProduct(@RequestParam Long id) {
-        merchantService.removeProductById(id);
+        merchantService.toggleProductStatus(id);
         return new ModelAndView(new MappingJackson2JsonView(), "success", true);
     }
 
@@ -138,9 +136,9 @@ public class MerchantController {
         return new ModelAndView(new MappingJackson2JsonView(), "success", true);
     }
 
-    @RequestMapping("removeProductCategory")
-    public ModelAndView removeProductCategory(@RequestParam Long id) {
-        merchantService.removeProductCategoryById(id);
+    @RequestMapping("toggleProductCategory")
+    public ModelAndView toggleProductCategoryStatus(@RequestParam Long id) {
+        merchantService.toggleProductCategoryStatus(id);
         return new ModelAndView(new MappingJackson2JsonView(), "success", true);
     }
 

@@ -17,7 +17,7 @@ public interface MerchantService {
 
     void saveOrUpdateMerchant(MerchantDTO merchantDTO);
 
-    void removeMerchantById(Long id);
+    void toggleMerchantStatus(Long id);
 
     List<ProductDTO> loadMerchantProducts(Long merchantId, Class productClass);
 
@@ -27,11 +27,11 @@ public interface MerchantService {
 
     ProductDTO loadProductById(Long id);
 
-    void removeProductById(Long id);
+    void toggleProductStatus(Long id);
 
     ProductCategoryDTO loadProductCategoryById(Long id);
 
     void saveOrUpdateProductCategory(ProductCategoryDTO productCategoryDTO);
 
-    void removeProductCategoryById(Long id);
+    void toggleProductCategoryStatus(Long id);
 }

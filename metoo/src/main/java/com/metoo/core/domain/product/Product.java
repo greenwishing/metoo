@@ -1,6 +1,6 @@
 package com.metoo.core.domain.product;
 
-import com.metoo.core.domain.Domain;
+import com.metoo.core.domain.common.StatefulDomain;
 import com.metoo.core.domain.merchant.Merchant;
 
 import javax.persistence.*;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @Table(name = "product")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // 单表记录继承结构
 @DiscriminatorColumn(name = "type") // 鉴别器字段
-public abstract class Product extends Domain {
+public abstract class Product extends StatefulDomain {
 
     /**
      * 商品所属商户

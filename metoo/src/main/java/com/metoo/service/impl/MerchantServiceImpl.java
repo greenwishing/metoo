@@ -1,5 +1,6 @@
 package com.metoo.service.impl;
 
+import com.metoo.core.domain.common.DomainUtils;
 import com.metoo.core.domain.merchant.Merchant;
 import com.metoo.core.domain.merchant.MerchantRepository;
 import com.metoo.core.domain.product.*;
@@ -57,12 +58,8 @@ public class MerchantServiceImpl implements MerchantService {
     }
 
     @Override
-    public void removeMerchantById(Long id) {
-        Long merchantInUse = merchantRepository.checkMerchantInUse(id);
-        if (merchantInUse > 0) {
-            throw new MetooFormException(ErrorMap.ALREADY_IN_USE_MERCHANT);
-        }
-        merchantRepository.delete(id);
+    public void toggleMerchantStatus(Long id) {
+        DomainUtils.toggleStatus(merchantRepository, id);
     }
 
     @Override
@@ -136,8 +133,8 @@ public class MerchantServiceImpl implements MerchantService {
     }
 
     @Override
-    public void removeProductById(Long id) {
-        productRepository.delete(id);
+    public void toggleProductStatus(Long id) {
+        DomainUtils.toggleStatus(productRepository, id);
     }
 
     @Override
@@ -162,11 +159,7 @@ public class MerchantServiceImpl implements MerchantService {
     }
 
     @Override
-    public void removeProductCategoryById(Long id) {
-        Long productInUse = productRepository.checkProductCategoryInUse(id);
-        if (productInUse > 0) {
-            throw new MetooFormException(ErrorMap.ALREADY_IN_USE_PRODUCT_CATEGORY);
-        }
-        productCategoryRepository.delete(id);
+    public void toggleProductCategoryStatus(Long id) {
+        DomainUtils.toggleStatus(productCategoryRepository, id);
     }
 }

@@ -1,6 +1,6 @@
 package com.metoo.core.domain.user;
 
-import com.metoo.core.domain.Domain;
+import com.metoo.core.domain.common.StatefulDomain;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
@@ -14,7 +14,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "user")
-public class User extends Domain {
+public class User extends StatefulDomain {
 
     /**
      * 邮箱，唯一，不可为空

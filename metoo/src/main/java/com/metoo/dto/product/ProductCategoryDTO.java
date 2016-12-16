@@ -2,6 +2,7 @@ package com.metoo.dto.product;
 
 import com.metoo.core.domain.merchant.Merchant;
 import com.metoo.core.domain.product.ProductCategory;
+import com.metoo.dto.StatefulDTO;
 import com.metoo.dto.merchant.MerchantDTO;
 
 import java.util.ArrayList;
@@ -11,9 +12,8 @@ import java.util.List;
  * User: Zhang xiaomei
  * Date: 2016/12/11
  */
-public class ProductCategoryDTO {
+public class ProductCategoryDTO extends StatefulDTO {
 
-    private Long id;
     private MerchantDTO merchant = new MerchantDTO();
     private String name;
     private String description;
@@ -22,19 +22,11 @@ public class ProductCategoryDTO {
     }
 
     public ProductCategoryDTO(ProductCategory category) {
-        this.id = category.getId();
+        super(category);
         Merchant merchant = category.getMerchant();
         this.merchant = new MerchantDTO(merchant);
         this.name = category.getName();
         this.description = category.getDescription();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public MerchantDTO getMerchant() {
