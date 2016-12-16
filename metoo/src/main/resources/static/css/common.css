@@ -1186,6 +1186,20 @@ textarea.form-control {
     min-height: 450px;
 }
 
+[role="admin"] > header {
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+[role="admin"] > .container {
+    z-index: 1;
+    position: relative;
+    padding-top: 40px;
+    min-height: 450px;
+}
+
 .data-required {
     display: inline-block;
 }
