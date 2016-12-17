@@ -2,6 +2,7 @@ package com.metoo.web.controller;
 
 import com.metoo.cache.SessionCodeHolder;
 import com.metoo.cache.SessionEmailHolder;
+import com.metoo.core.MetooSystem;
 import com.metoo.dto.user.UserDTO;
 import com.metoo.exception.ErrorMap;
 import com.metoo.exception.MetooException;
@@ -40,6 +41,8 @@ public class CommonController {
     private UserService userService;
     @Autowired
     private MailService mailService;
+    @Autowired
+    private MetooSystem metooSystem;
 
     private static final Map<String, String> SESSION_MAIL_CACHE = new HashMap<>();
 
@@ -194,7 +197,7 @@ public class CommonController {
     public ModelAndView code(@PathVariable String pictureKey, @PathVariable String suffix, HttpServletResponse response) {
         try {
             ServletOutputStream os = response.getOutputStream();
-            File file = FileuploadUtils.readPicture(pictureKey + "." + suffix);
+            File file = FileuploadUtils.readPicture(pictureKey + "." + suffix, metooSystem);
             if (file != null) {
                 FileInputStream fis = new FileInputStream(file);
                 StreamUtils.copy(fis, os);

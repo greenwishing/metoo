@@ -1,5 +1,6 @@
 package com.metoo.service.impl;
 
+import com.metoo.core.MetooSystem;
 import com.metoo.core.domain.common.DomainUtils;
 import com.metoo.core.domain.merchant.Merchant;
 import com.metoo.core.domain.merchant.MerchantRepository;
@@ -34,6 +35,8 @@ public class MerchantServiceImpl implements MerchantService {
     private ProductRepository<Product> productRepository;
     @Autowired
     private ProductCategoryRepository productCategoryRepository;
+    @Autowired
+    private MetooSystem metooSystem;
 
     @Override
     public List<MerchantDTO> loadAll() {
@@ -56,7 +59,7 @@ public class MerchantServiceImpl implements MerchantService {
                 throw new MetooException(ErrorMap.INVALID_PICTURE_SIZE);
             }
             try {
-                String pictureKey = FileuploadUtils.storePicture(merchantDTO.getPicture());
+                String pictureKey = FileuploadUtils.storePicture(merchantDTO.getPicture(), metooSystem);
                 merchantDTO.setPictureKey(pictureKey);
             } catch (Exception e) {
                 throw new MetooException(ErrorMap.INVALID_PICTURE);
