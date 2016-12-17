@@ -1,6 +1,5 @@
 package com.metoo.web.controller;
 
-import com.metoo.core.domain.common.Status;
 import com.metoo.core.domain.merchant.Feature;
 import com.metoo.core.domain.merchant.MerchantBusinessType;
 import com.metoo.dto.merchant.MerchantDTO;

@@ -7,11 +7,14 @@ import com.metoo.exception.ErrorMap;
 import com.metoo.exception.MetooException;
 import com.metoo.service.MailService;
 import com.metoo.service.UserService;
+import com.metoo.utils.FileuploadUtils;
 import com.metoo.utils.VerifyCodeUtils;
 import com.metoo.web.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,6 +23,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +34,7 @@ import java.util.Map;
  * Date: 2016/11/23
  */
 @Controller
-public class IndexController {
+public class CommonController {
 
     @Autowired
     private UserService userService;
@@ -178,6 +184,21 @@ public class IndexController {
             String code = VerifyCodeUtils.generateVerifyCode(4);
             SessionCodeHolder.put(request.getSession().getId(), code);
             VerifyCodeUtils.outputImage(80, 34, os, code);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @RequestMapping("/picture/{pictureKey}.{suffix}")
+    public ModelAndView code(@PathVariable String pictureKey, @PathVariable String suffix, HttpServletResponse response) {
+        try {
+            ServletOutputStream os = response.getOutputStream();
+            File file = FileuploadUtils.readPicture(pictureKey + "." + suffix);
+            if (file != null) {
+                FileInputStream fis = new FileInputStream(file);
+                StreamUtils.copy(fis, os);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

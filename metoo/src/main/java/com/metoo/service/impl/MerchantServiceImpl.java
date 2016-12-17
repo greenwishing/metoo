@@ -8,12 +8,15 @@ import com.metoo.dto.merchant.MerchantDTO;
 import com.metoo.dto.product.ProductCategoryDTO;
 import com.metoo.dto.product.ProductDTO;
 import com.metoo.exception.ErrorMap;
+import com.metoo.exception.MetooException;
 import com.metoo.exception.MetooFormException;
 import com.metoo.service.MerchantService;
+import com.metoo.utils.FileuploadUtils;
 import com.metoo.utils.JodaUtils;
 import com.metoo.utils.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -46,6 +49,19 @@ public class MerchantServiceImpl implements MerchantService {
 
     @Override
     public void saveOrUpdateMerchant(MerchantDTO merchantDTO) {
+        MultipartFile picture = merchantDTO.getPicture();
+        if (picture != null) {
+            long size = picture.getSize();
+            if (size > 512 * 1024) {
+                throw new MetooException(ErrorMap.INVALID_PICTURE_SIZE);
+            }
+            try {
+                String pictureKey = FileuploadUtils.storePicture(merchantDTO.getPicture());
+                merchantDTO.setPictureKey(pictureKey);
+            } catch (Exception e) {
+                throw new MetooException(ErrorMap.INVALID_PICTURE);
+            }
+        }
         Long id = merchantDTO.getId();
         Merchant merchant;
         if (id != null) {

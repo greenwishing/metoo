@@ -1,6 +1,6 @@
 package com.metoo.web;
 
-import com.metoo.web.controller.IndexController;
+import com.metoo.web.controller.CommonController;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -10,11 +10,11 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class IndexControllerTest extends AbstractControllerTest {
+public class CommonControllerTest extends AbstractControllerTest {
 
     @Before
     public void setup() throws Exception {
-        setup(new IndexController());
+        setup(new CommonController());
     }
 
     @Test

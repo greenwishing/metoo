@@ -4,6 +4,7 @@ import com.metoo.core.domain.merchant.Feature;
 import com.metoo.core.domain.merchant.Merchant;
 import com.metoo.core.domain.merchant.MerchantBusinessType;
 import com.metoo.dto.StatefulDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,8 @@ public class MerchantDTO extends StatefulDTO {
     private String name;
     private MerchantBusinessType businessType;
     private Integer level;
-    private String picture;
+    private MultipartFile picture;
+    private String pictureKey;
     private String introduction;
     private String specialty;
     private List<Feature> features = new ArrayList<>();
@@ -32,7 +34,7 @@ public class MerchantDTO extends StatefulDTO {
         this.name = merchant.getName();
         this.businessType = merchant.getBusinessType();
         this.level = merchant.getLevel();
-        this.picture = merchant.getPicture();
+        this.pictureKey = merchant.getPicture();
         this.introduction = merchant.getIntroduction();
         this.specialty = merchant.getSpecialty();
         this.features = Feature.listOf(merchant.getFeatures());
@@ -64,12 +66,12 @@ public class MerchantDTO extends StatefulDTO {
         this.level = level;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getPictureKey() {
+        return pictureKey;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setPictureKey(String pictureKey) {
+        this.pictureKey = pictureKey;
     }
 
     public String getIntroduction() {
@@ -90,6 +92,10 @@ public class MerchantDTO extends StatefulDTO {
 
     public List<Feature> getFeatures() {
         return features;
+    }
+
+    public Integer getFeatureVal() {
+        return Feature.countValue(features);
     }
 
     public void setFeatures(List<Feature> features) {
@@ -126,6 +132,14 @@ public class MerchantDTO extends StatefulDTO {
         for (Feature feature : this.features) {
             features += feature.getVal();
         }
-        merchant.update(name, businessType, level, picture, introduction, specialty, features, address, contactPhone);
+        merchant.update(name, businessType, level, pictureKey, introduction, specialty, features, address, contactPhone);
+    }
+
+    public MultipartFile getPicture() {
+        return picture;
+    }
+
+    public void setPicture(MultipartFile picture) {
+        this.picture = picture;
     }
 }

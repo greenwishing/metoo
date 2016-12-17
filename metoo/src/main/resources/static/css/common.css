@@ -854,6 +854,20 @@ textarea.form-control {
     margin-bottom: 0;
 }
 
+.form-control-picture {
+    display: inline-block;
+    vertical-align: top;
+    padding: 0;
+    margin: 0;
+    height: 34px;
+    border: 1px solid #ccc;
+}
+
+.form-control-picture img {
+    display: inline-block;
+    height: 100%;
+}
+
 .input-group {
     position: relative;
     display: table;

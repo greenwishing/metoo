@@ -360,6 +360,25 @@ Slider.prototype = {
     }
 })(jQuery);
 
+
+/**
+ * 初始化 feature 选中状态
+ */
+(function($){
+    $.fn.initFeatures = function(options) {
+        options = $.extend({}, {target: ':checkbox[feature-val]', attr: 'feature-val'}, options || {});
+        var $el = $(this);
+        var featureVal = parseInt($el.val());
+        $(options.target).each(function(){
+            var $feature = $(this);
+            var _val = parseInt($feature.attr(options.attr));
+            if ((_val & featureVal) == _val) {
+                $feature.attr({'checked': 'checked'});
+            }
+        });
+    }
+})(jQuery);
+
 function isEmpty(text) {
     return !text || null == text || "" == text || "null" == text || "undefined" == text;
 }
