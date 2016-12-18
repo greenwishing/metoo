@@ -1,5 +1,9 @@
 package com.metoo.core.domain.order;
 
+import com.metoo.core.domain.merchant.Merchant;
+import com.metoo.core.domain.product.Product;
+import com.metoo.core.domain.user.User;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -19,6 +23,13 @@ public class FoodOrder extends Order {
      */
     @Column(name = "quantity")
     private Integer quantity;
+
+    public FoodOrder() {
+    }
+
+    public FoodOrder(Merchant merchant, User user, Product product) {
+        super(merchant, user, product);
+    }
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;

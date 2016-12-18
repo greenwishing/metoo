@@ -35,7 +35,7 @@ import java.util.Map;
  * Date: 2016/11/23
  */
 @Controller
-public class CommonController {
+public class AccountController {
 
     @Autowired
     private UserService userService;
@@ -45,11 +45,6 @@ public class CommonController {
     private MetooSystem metooSystem;
 
     private static final Map<String, String> SESSION_MAIL_CACHE = new HashMap<>();
-
-    @RequestMapping({"/", "/index"})
-    public ModelAndView index() {
-        return new ModelAndView("index");
-    }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login_form() {

@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.List;
 
@@ -17,12 +18,13 @@ import java.util.List;
  * Date: 2016/12/10
  */
 @Controller
+@RequestMapping("/admin/order")
 public class OrderController {
 
     @Autowired
     private OrderService orderService;
 
-    @RequestMapping("/admin/order/list")
+    @RequestMapping("list")
     public ModelAndView list(OrderStatus status, ModelMap model) {
         List<OrderDTO> orderDTOs = orderService.loadOrders(status);
         model.put("statusList", OrderStatus.values());
@@ -30,9 +32,22 @@ public class OrderController {
         return new ModelAndView("admin/order_list");
     }
 
-    @RequestMapping("/admin/order/detail")
+    @RequestMapping("detail")
     public ModelAndView detail(@RequestParam Long id) {
-        return new ModelAndView("admin/order_detail");
+        OrderDTO orderDTO = orderService.loadOrderById(id);
+        return new ModelAndView("admin/order_detail", "orderDTO", orderDTO);
+    }
+
+    @RequestMapping("success")
+    public ModelAndView success(@RequestParam Long id) {
+        orderService.changeOrderStatus(id, OrderStatus.SUCCESS);
+        return new ModelAndView(new MappingJackson2JsonView(), "success", true);
+    }
+
+    @RequestMapping("cancel")
+    public ModelAndView cancel(@RequestParam Long id) {
+        orderService.changeOrderStatus(id, OrderStatus.CANCELED);
+        return new ModelAndView(new MappingJackson2JsonView(), "success", true);
     }
 
 }

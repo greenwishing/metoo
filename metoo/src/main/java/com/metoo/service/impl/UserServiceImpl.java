@@ -1,7 +1,6 @@
 package com.metoo.service.impl;
 
 import com.metoo.core.domain.common.DomainUtils;
-import com.metoo.core.domain.order.OrderRepository;
 import com.metoo.core.domain.user.User;
 import com.metoo.core.domain.user.UserRepository;
 import com.metoo.dto.user.UserDTO;
@@ -21,8 +20,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private OrderRepository orderRepository;
 
     @Override
     public List<UserDTO> loadUsers() {

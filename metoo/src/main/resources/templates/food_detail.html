@@ -10,42 +10,33 @@
 </head>
 <body>
 <div id="main" layout:fragment="content">
-    <h1>山姆老爹牛排自助馆</h1>
-    <p>仅售59元！价值85元的单人自助，提供免费WiFi。</p>
+    <h1 th:text="${merchantDTO.name}">山姆老爹牛排自助馆</h1>
+    <p th:text="${merchantDTO.introduction}">仅售59元！价值85元的单人自助，提供免费WiFi。</p>
     <div class="box box-info">
         <div class="box-pic">
-            <img src="/img/food1.jpg"/>
+            <img title="山姆老爹牛排自助馆" th:src="@{/picture/{pictureKey}(pictureKey=${merchantDTO.pictureKey})}" th:title="${merchantDTO.name}"/>
         </div>
-        <div class="box-body">
+        <div class="box-body" th:if="${productDTO != null}">
             <p>
                 <strong>团购价：</strong>
-                <span class="text-large text-highlight price-cn">88</span>
+                <span class="text-large text-highlight price-cn" th:text="${productDTO.price}">88</span>
                 <span class="text-desc">门店价</span>
-                <span class="text-line-through text-desc price-cn">100</span>
+                <span class="text-line-through text-desc price-cn" th:text="${productDTO.marketingPrice}">100</span>
             </p>
             <p>
                 <strong>有效期：</strong>
-                <span class="text-desc">截止到2017.01.06</span>
+                <span class="text-desc" th:text="'截止到'+${productDTO.expiryDate}">截止到2017.01.06</span>
                 <span class="text-highlight">周末、法定节假日通用</span>
             </p>
             <p>
                 <strong>套餐：</strong>
-                <span class="tag-selectable"><span class="tag tag-selected">代金券88元</span><span class="tag">代金券79元</span></span>
-            </p>
-            <p>
-                <strong>数量：</strong>
-                <span class="input-group">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default">-</button>
-                    </span>
-                    <input class="form-control form-control-quantity" id="quantity" name="quantity" value="1"/>
-                    <span class="input-group-btn">
-                        <button class="btn btn-default">+</button>
-                    </span>
+                <span class="tag-selectable">
+                    <a class="tag tag-selected" th:each="p,stat:${productDTOs}"
+                       th:href="@{/food/{id}/{productId}(id=${merchantDTO.id},productId=${p.id})}" th:text="${p.name}" th:class="${productDTO.id==p.id}?'tag tag-selected':'tag'">代金券88元</a>
                 </span>
             </p>
             <p>
-                <button class="btn btn-primary btn-large">立即抢购</button>
+                <a class="btn btn-primary btn-large" th:href="@{/order/{id}(id=${productDTO.id})}">立即抢购</a>
             </p>
         </div>
     </div>
@@ -58,46 +49,14 @@
             <div class="tab-content">
                 <table class="table table-detail">
                     <tbody>
-                    <tr>
-                        <th>有效期</th>
-                        <td>2014.7.17 至 2017.1.6（周末、法定节假日通用）</td>
-                    </tr>
-                    <tr>
-                        <th>使用时间</th>
-                        <td>11:00-次日06:00,乐山店、群光店、凯德店、龙湖店、金楠天街店营业时间：11:00——22:00；建设路店营业时间：11:00——23:00</td>
-                    </tr>
-                    <tr>
-                        <th>预约提醒</th>
-                        <td>无需预约，消费高峰时可能需要等位</td>
-                    </tr>
-                    <tr>
-                        <th>限购限用提醒</th>
-                        <td>最多可叠加使用500张<br/>不兑现、不找零</td>
-                    </tr>
-                    <tr>
-                        <th>包间</th>
-                        <td>可免费使用包间</td>
-                    </tr>
-                    <tr>
-                        <th>堂食外带</th>
-                        <td>仅限堂食，不提供餐前外带，餐毕未吃完可打包，打包费详情咨询商家</td>
-                    </tr>
-                    <tr>
-                        <th>温馨提示</th>
-                        <td>
-                            加入商家会员，团购消费可纳入积分（详询商家）<br/>
-                            团购用户不可同时享受商家其他优惠<br/>
-                            酒水饮料等问题，请致电商家咨询，以商家反馈为准</td>
-                    </tr>
-                    <tr>
-                        <th>商家服务</th>
-                        <td>提供免费WiFi<br/>
-                            停车位收费标准：请咨询商家</td>
+                    <tr th:each="notice:${productDTO.notices}">
+                        <th th:text="${notice.title}">有效期</th>
+                        <td th:text="${notice.content}">2014.7.17 至 2017.1.6（周末、法定节假日通用）</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="tab-content">
+            <div class="tab-content" th:text="${productDTO.article}">
                 <ul>
                     <li>店内人均消费参考价：65元</li>
                     <li>适用范围：全场通用</li>

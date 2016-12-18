@@ -6,8 +6,10 @@ import com.metoo.core.domain.merchant.MerchantBusinessType;
 import com.metoo.dto.StatefulDTO;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * User: Zhang xiaomei
@@ -54,6 +56,11 @@ public class MerchantDTO extends StatefulDTO {
         return businessType;
     }
 
+    public String getLocation() {
+        if (businessType == null) return null;
+        return businessType.getValue().toLowerCase();
+    }
+
     public void setBusinessType(MerchantBusinessType businessType) {
         this.businessType = businessType;
     }
@@ -65,21 +72,25 @@ public class MerchantDTO extends StatefulDTO {
     public String getFormattedLevel() {
         if (level == null || businessType == null) return null;
         String formattedLevel = null;
-        switch (businessType) {
-            case SCENERY:
-                formattedLevel = "";
-                for (int i = 1; i <= level; i++) {
-                    formattedLevel += "A";
-                }
-                formattedLevel += businessType.getLabel();
-                break;
-            case HOTEL:
-                if (level >= 3) {
-                    formattedLevel = "三四五".charAt(this.level - 3) + "星级" + businessType.getLabel();
-                }
-                break;
+        if (level >= 3) {
+            formattedLevel = "";
+            for (int i = 1; i <= level; i++) {
+                formattedLevel += businessType.getLevelChar();
+            }
         }
         return formattedLevel;
+    }
+
+    public String getHotelType() {
+        if (MerchantBusinessType.HOTEL != this.businessType) return null;
+        if (level < 3) {
+            return "经济型";
+        }
+        String starLevel = "";
+        for (int i = 1; i <= level; i++) {
+            starLevel += businessType.getLevelChar();
+        }
+        return starLevel + "星级";
     }
 
     public void setLevel(Integer level) {
@@ -161,5 +172,13 @@ public class MerchantDTO extends StatefulDTO {
 
     public void setPicture(MultipartFile picture) {
         this.picture = picture;
+    }
+
+    public String getMinConsumption() {
+        return "100.00";
+    }
+
+    public String getTicketPrice() {
+        return "80.00";
     }
 }

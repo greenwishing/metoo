@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorator="decorators/homepage" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+	<title>订单详情</title>
+</head>
+<body>
+	<div layout:fragment="content">
+        <div class="box box-full">
+            <div class="box-pic">
+                <img title="如家快捷酒店(成都春熙路太古里书院街店)" th:src="@{/picture/{pictureKey}(pictureKey=${orderDTO.merchant.pictureKey})}" th:title="${orderDTO.merchant.name}"/>
+            </div>
+            <div class="box-body">
+                <h3 class="text-primary text-large" th:text="${orderDTO.merchant.name}">如家快捷酒店</h3>
+                <p th:text="${orderDTO.merchant.address}">成都春熙路太古里书院街</p>
+                <br/>
+                <p class="box-body-desc text-highlight" th:text="${orderDTO.product.name}"></p>
+                <p class="box-body-desc" th:if="${orderDTO.product.type eq 'Food'}" th:text="'有效期至'+${orderDTO.product.expiryDate}"></p>
+                <p class="box-body-desc" th:text="${orderDTO.product.description}"></p>
+            </div>
+        </div>
+		<div>
+            <div class="form-group">
+                <label class="control-label col-2" th:if="${orderDTO.product.type eq 'Food'}">购买数量</label>
+                <label class="control-label col-2" th:if="${orderDTO.product.type eq 'Hotel'}">房间数量</label>
+                <label class="control-label col-2" th:if="${orderDTO.product.type eq 'Scenery'}">门票数量</label>
+                <div class="col-10">
+                    <div class="form-control-static" th:text="${orderDTO.quantity}"></div>
+                </div>
+            </div>
+            <div class="form-group" th:if="${orderDTO.product.type eq 'Hotel'} or ${orderDTO.product.type eq 'Scenery'}">
+                <label class="control-label col-2">预订日期</label>
+                <div class="col-10">
+                    <div class="form-control-static" th:text="${orderDTO.bookingDate}"></div>
+                </div>
+            </div>
+            <div class="form-group" th:if="${orderDTO.product.type eq 'Food'}">
+                <label class="control-label col-2">有效期至</label>
+                <div class="col-10">
+                    <div class="form-control-static" th:text="${orderDTO.product.expiryDate}"></div>
+                </div>
+            </div>
+            <div class="form-group" th:if="${orderDTO.product.type eq 'Hotel'}">
+                <label class="control-label col-2">预订天数</label>
+                <div class="col-10">
+                    <div class="form-control-static" th:text="${orderDTO.days}"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-2">订单状态</label>
+                <div class="col-10">
+                    <div class="form-control-static" th:text="${orderDTO.status.label}"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-2">联系方式</label>
+                <div class="col-10">
+                    <div class="form-control-static" th:text="${orderDTO.username} + '(' + ${orderDTO.telephone} + ')'"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-10 col-offset-2">
+                    <a class="btn btn-primary" href="/index">返回首页</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

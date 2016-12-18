@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorator="decorators/homepage" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+	<title>订单确认</title>
+    <script type="text/javascript">
+        $(function(){
+            $('#quantity-control').initQuantityInput();
+            $('#days-control').initQuantityInput();
+        });
+    </script>
+</head>
+<body>
+	<div layout:fragment="content">
+        <div class="box box-full">
+            <div class="box-pic">
+                <img title="如家快捷酒店(成都春熙路太古里书院街店)" th:src="@{/picture/{pictureKey}(pictureKey=${productDTO.merchant.pictureKey})}" th:title="${productDTO.merchant.name}"/>
+            </div>
+            <div class="box-body">
+                <h3 class="text-primary text-large" th:text="${productDTO.merchant.name}">如家快捷酒店</h3>
+                <p th:text="${productDTO.merchant.address}">成都春熙路太古里书院街</p>
+                <br/>
+                <p class="box-body-desc text-highlight" th:text="${productDTO.name}"></p>
+                <p class="box-body-desc" th:if="${productDTO.type eq 'Food'}" th:text="'有效期至'+${productDTO.expiryDate}"></p>
+                <p class="box-body-desc" th:text="${productDTO.description}"></p>
+            </div>
+        </div>
+		<form id="order-form" th:action="@{feedback}" th:object="${orderDTO}" method="post" onsubmit="return $('#order-form').submitForm();">
+            <div class="form-group">
+                <label class="control-label col-2" for="quantity" th:if="${productDTO.type eq 'Food'}">购买数量<span class="data-required"></span></label>
+                <label class="control-label col-2" for="quantity" th:if="${productDTO.type eq 'Hotel'}">房间数量<span class="data-required"></span></label>
+                <label class="control-label col-2" for="quantity" th:if="${productDTO.type eq 'Scenery'}">门票数量<span class="data-required"></span></label>
+                <div class="col-10">
+                    <span class="input-group" id="quantity-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default quantity-decrement">-</button>
+                        </span>
+                        <input class="form-control form-control-quantity quantity-input" id="quantity" name="quantity" value="1" data-required="true"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default quantity-increment">+</button>
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group" th:if="${productDTO.type eq 'Hotel'} or ${productDTO.type eq 'Scenery'}">
+                <label class="control-label col-2" for="bookingDate">预订日期<span class="data-required"></span></label>
+                <div class="col-10">
+                    <input class="form-control" id="bookingDate" name="bookingDate" data-required="true"/>
+                </div>
+            </div>
+            <div class="form-group" th:if="${productDTO.type eq 'Hotel'}">
+                <label class="control-label col-2" for="days">预订天数<span class="data-required"></span></label>
+                <div class="col-10">
+                    <span class="input-group" id="days-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default quantity-decrement">-</button>
+                        </span>
+                        <input class="form-control form-control-quantity quantity-input" id="days" name="days" value="1" data-required="true"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default quantity-increment">+</button>
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-10 col-offset-2">
+                    <p>请留下您的联系方式</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-2" for="username">您的姓名<span class="data-required"></span></label>
+                <div class="col-10">
+                    <input class="form-control" id="username" name="username" data-required="true"/>
+                    <div class="help-block">所填姓名需与有效证件（如身份证）一致</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-2" for="telephone">联系电话<span class="data-required"></span></label>
+                <div class="col-10">
+                    <input class="form-control" id="telephone" name="telephone" data-required="true"/>
+                    <div class="help-block">请确保此联系电话真实有效</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-10 col-offset-2">
+                    <input type="hidden" name="merchant.id" th:value="${productDTO.merchant.id}"/>
+                    <input type="hidden" name="product.id" th:value="${productDTO.id}"/>
+                    <input type="hidden" name="user.id" th:if="${session.METOO_USER != null}" th:value="${session.METOO_USER.id}"/>
+                    <button class="btn btn-primary" type="submit">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

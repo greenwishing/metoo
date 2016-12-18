@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorator="decorators/admin" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>反馈</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div th:if="${not #lists.isEmpty(feedbackDTOs)}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>业务</th>
+                <th>时间</th>
+                <th>联系方式</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="feedbackDTO:${feedbackDTOs}">
+                <td th:text="${feedbackDTO.id}">Id</td>
+                <td th:text="${feedbackDTO.businessType.label}">Business type</td>
+                <td th:text="${feedbackDTO.creationTime}">Creation time</td>
+                <td>
+                    <div th:text="${feedbackDTO.username}"></div>
+                    <div th:if="${feedbackDTO.telephone!=null}" th:text="${feedbackDTO.telephone}"></div>
+                    <div th:if="${feedbackDTO.email!=null}" th:text="${feedbackDTO.email}"></div>
+                </td>
+                <td>
+                    <a th:href="@{detail(id=${feedbackDTO.id})}">查看详情</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${#lists.isEmpty(feedbackDTOs)}">
+        <p class="text-center">没有数据</p>
+    </div>
+</div>
+</body>
+</html>

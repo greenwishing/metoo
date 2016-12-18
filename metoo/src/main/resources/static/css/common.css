@@ -998,6 +998,10 @@ textarea.form-control {
     border-color: #50b400;
 }
 
+a.tag, a.tag:hover, a.tag:focus, a.tag:active {
+    text-decoration: none;
+}
+
 .price-panel {
     position: relative;
     padding-left: 15px;

@@ -11,4 +11,12 @@ import java.util.List;
  */
 public interface OrderService {
     List<OrderDTO> loadOrders(OrderStatus status);
+
+    Long saveOrder(OrderDTO orderDTO);
+
+    OrderDTO loadOrderById(Long id);
+
+    List<OrderDTO> loadOrderByUserId(Long userId);
+
+    void changeOrderStatus(Long id, OrderStatus status);
 }

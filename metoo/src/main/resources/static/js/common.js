@@ -379,6 +379,45 @@ Slider.prototype = {
     }
 })(jQuery);
 
+/**
+ * 可加减数量的文本框
+ */
+(function($){
+    $.fn.initQuantityInput = function(options) {
+        options = $.extend({}, {inputSelector: '.quantity-input', decrementSelector: '.quantity-decrement', incrementSelector: '.quantity-increment'}, options || {});
+        var $wrapper = $(this);
+        var $input = $wrapper.find(options.inputSelector);
+        $input.val('1').attr({'maxLength': 1});
+        $wrapper.delegate(options.decrementSelector, 'click', function(){
+            var quantity = parseInt($input.val()) || 1;
+            if (quantity <= 1) {
+                quantity = 1;
+            } else {
+                quantity --;
+            }
+            $input.val(quantity);
+        });
+        $wrapper.delegate(options.incrementSelector, 'click', function(){
+            var quantity = parseInt($input.val()) || 8;
+            if (quantity >= 8) {
+                quantity = 8
+            } else {
+                quantity ++;
+            }
+            $input.val(quantity);
+        });
+        $wrapper.delegate(options.inputSelector, 'change', function(){
+            var quantity = parseInt($input.val());
+            if (!quantity || quantity < 1 || quantity > 8) {
+                quantity = parseInt($input.data('data-prev') || 1);
+                $input.val(quantity);
+            } else {
+                $input.data({'data-prev': quantity});
+            }
+        });
+    }
+})(jQuery);
+
 function isEmpty(text) {
     return !text || null == text || "" == text || "null" == text || "undefined" == text;
 }
@@ -404,6 +443,9 @@ function logout() {
     $.fn.submitWithAjax = function(options) {
         options = $.extend({}, {success: null, error: null}, options || {});
         var $form = $(this);
+        if (!$form.validateForm()) {
+            return false;
+        }
         $.ajax({
             type: 'post',
             datatype: 'json',
@@ -418,6 +460,10 @@ function logout() {
                         var url = result.redirectUrl;
                         if (!isEmpty(url)) {
                             forward(url);
+                        } else if (result.message) {
+                            $.metoo.alert(result.message, function(){
+                                reload();
+                            });
                         } else {
                             reload();
                         }
@@ -443,6 +489,12 @@ function logout() {
 
 (function($){
     $.fn.submitForm = function() {
+        return $(this).validateForm();
+    };
+})(jQuery);
+
+(function($){
+    $.fn.validateForm = function() {
         var $form = $(this);
         var valid = true;
 		$form.find(':input[data-required]').each(function(){
@@ -450,10 +502,12 @@ function logout() {
             var $formGroup = $filed.closest('.form-group');
             var $tips = $formGroup.find('.help-block');
             if (isEmpty($filed.val())) {
-                var label = $filed.attr('placeholder') || $formGroup.find('.control-label').html() || '';
+                var label = $filed.attr('placeholder') || $formGroup.find('.control-label').text() || '';
                 if (!$tips.length) {
                     var $inputGroup = $filed.closest('.input-group');
                     $tips = $('<p class="help-block text-highlight"></p>').insertAfter($inputGroup.length ? $inputGroup : $filed);
+                } else {
+                    $tips.data('message', $tips.html());
                 }
                 $tips.html('请输入' + label + '！');
                 $filed.focus();
@@ -461,7 +515,12 @@ function logout() {
                 return false;
             } else {
                 if ($tips.length) {
-                    $tips.empty().hide();
+                    var message = $tips.data('message');
+                    if (!isEmpty(message)) {
+                        $tips.html(message);
+                    } else {
+                        $tips.empty().hide();
+                    }
                 }
             }
         });
@@ -471,85 +530,4 @@ function logout() {
 
 function refreshCode(el) {
 	$(el).attr({src: '/code?t=' + new Date().getTime()});
-}
-
-//反馈
-function chooseType() {
-	var select = document.querySelector("select");
-	if (select.value == 0) {
-		document.querySelector("#error1").style.display = "block";
-	}
-	else {
-		document.querySelector("#error1").style.display = "none";
-	}
-}//选项列表
-function advice() {
-	textarea = document.querySelector("textarea");
-	textarea.innerHTML = "";
-	textarea.className += " advice";
-}
-function checkAdvice() {
-	var txt = textarea.value;
-	textarea.className = "input01";
-	document.querySelector("#error2").style.display = "none";
-	document.querySelector("#error3").style.display = "none";
-	document.querySelector("#error4").style.display = "none";
-	if (txt.length == 0) {
-		document.querySelector("#error2").style.display = "block";
-	}
-	else if (txt.length != 0 && txt.length <= 10) {
-		document.querySelector("#error3").style.display = "block";
-	}
-	else if (txt.length >= 200) {
-		document.querySelector("#error4").style.display = "block";
-	}
-}//文本区域
-function inputIn(idName) {
-    content = document.getElementById(idName);
-	content.className = "advice";
-}//获得焦点
-function checkinput(idName,error) {
-	content.className = "";
-	content = content.value.replace(/(^\s+)|(\s+$)/g, "");
-	if (idName =="name") {
-		if (!content.match(/^[\u4e00-\u9fa5]{2,4}$/)) {
-			document.querySelector(error).style.display = "block";
-		}
-		else {
-	    	document.querySelector(error).style.display = "none";
-		}
-	}//姓名
-	else if(idName == "advice_phone") {
-		var email = document.querySelector("#advice_email");
-		if (email.value) {
-			document.querySelector(error).style.display = "none";
-		}
-		else if (!content.match(/^(13|14|15|17|18)+\d{9}$/)) {
-			document.querySelector(error).style.display = "block";
-		}
-		
-		else {
-	    	document.querySelector(error).style.display = "none";
-		}
-	}//电话
-	else if (idName == "advice_email") {
-		var phone = document.querySelector("#advice_phone");
-		if (phone.value) {
-			document.querySelector(error).style.display = "none";
-		}
-		else if (!content.match(/^\w{5,15}@\w{2,3}\.\w{2,3}$/)) {
-			document.querySelector(error).style.display = "block";
-		}
-		else {
-			document.querySelector(error).style.display = "none";
-		}
-	}//邮件
-	else if (idName = "checkcode") {
-		if (!content.match(/^\d{4}$/)) {
-			document.querySelector(error).style.display = "block";
-		}
-	    else {
-	    	document.querySelector(error).style.display = "none";
-	    }
-	}//验证码
 }

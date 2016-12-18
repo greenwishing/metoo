@@ -3,6 +3,7 @@ package com.metoo.service.impl;
 import com.metoo.core.MetooSystem;
 import com.metoo.core.domain.common.DomainUtils;
 import com.metoo.core.domain.merchant.Merchant;
+import com.metoo.core.domain.merchant.MerchantBusinessType;
 import com.metoo.core.domain.merchant.MerchantRepository;
 import com.metoo.core.domain.product.*;
 import com.metoo.dto.merchant.MerchantDTO;
@@ -15,7 +16,9 @@ import com.metoo.service.MerchantService;
 import com.metoo.utils.FileuploadUtils;
 import com.metoo.utils.JodaUtils;
 import com.metoo.utils.NumberUtils;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,13 +56,14 @@ public class MerchantServiceImpl implements MerchantService {
     @Override
     public void saveOrUpdateMerchant(MerchantDTO merchantDTO) {
         MultipartFile picture = merchantDTO.getPicture();
-        if (picture != null) {
+        String pictureKey = null;
+        if (picture != null && picture.getSize() > 0) {
             long size = picture.getSize();
             if (size > 512 * 1024) {
                 throw new MetooException(ErrorMap.INVALID_PICTURE_SIZE);
             }
             try {
-                String pictureKey = FileuploadUtils.storePicture(merchantDTO.getPicture(), metooSystem);
+                pictureKey = FileuploadUtils.storePicture(merchantDTO.getPicture(), metooSystem);
                 merchantDTO.setPictureKey(pictureKey);
             } catch (Exception e) {
                 throw new MetooException(ErrorMap.INVALID_PICTURE);
@@ -73,6 +77,9 @@ public class MerchantServiceImpl implements MerchantService {
             merchant = new Merchant();
         }
         merchantDTO.update(merchant);
+        if (pictureKey != null) {
+            merchant.updatePicture(pictureKey);
+        }
         merchantRepository.save(merchant);
     }
 
@@ -82,8 +89,8 @@ public class MerchantServiceImpl implements MerchantService {
     }
 
     @Override
-    public List<ProductDTO> loadMerchantProducts(Long merchantId, Class productClass) {
-        List<Product> products = merchantRepository.loadMerchantProducts(merchantId, productClass.getSimpleName());
+    public List<ProductDTO> loadMerchantProducts(Long merchantId) {
+        List<Product> products = merchantRepository.loadMerchantProducts(merchantId);
         return ProductDTO.toDTOs(products);
     }
 
@@ -137,8 +144,12 @@ public class MerchantServiceImpl implements MerchantService {
         BigDecimal marketingPrice = new BigDecimal(marketingPriceStr);
         product.update(productDTO.getName(), productDTO.getDescription(), price, marketingPrice);
         if (product instanceof Food) {
-            String expiryDate = productDTO.getExpiryDate();
-            ((Food) product).update(JodaUtils.parseLocalDate(expiryDate), productDTO.getNotices(), productDTO.getArticle());
+            String expiryDateStr = productDTO.getExpiryDate();
+            LocalDate expiryDate = null;
+            if (JodaUtils.isValidDate(expiryDateStr)) {
+                expiryDate = JodaUtils.parseLocalDate(expiryDateStr);
+            }
+            ((Food) product).update(expiryDate, productDTO.getNotices(), productDTO.getArticle());
         } else if (product instanceof Hotel) {
             ((Hotel) product).update(productDTO.isHasBreakfast(), productDTO.isHasWindow());
         }
@@ -180,5 +191,25 @@ public class MerchantServiceImpl implements MerchantService {
     @Override
     public void toggleProductCategoryStatus(Long id) {
         DomainUtils.toggleStatus(productCategoryRepository, id);
+    }
+
+    @Override
+    public List<MerchantDTO> loadMerchantSaleRanking(int top) {
+        Sort.Order salesVolumeDesc = new Sort.Order(Sort.Direction.DESC, "salesVolume");
+        Sort.Order idDesc = new Sort.Order(Sort.Direction.DESC, "id");
+        PageRequest pageRequest = new PageRequest(0, top, new Sort(salesVolumeDesc, idDesc));
+        Page<Merchant> page = merchantRepository.findAll(pageRequest);
+        List<Merchant> content = page.getContent();
+        return MerchantDTO.toDTOs(content);
+    }
+
+    @Override
+    public Page<MerchantDTO> loadMerchantByPage(MerchantBusinessType businessType, Pageable page) {
+        Page<Merchant> pageResult = merchantRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+            criteriaQuery.where(criteriaBuilder.equal(root.get("businessType"), businessType));
+            return null;
+        }, page);
+        List<MerchantDTO> merchantDTOs = MerchantDTO.toDTOs(pageResult.getContent());
+        return new PageImpl<>(merchantDTOs);
     }
 }

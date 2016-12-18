@@ -33,17 +33,21 @@ public class OrderDTO extends DTO {
     private String username;
     private String telephone;
 
-    public OrderDTO(Order order) {
-        this.id = order.getId();
+    public OrderDTO() {
+        super();
+    }
 
+    public OrderDTO(Order order) {
+        super(order);
         this.type = order.getClass().getSimpleName();
-        Merchant merchant = order.getMerchant();
         User user = order.getUser();
         Product product = order.getProduct();
 
-        this.merchant = new MerchantDTO(merchant);
-        this.user = new UserDTO(user);
+        if (user != null) {
+            this.user = new UserDTO(user);
+        }
         this.product = new ProductDTO(product);
+        this.merchant = this.product.getMerchant();
         this.creationTime = JodaUtils.dateTimeToString(order.getCreationTime());
 
         if (order instanceof FoodOrder) {
@@ -60,6 +64,8 @@ public class OrderDTO extends DTO {
         this.bookingDate = JodaUtils.localDateToString(order.getBookingDate());
         this.username = order.getUsername();
         this.telephone = order.getTelephone();
+
+        this.status = order.getStatus();
     }
 
     public String getType() {
@@ -149,5 +155,13 @@ public class OrderDTO extends DTO {
             orderDTOs.add(orderDTO);
         }
         return orderDTOs;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 }

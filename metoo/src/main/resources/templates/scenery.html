@@ -5,49 +5,22 @@
 </head>
 <body>
 	<section layout:fragment="content">
-        <div class="box box-full box-scale">
+        <div class="box box-full box-scale" th:each="merchantDTO:${page.content}">
             <div class="box-pic">
-                <img th:src="@{/img/spot1.jpg}" title="花舞人间"/>
+                <img title="花舞人间" th:src="@{/picture/{pictureKey}(pictureKey=${merchantDTO.pictureKey})}" th:title="${merchantDTO.name}"/>
             </div>
             <div class="box-body">
-                <h3 class="text-primary text-large">花舞人间<small>[四川.成都]</small></h3>
-                <p><span class="box-body-tag">4A景点</span></p>
-                <p class="box-body-desc">地址：四川省成都市新津县新蒲路</p>
-                <p class="box-body-desc">特色：四季花开，美出不同的高度</p>
+                <h3 class="text-primary text-large">
+                    <span th:text="${merchantDTO.name}">花舞人间</span>
+                    <small th:if="${merchantDTO.address!=null}" th:name="'['+${merchantDTO.address}+']'">[四川.成都]</small>
+                </h3>
+                <p><span class="box-body-tag" th:text="${merchantDTO.formattedLevel}">AAAA景点</span></p>
+                <p class="box-body-desc" th:text="'地址：'+${merchantDTO.address}">地址：四川省成都市新津县新蒲路</p>
+                <p class="box-body-desc" th:text="'特色：'+${merchantDTO.specialty}">特色：四季花开，美出不同的高度</p>
             </div>
             <div class="box-foot">
-                <p><span class="text-highlight text-large"><span class="price-cn">72</span><small>起</small></span></p>
-                <a th:href="@{/scenery/{id}(id=1)}" class="btn btn-highlight">查看详情</a>
-            </div>
-        </div>
-        <div class="box box-full box-scale">
-            <div class="box-pic">
-                <img th:src="@{/img/spot2.jpg}" title="叠溪松坪沟风景区"/>
-            </div>
-            <div class="box-body">
-                <h3 class="text-primary text-large">叠溪松坪沟风景区<small>[四川.阿坝]</small></h3>
-                <p><span class="box-body-tag">4A景点</span></p>
-                <p class="box-body-desc">地址：四川省阿坝州茂县西北叠溪镇松坪沟乡内</p>
-                <p class="box-body-desc">特色：雄山、异水、秀林、幽沟</p>
-            </div>
-            <div class="box-foot">
-                <p><span class="text-highlight text-large"><span class="price-cn">68</span><small>起</small></span></p>
-                <a th:href="@{/scenery/{id}(id=1)}" class="btn btn-highlight">查看详情</a>
-            </div>
-        </div>
-        <div class="box box-full box-scale">
-            <div class="box-pic">
-                <img th:src="@{/img/spot3.jpg}" title="青城山——都江堰风景区"/>
-            </div>
-            <div class="box-body">
-                <h3 class="text-primary text-large">青城山——都江堰风景区<small>[四川.成都]</small></h3>
-                <p><span class="box-body-tag">5A景点</span></p>
-                <p class="box-body-desc">地址：四川省都江堰市公园路</p>
-                <p class="box-body-desc">特色：远眺都江堰的水，探寻青城山的幽</p>
-            </div>
-            <div class="box-foot">
-                <p><span class="text-highlight text-large"><span class="price-cn">88</span><small>起</small></span></p>
-                <a th:href="@{/scenery/{id}(id=1)}" class="btn btn-highlight">查看详情</a>
+                <p><span class="text-highlight text-large"><span class="price-cn" th:text="${merchantDTO.minConsumption}">72</span><small>起</small></span></p>
+                <a th:href="@{/{location}/{id}(id=${merchantDTO.id},location=${merchantDTO.location})}" class="btn btn-highlight">查看详情</a>
             </div>
         </div>
     </section>

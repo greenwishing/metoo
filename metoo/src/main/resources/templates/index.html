@@ -41,55 +41,16 @@
             <section>
                 <h4 class="text-highlight">人气榜单</h4>
                 <div class="row">
-                    <div class="col-3">
-                        <a class="box box-scale" th:href="@{/scenery/{id}(id=1)}">
+                    <div class="col-3" th:each="merchantDTO:${merchantDTOs}">
+                        <a class="box box-scale" th:href="@{/{location}/{id}(id=${merchantDTO.id},location=${merchantDTO.location})}">
                             <div class="box-pic">
-                                <img th:src="@{/img/info4.jpg}" title="自选峨眉山乐活酒店峨眉山/红珠山森林温泉/峨眉山灵秀温泉"/>
-                                <div class="box-pic-desc">自选峨眉山乐活酒店峨眉山/红珠山森林温泉/峨眉山灵秀温泉</div>
-                                <em class="box-pic-tag">自由行</em>
+                                <img th:src="@{/picture/{pictureKey}(pictureKey=${merchantDTO.pictureKey})}" th:title="${merchantDTO.name}"/>
+                                <div class="box-pic-desc" th:text="${merchantDTO.introduction}"></div>
+                                <em class="box-pic-tag" th:if="${merchantDTO.formattedLevel!=null}" th:text="${merchantDTO.formattedLevel}"></em>
                             </div>
                             <div class="box-title">
-                                <span>乐山</span>
-                                <span class="pull-right text-primary text-large"><span class="price-cn">389</span><small>起</small></span>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-3">
-                        <a class="box box-scale" th:href="@{/scenery/{id}(id=1)}">
-                            <div class="box-pic">
-                                <img th:src="@{/img/info2.jpg}" title="都江堰-青城山探秘纯玩1日游 经典特卖"/>
-                                <div class="box-pic-desc">&lt;都江堰-青城山探秘纯玩1日游&gt;经典特卖</div>
-                                <em class="box-pic-tag">跟团游</em>
-                            </div>
-                            <div class="box-title">
-                                <span>成都<b>→</b>成都</span>
-                                <span class="pull-right text-primary text-large"><span class="price-cn">299</span><small>起</small></span>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-3">
-                        <a class="box box-scale" th:href="@{/scenery/{id}(id=1)}">
-                            <div class="box-pic">
-                                <img th:src="@{/img/info4.jpg}" title="自选峨眉山乐活酒店峨眉山/红珠山森林温泉/峨眉山灵秀温泉"/>
-                                <div class="box-pic-desc">自选峨眉山乐活酒店峨眉山/红珠山森林温泉/峨眉山灵秀温泉</div>
-                                <em class="box-pic-tag">自由行</em>
-                            </div>
-                            <div class="box-title">
-                                <span>乐山</span>
-                                <span class="pull-right text-primary text-large"><span class="price-cn">389</span><small>起</small></span>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-3">
-                        <a class="box box-scale" th:href="@{/scenery/{id}(id=1)}">
-                            <div class="box-pic">
-                                <img th:src="@{/img/info2.jpg}" title="都江堰-青城山探秘纯玩1日游 经典特卖"/>
-                                <div class="box-pic-desc">&lt;都江堰-青城山探秘纯玩1日游&gt;经典特卖</div>
-                                <em class="box-pic-tag">跟团游</em>
-                            </div>
-                            <div class="box-title">
-                                <span>成都<b>→</b>成都</span>
-                                <span class="pull-right text-primary text-large"><span class="price-cn">299</span><small>起</small></span>
+                                <span th:text="${merchantDTO.name}"></span>
+                                <span class="pull-right text-primary text-large"><span class="price-cn" th:text="${merchantDTO.minConsumption}"></span><small>起</small></span>
                             </div>
                         </a>
                     </div>

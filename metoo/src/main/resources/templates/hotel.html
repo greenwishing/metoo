@@ -5,85 +5,22 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<div class="box box-full box-scale">
+		<div class="box box-full box-scale" th:each="merchantDTO:${page.content}">
 			<div class="box-pic">
-				<img th:src="@{/img/hotel1.jpg}" title="如家快捷酒店(成都春熙路太古里书院街店)图片"/>
+				<img title="如家快捷酒店(成都春熙路太古里书院街店)" th:src="@{/picture/{pictureKey}(pictureKey=${merchantDTO.pictureKey})}" th:title="${merchantDTO.name}"/>
 			</div>
 			<div class="box-body">
-				<h3 class="text-primary text-large"><span class="location">1</span><span>如家快捷酒店(成都春熙路太古里书院街店)</span><span class="medal medal-gold"></span></h3>
-				<p class="box-body-desc">书院西街75号</p>
+				<h3 class="text-primary text-large" th:text="${merchantDTO.name}">如家快捷酒店(成都春熙路太古里书院街店)</h3>
+				<p><span class="box-body-tag" th:text="${merchantDTO.formattedLevel}">五星级酒店</span></p>
+				<p class="box-body-desc" th:text="${merchantDTO.address}">书院西街75号</p>
+				<p class="box-body-desc" th:text="'特色：'+${merchantDTO.specialty}">特色：</p>
 				<div class="feature-wrapper">
-					<span class="feature feature-wifi" title="WIFI"></span>
-					<span class="feature feature-wifi-free" title="免费WIFI"></span>
-                    <span class="feature feature-parking" title="停车场"></span>
-                    <span class="feature feature-parking-free" title="免费停车场"></span>
-                    <span class="feature feature-broadband" title="有线宽带"></span>
-                    <span class="feature feature-broadband-free" title="免费有线宽带"></span>
-                    <span class="feature feature-restaurant" title="餐厅"></span>
-                    <span class="feature feature-pet" title="宠物"></span>
-                    <span class="feature feature-gymnasium" title="健身房"></span>
-                    <span class="feature feature-meeting" title="会议"></span>
-                    <span class="feature feature-airport" title="接机服务"></span>
-                    <span class="feature feature-swimming" title="游泳"></span>
-                </div>
+					<span th:each="feature:${merchantDTO.features}" th:class="${feature.className}" th:title="${feature.label}"></span>
+				</div>
 			</div>
 			<div class="box-foot">
-				<p><span class="text-highlight text-large"><span class="price-cn">108</span><small>起</small></span></p>
-				<a th:href="@{/hotel/{id}(id=1)}" class="btn btn-highlight">查看详情</a>
-			</div>
-		</div>
-		<div class="box box-full box-scale">
-			<div class="box-pic">
-				<img th:src="@{/img/hotel2.jpg}" title="成都川港国际酒店图片"/>
-			</div>
-			<div class="box-body">
-				<h3 class="text-primary text-large"><span class="location">2</span><span>成都川港国际酒店</span><span class="medal medal-gold"></span></h3>
-				<p class="box-body-desc">西航港大道一段209号</p>
-				<div class="feature-wrapper">
-					<span class="feature feature-wifi" title="WIFI"></span>
-					<span class="feature feature-wifi-free" title="免费WIFI"></span>
-                    <span class="feature feature-parking" title="停车场"></span>
-                    <span class="feature feature-parking-free" title="免费停车场"></span>
-                    <span class="feature feature-broadband" title="有线宽带"></span>
-                    <span class="feature feature-broadband-free" title="免费有线宽带"></span>
-                    <span class="feature feature-restaurant" title="餐厅"></span>
-                    <span class="feature feature-pet" title="宠物"></span>
-                    <span class="feature feature-gymnasium" title="健身房"></span>
-                    <span class="feature feature-meeting" title="会议"></span>
-                    <span class="feature feature-airport" title="接机服务"></span>
-                    <span class="feature feature-swimming" title="游泳"></span>
-                </div>
-			</div>
-			<div class="box-foot">
-				<p><span class="text-highlight text-large"><span class="price-cn">108</span><small>起</small></span></p>
-				<a th:href="@{/hotel/{id}(id=1)}" class="btn btn-highlight">查看详情</a>
-			</div>
-		</div>
-		<div class="box box-full box-scale">
-			<div class="box-pic">
-				<img th:src="@{/img/hotel3.jpg}" title="好逸SMART酒店(成都春熙路店)图片"/>
-			</div>
-			<div class="box-body">
-				<h3 class="text-primary text-large"><span class="location">3</span><span>好逸SMART酒店(成都春熙路店)</span><span class="medal medal-sliver"></span></h3>
-				<p class="box-body-desc">红星路四段88号</p>
-				<div class="feature-wrapper">
-					<span class="feature feature-wifi" title="WIFI"></span>
-					<span class="feature feature-wifi-free" title="免费WIFI"></span>
-                    <span class="feature feature-parking" title="停车场"></span>
-                    <span class="feature feature-parking-free" title="免费停车场"></span>
-                    <span class="feature feature-broadband" title="有线宽带"></span>
-                    <span class="feature feature-broadband-free" title="免费有线宽带"></span>
-                    <span class="feature feature-restaurant" title="餐厅"></span>
-                    <span class="feature feature-pet" title="宠物"></span>
-                    <span class="feature feature-gymnasium" title="健身房"></span>
-                    <span class="feature feature-meeting" title="会议"></span>
-                    <span class="feature feature-airport" title="接机服务"></span>
-                    <span class="feature feature-swimming" title="游泳"></span>
-                </div>
-			</div>
-			<div class="box-foot">
-				<p><span class="text-highlight text-large"><span class="price-cn">248</span><small>起</small></span></p>
-				<a th:href="@{/hotel/{id}(id=1)}" class="btn btn-highlight">查看详情</a>
+				<p><span class="text-highlight text-large"><span class="price-cn" th:text="${merchantDTO.minConsumption}">108</span><small>起</small></span></p>
+				<a th:href="@{/{location}/{id}(id=${merchantDTO.id},location=${merchantDTO.location})}" class="btn btn-highlight">查看详情</a>
 			</div>
 		</div>
 	</div>

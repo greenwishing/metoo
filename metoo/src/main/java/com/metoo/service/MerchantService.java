@@ -1,8 +1,11 @@
 package com.metoo.service;
 
+import com.metoo.core.domain.merchant.MerchantBusinessType;
 import com.metoo.dto.merchant.MerchantDTO;
 import com.metoo.dto.product.ProductCategoryDTO;
 import com.metoo.dto.product.ProductDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -19,7 +22,7 @@ public interface MerchantService {
 
     void toggleMerchantStatus(Long id);
 
-    List<ProductDTO> loadMerchantProducts(Long merchantId, Class productClass);
+    List<ProductDTO> loadMerchantProducts(Long merchantId);
 
     List<ProductCategoryDTO> loadProductCategories(Long merchantId);
 
@@ -34,4 +37,8 @@ public interface MerchantService {
     void saveOrUpdateProductCategory(ProductCategoryDTO productCategoryDTO);
 
     void toggleProductCategoryStatus(Long id);
+
+    List<MerchantDTO> loadMerchantSaleRanking(int top);
+
+    Page<MerchantDTO> loadMerchantByPage(MerchantBusinessType businessType, Pageable page);
 }

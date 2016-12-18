@@ -6,8 +6,7 @@ package com.metoo.core.domain.order;
  */
 public enum OrderStatus {
     NEW("待确认"),
-    CONFIRMED("已确认"),
-    SUCCESS("已完成"),
+    SUCCESS("成功"),
     CANCELED("已取消"),
     ;
 

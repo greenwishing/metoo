@@ -1,6 +1,6 @@
 package com.metoo.web;
 
-import com.metoo.web.controller.CommonController;
+import com.metoo.web.controller.AccountController;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -14,7 +14,7 @@ public class CommonControllerTest extends AbstractControllerTest {
 
     @Before
     public void setup() throws Exception {
-        setup(new CommonController());
+        setup(new AccountController());
     }
 
     @Test

@@ -5,24 +5,20 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<form onsubmit="return false;">
+		<form id="feedback-form" th:action="@{feedback}" th:object="${feedbackDTO}" method="post" onsubmit="return false">
             <div class="form-group">
-                <label class="control-label col-2" for="type">反馈类型</label>
+                <label class="control-label col-2" for="businessType">反馈类型<span class="data-required"></span></label>
                 <div class="col-10">
-                    <select class="form-control" id="type" name="type" onchange="chooseType()">
-                        <option value="0">请选择</option>
-                        <option value="1">景点</option>
-                        <option value="2">酒店</option>
-                        <option value="3">美食</option>
-                        <option value="4">其他</option>
+                    <select class="form-control" id="businessType" name="businessType" data-required="true">
+                        <option th:each="businessType:${businessTypes}" th:value="${businessType.value}" th:text="${businessType.label}">请选择</option>
                     </select>
                     <p class="help-block">反馈类型</p>
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-2" for="desc">问题描述</label>
+                <label class="control-label col-2" for="description">问题描述<span class="data-required"></span></label>
                 <div class="col-10">
-                    <textarea class="form-control" id="desc" name="desc" cols="5"></textarea>
+                    <textarea class="form-control" id="description" name="description" cols="5" data-required="true"></textarea>
                     <p class="help-block">内容的字数请控制在10-200字之间</p>
                 </div>
             </div>
@@ -32,24 +28,24 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-2" for="name">您的姓名</label>
+                <label class="control-label col-2" for="username">您的姓名<span class="data-required"></span></label>
                 <div class="col-10">
-                    <input class="form-control" id="name" name="name"/>
+                    <input class="form-control" id="username" name="username" data-required="true"/>
                     <p class="help-block">姓名</p>
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-2" for="telephone">手机号码</label>
+                <label class="control-label col-2" for="telephone">联系电话<span class="data-required"></span></label>
                 <div class="col-10">
                     <input class="form-control" id="telephone" name="telephone"/>
                     <p class="help-block">11位数字，且以13，14，15，17，18开头</p>
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-2" for="email">电子邮箱</label>
+                <label class="control-label col-2" for="email">邮箱</label>
                 <div class="col-10">
                     <input class="form-control" id="email" name="email"/>
-                    <p class="help-block">手机号、邮箱可选填一项</p>
+                    <p class="help-block">联系电话、邮箱可选填一项</p>
                 </div>
             </div>
             <div class="form-group">
@@ -66,7 +62,7 @@
             </div>
             <div class="form-group">
                 <div class="col-10 col-offset-2">
-                    <button class="btn btn-primary">提交</button>
+                    <a class="btn btn-primary" href="javascript:void(0)" onclick="$('#feedback-form').submitWithAjax();">提交</a>
                 </div>
             </div>
         </form>

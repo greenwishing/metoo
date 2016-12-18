@@ -57,7 +57,7 @@ public abstract class Order extends Domain {
      */
     @Column(name = "booking_date")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
-    protected LocalDate bookingDate;
+    protected LocalDate bookingDate = new LocalDate();
 
     /**
      * 下单时间
@@ -78,10 +78,10 @@ public abstract class Order extends Domain {
     @Column(name = "telephone")
     protected String telephone;
 
-    public Order() {
+    protected Order() {
     }
 
-    public Order(Merchant merchant, User user, Product product) {
+    protected Order(Merchant merchant, User user, Product product) {
         this.merchant = merchant;
         this.user = user;
         this.product = product;

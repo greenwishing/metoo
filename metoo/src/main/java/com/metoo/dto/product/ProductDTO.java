@@ -67,10 +67,6 @@ public class ProductDTO extends StatefulDTO {
         return type;
     }
 
-    public String getLocation() {
-        return type == null ? null : type.toLowerCase();
-    }
-
     public void setType(String type) {
         this.type = type;
     }

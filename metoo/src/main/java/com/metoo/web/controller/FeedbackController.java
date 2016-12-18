@@ -1,28 +1,36 @@
 package com.metoo.web.controller;
 
 import com.metoo.dto.feedback.FeedbackDTO;
+import com.metoo.service.FeedbackService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * User: Zhang xiaomei
  * Date: 2016/12/10
  */
 @Controller
+@RequestMapping("/admin/feedback")
 public class FeedbackController {
 
-    @RequestMapping("/admin/feedback/list")
+    @Autowired
+    private FeedbackService feedbackService;
+
+    @RequestMapping("list")
     public ModelAndView list() {
-        return new ModelAndView("feedback_list");
+        List<FeedbackDTO> feedbackDTOs = feedbackService.loadFeedbackList();
+        return new ModelAndView("admin/feedback_list", "feedbackDTOs", feedbackDTOs);
     }
 
-    @RequestMapping("/admin/feedback/detail")
+    @RequestMapping("detail")
     public ModelAndView detail(@RequestParam Long id) {
-        return new ModelAndView("feedback_form");
+        FeedbackDTO feedbackDTO = feedbackService.loadFeedbackById(id);
+        return new ModelAndView("admin/feedback_detail", "feedbackDTO", feedbackDTO);
     }
 
 }

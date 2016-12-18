@@ -39,7 +39,7 @@ public class MerchantController {
     public ModelAndView detail(@RequestParam Long id, ModelMap model) {
         MerchantDTO merchantDTO = merchantService.loadById(id);
         model.put("merchantDTO", merchantDTO);
-        List<ProductDTO> productDTOs = merchantService.loadMerchantProducts(id, merchantDTO.getBusinessType().getProductClass());
+        List<ProductDTO> productDTOs = merchantService.loadMerchantProducts(id);
         model.put("productDTOs", productDTOs);
         return new ModelAndView("admin/merchant_detail", model);
     }

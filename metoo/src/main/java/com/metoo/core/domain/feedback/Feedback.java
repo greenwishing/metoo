@@ -30,7 +30,7 @@ public class Feedback extends StatefulDomain {
      */
     @Column(name = "creation_time")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-    private DateTime creationTime;
+    private DateTime creationTime = new DateTime();
 
     /**
      * 业务类型
