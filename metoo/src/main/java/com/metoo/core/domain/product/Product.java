@@ -56,12 +56,6 @@ public abstract class Product extends StatefulDomain {
     @Column(name = "marketing_price")
     private BigDecimal marketingPrice;
 
-    /**
-     * 销售量，销售量大的商品将显示到首页“人气榜单”
-     */
-    @Column(name = "sales_volume")
-    private Integer salesVolume = 0;
-
     protected Product() {
     }
 
@@ -78,14 +72,6 @@ public abstract class Product extends StatefulDomain {
         this.description = description;
         this.price = price;
         this.marketingPrice = marketingPrice;
-    }
-
-    public void addSalesVolume() {
-        addSalesVolume(1);
-    }
-
-    public void addSalesVolume(Integer salesVolume) {
-        this.salesVolume += salesVolume;
     }
 
     public Merchant getMerchant() {
@@ -110,9 +96,5 @@ public abstract class Product extends StatefulDomain {
 
     public BigDecimal getMarketingPrice() {
         return marketingPrice;
-    }
-
-    public Integer getSalesVolume() {
-        return salesVolume;
     }
 }

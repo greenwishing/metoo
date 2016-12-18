@@ -1,7 +1,7 @@
 
 
-/* 商品增加销售数量 */
+/* 商户增加销售数量 */
 
-ALTER TABLE `product` ADD COLUMN `sales_volume` INT DEFAULT 0;
+ALTER TABLE `merchant` ADD COLUMN `sales_volume` INT DEFAULT 0;
 
-UPDATE `product` SET `sales_volume` = 0 WHERE `sales_volume` IS NULL;
+UPDATE `merchant` SET `sales_volume` = 0 WHERE `sales_volume` IS NULL;

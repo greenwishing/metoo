@@ -70,19 +70,36 @@ public class Merchant extends StatefulDomain {
     @Column(name = "contact_phone")
     private String contactPhone;
 
+    /**
+     * 销售量，销售量大的商户将显示到首页“人气榜单”
+     */
+    @Column(name = "sales_volume")
+    private Integer salesVolume = 0;
+
     public Merchant() {
     }
 
-    public void update(String name, MerchantBusinessType businessType, Integer level, String picture, String introduction, String specialty, Integer features, String address, String contactPhone) {
+    public void update(String name, MerchantBusinessType businessType, Integer level, String introduction, String specialty, Integer features, String address, String contactPhone) {
         this.name = name;
         this.businessType = businessType;
         this.level = level;
-        this.picture = picture;
         this.introduction = introduction;
         this.specialty = specialty;
         this.features = features;
         this.address = address;
         this.contactPhone = contactPhone;
+    }
+
+    public void updatePicture(String picture) {
+        this.picture = picture;
+    }
+
+    public void addSalesVolume() {
+        addSalesVolume(1);
+    }
+
+    public void addSalesVolume(Integer salesVolume) {
+        this.salesVolume += salesVolume;
     }
 
     public String getName() {
@@ -119,5 +136,9 @@ public class Merchant extends StatefulDomain {
 
     public String getContactPhone() {
         return contactPhone;
+    }
+
+    public Integer getSalesVolume() {
+        return salesVolume;
     }
 }

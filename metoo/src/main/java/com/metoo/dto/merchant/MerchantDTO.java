@@ -62,6 +62,26 @@ public class MerchantDTO extends StatefulDTO {
         return level;
     }
 
+    public String getFormattedLevel() {
+        if (level == null || businessType == null) return null;
+        String formattedLevel = null;
+        switch (businessType) {
+            case SCENERY:
+                formattedLevel = "";
+                for (int i = 1; i <= level; i++) {
+                    formattedLevel += "A";
+                }
+                formattedLevel += businessType.getLabel();
+                break;
+            case HOTEL:
+                if (level >= 3) {
+                    formattedLevel = "三四五".charAt(this.level - 3) + "星级" + businessType.getLabel();
+                }
+                break;
+        }
+        return formattedLevel;
+    }
+
     public void setLevel(Integer level) {
         this.level = level;
     }
@@ -132,7 +152,7 @@ public class MerchantDTO extends StatefulDTO {
         for (Feature feature : this.features) {
             features += feature.getVal();
         }
-        merchant.update(name, businessType, level, pictureKey, introduction, specialty, features, address, contactPhone);
+        merchant.update(name, businessType, level, introduction, specialty, features, address, contactPhone);
     }
 
     public MultipartFile getPicture() {
