@@ -13,10 +13,6 @@ public abstract class MetooFilter implements Filter {
 
     public static final String METOO_USER_SESSION_KEY = "METOO_USER";
 
-    protected String processesUrl;
-    protected String successUrl;
-    protected String failureUrl;
-
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
@@ -35,8 +31,10 @@ public abstract class MetooFilter implements Filter {
 
     protected boolean requires(HttpServletRequest request, HttpServletResponse response) {
         String uri = request.getRequestURI();
-        return uri.startsWith(request.getContextPath() + processesUrl);
+        return uri.startsWith(request.getContextPath() + getProcessesUrl());
     }
+
+    protected abstract String getProcessesUrl();
 
     @Override
     public void init(FilterConfig config) throws ServletException {
@@ -45,17 +43,5 @@ public abstract class MetooFilter implements Filter {
 
     @Override
     public void destroy() {
-    }
-
-    public void setProcessesUrl(String processesUrl) {
-        this.processesUrl = processesUrl;
-    }
-
-    public void setSuccessUrl(String successUrl) {
-        this.successUrl = successUrl;
-    }
-
-    public void setFailureUrl(String failureUrl) {
-        this.failureUrl = failureUrl;
     }
 }

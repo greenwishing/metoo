@@ -1,6 +1,7 @@
 package com.metoo.web.filter;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.metoo.core.MetooSystem;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -15,6 +16,8 @@ import java.io.IOException;
  */
 @WebFilter(filterName = "logoutFilter", urlPatterns = "/*")
 public class LogoutFilter extends MetooFilter {
+    @Autowired
+    protected MetooSystem metooSystem;
 
     @Override
     protected void processes(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -23,19 +26,11 @@ public class LogoutFilter extends MetooFilter {
             return;
         }
         request.getSession().removeAttribute(METOO_USER_SESSION_KEY);
-        response.sendRedirect(successUrl);
+        response.sendRedirect(metooSystem.getLogoutSuccessUrl());
     }
 
     @Override
-    @Value("${metoo.logout.url}")
-    public void setProcessesUrl(String processesUrl) {
-        this.processesUrl = processesUrl;
+    protected String getProcessesUrl() {
+        return metooSystem.getLogoutProcessesUrl();
     }
-
-    @Override
-    @Value("${metoo.logout.success.url}")
-    public void setSuccessUrl(String successUrl) {
-        this.successUrl = successUrl;
-    }
-
 }

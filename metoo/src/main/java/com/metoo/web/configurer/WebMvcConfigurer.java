@@ -1,7 +1,9 @@
 package com.metoo.web.configurer;
 
+import com.metoo.core.MetooSystem;
 import com.metoo.web.interceptor.AccessControlInterceptor;
-import org.springframework.beans.factory.annotation.Value;
+import com.metoo.web.interceptor.SecurityHolderInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,12 +19,13 @@ import javax.servlet.MultipartConfigElement;
 @Configuration
 public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
 
-    @Value("${metoo.administrator.login.failure.url}")
-    private String loginFailureUrl;
+    @Autowired
+    private MetooSystem metooSystem;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AccessControlInterceptor(loginFailureUrl));
+        registry.addInterceptor(new SecurityHolderInterceptor());
+        registry.addInterceptor(new AccessControlInterceptor(metooSystem.getLoginFailureUrl()));
     }
 
     @Bean

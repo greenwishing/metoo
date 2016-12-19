@@ -1,5 +1,6 @@
 package com.metoo.dto.user;
 
+import com.metoo.core.domain.merchant.MerchantBusinessType;
 import com.metoo.core.domain.user.User;
 import com.metoo.core.domain.user.UserType;
 import com.metoo.dto.StatefulDTO;
@@ -23,6 +24,10 @@ public class UserDTO extends StatefulDTO {
     private String confirmPassword;
     private String code;
 
+    private Long merchantId;
+    private String merchantName;
+    private MerchantBusinessType businessType;
+
     public UserDTO() {
     }
 
@@ -33,6 +38,12 @@ public class UserDTO extends StatefulDTO {
         this.creationTime = JodaUtils.dateTimeToString(user.getCreationTime());
         this.username = user.getUsername();
         this.password = user.getPassword();
+    }
+
+    public void update(Long merchantId, String merchantName, MerchantBusinessType businessType) {
+        this.merchantId = merchantId;
+        this.merchantName = merchantName;
+        this.businessType = businessType;
     }
 
     public String getUsername() {
@@ -98,5 +109,17 @@ public class UserDTO extends StatefulDTO {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public Long getMerchantId() {
+        return merchantId;
+    }
+
+    public String getMerchantName() {
+        return merchantName;
+    }
+
+    public MerchantBusinessType getBusinessType() {
+        return businessType;
     }
 }

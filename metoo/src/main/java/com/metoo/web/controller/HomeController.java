@@ -11,6 +11,7 @@ import com.metoo.exception.ErrorMap;
 import com.metoo.service.FeedbackService;
 import com.metoo.service.MerchantService;
 import com.metoo.service.OrderService;
+import com.metoo.service.ProductService;
 import com.metoo.web.filter.LoginFilter;
 import com.metoo.web.utils.JsonResult;
 import com.sun.istack.internal.Nullable;
@@ -44,6 +45,8 @@ public class HomeController {
     @Autowired
     private OrderService orderService;
     @Autowired
+    private ProductService productService;
+    @Autowired
     private FeedbackService feedbackService;
 
     @RequestMapping({"/", "/index"})
@@ -66,7 +69,7 @@ public class HomeController {
     public ModelAndView food_detail(@PathVariable Long id, ModelMap model) {
         MerchantDTO merchantDTO = merchantService.loadById(id);
         model.put("merchantDTO", merchantDTO);
-        List<ProductDTO> productDTOs = merchantService.loadMerchantProducts(id);
+        List<ProductDTO> productDTOs = productService.loadProducts(id);
         model.put("productDTOs", productDTOs);
         if (productDTOs.size() > 0) {
             model.put("productDTO", productDTOs.get(0));
@@ -78,7 +81,7 @@ public class HomeController {
     public ModelAndView food_detail(@PathVariable Long id, @PathVariable Long productId, ModelMap model) {
         MerchantDTO merchantDTO = merchantService.loadById(id);
         model.put("merchantDTO", merchantDTO);
-        List<ProductDTO> productDTOs = merchantService.loadMerchantProducts(id);
+        List<ProductDTO> productDTOs = productService.loadProducts(id);
         model.put("productDTOs", productDTOs);
         if (productDTOs.size() > 0) {
             ProductDTO currentProductDTO = null;
@@ -106,7 +109,7 @@ public class HomeController {
     public ModelAndView hotel_detail(@PathVariable Long id, ModelMap model) {
         MerchantDTO merchantDTO = merchantService.loadById(id);
         model.put("merchantDTO", merchantDTO);
-        List<ProductDTO> productDTOs = merchantService.loadMerchantProducts(id);
+        List<ProductDTO> productDTOs = productService.loadProducts(id);
         model.put("productDTOs", productDTOs);
         return new ModelAndView("hotel_detail");
     }
@@ -124,14 +127,14 @@ public class HomeController {
     public ModelAndView scenery_detail(@PathVariable Long id, ModelMap model) {
         MerchantDTO merchantDTO = merchantService.loadById(id);
         model.put("merchantDTO", merchantDTO);
-        List<ProductDTO> productDTOs = merchantService.loadMerchantProducts(id);
+        List<ProductDTO> productDTOs = productService.loadProducts(id);
         model.put("productDTOs", productDTOs);
         return new ModelAndView("scenery_detail");
     }
 
     @RequestMapping("/order/{id}")
     public ModelAndView order(@PathVariable Long id, ModelMap model) {
-        ProductDTO productDTO = merchantService.loadProductById(id);
+        ProductDTO productDTO = productService.loadProductById(id);
         model.put("productDTO", productDTO);
         return new ModelAndView("order");
     }

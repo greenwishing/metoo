@@ -1,16 +1,22 @@
 package com.metoo.web.filter;
 
 import com.metoo.cache.SessionCodeHolder;
+import com.metoo.core.MetooSystem;
+import com.metoo.core.domain.merchant.Merchant;
 import com.metoo.core.domain.user.UserType;
+import com.metoo.dto.merchant.MerchantDTO;
 import com.metoo.dto.user.UserDTO;
 import com.metoo.exception.ErrorMap;
 import com.metoo.exception.MetooLoginException;
+import com.metoo.service.MerchantService;
 import com.metoo.service.UserService;
 import com.metoo.utils.MD5Utils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.ServletRequestUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,9 +26,15 @@ import java.io.IOException;
  * User: Zhang xiaomei
  * Date: 2016/12/10
  */
-public abstract class LoginFilter extends MetooFilter {
+@WebFilter(filterName = "loginFilter", urlPatterns = "/*")
+public class LoginFilter extends MetooFilter {
 
-    protected UserService userService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private MetooSystem metooSystem;
+    @Autowired
+    private MerchantService merchantService;
 
     @Override
     protected void processes(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -46,8 +58,13 @@ public abstract class LoginFilter extends MetooFilter {
         loginSuccess(request, response, chain, user);
     }
 
+    @Override
+    protected String getProcessesUrl() {
+        return metooSystem.getLoginProcessesUrl();
+    }
 
-    protected UserDTO login(HttpServletRequest request, HttpServletResponse response) {
+
+    private UserDTO login(HttpServletRequest request, HttpServletResponse response) {
         String email = ServletRequestUtils.getStringParameter(request, "email", "");
         String password = ServletRequestUtils.getStringParameter(request, "password", "");
         String code = ServletRequestUtils.getStringParameter(request, "code", "");
@@ -65,19 +82,16 @@ public abstract class LoginFilter extends MetooFilter {
         if (!md5Password.equals(user.getPassword())) {
             throw new MetooLoginException(ErrorMap.INVALID_PASSWORD);
         }
-        UserType type = user.getType();
-        if (!isUserType(type)) {
-            throw new MetooLoginException(ErrorMap.INVALID_USER_TYPE);
-        }
         return user;
     }
 
-    protected void loginSuccess(HttpServletRequest request, HttpServletResponse response, FilterChain chain, UserDTO user) throws IOException, ServletException {
+    private void loginSuccess(HttpServletRequest request, HttpServletResponse response, FilterChain chain, UserDTO user) throws IOException, ServletException {
         onLoginSuccess(request, response, user);
         chain.doFilter(request, response);
     }
 
-    protected void loginFailure(HttpServletRequest request, HttpServletResponse response, MetooLoginException failed) throws IOException, ServletException {
+    private void loginFailure(HttpServletRequest request, HttpServletResponse response, MetooLoginException failed) throws IOException, ServletException {
+        String failureUrl = metooSystem.getLoginFailureUrl();
         if (failureUrl == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "登录失败：" + failed.getMessage());
         } else {
@@ -85,14 +99,29 @@ public abstract class LoginFilter extends MetooFilter {
         }
     }
 
-    protected void onLoginSuccess(HttpServletRequest request, HttpServletResponse response, UserDTO user) throws IOException {
+    private void onLoginSuccess(HttpServletRequest request, HttpServletResponse response, UserDTO user) throws IOException {
         request.getSession().setAttribute(METOO_USER_SESSION_KEY, user);
-        response.sendRedirect(successUrl);
-    }
-
-    protected abstract boolean isUserType(UserType userType);
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+        UserType type = user.getType();
+        String loginSuccessUrl;
+        switch (type) {
+            case ADMINISTRATOR:
+                loginSuccessUrl = metooSystem.getAdminLoginSuccessUrl();
+                break;
+            case MERCHANT_MANAGER:
+                Long managerId = user.getId();
+                MerchantDTO merchantDTO = merchantService.loadByManagerId(managerId);
+                if (merchantDTO == null) {
+                    throw new MetooLoginException("管理员未关联有效的商户：" + user.getEmail());
+                }
+                user.update(merchantDTO.getId(), merchantDTO.getName(), merchantDTO.getBusinessType());
+                loginSuccessUrl = metooSystem.getManagerLoginSuccessUrl();
+                break;
+            case CUSTOMER:
+                loginSuccessUrl = metooSystem.getCustomLoginSuccessUrl();
+                break;
+            default:
+                throw new MetooLoginException("不支持的用户类型：" + type.getLabel());
+        }
+        response.sendRedirect(loginSuccessUrl);
     }
 }

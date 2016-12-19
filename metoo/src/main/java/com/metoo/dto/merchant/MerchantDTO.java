@@ -4,6 +4,7 @@ import com.metoo.core.domain.merchant.Feature;
 import com.metoo.core.domain.merchant.Merchant;
 import com.metoo.core.domain.merchant.MerchantBusinessType;
 import com.metoo.dto.StatefulDTO;
+import com.metoo.dto.user.UserDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -28,11 +29,14 @@ public class MerchantDTO extends StatefulDTO {
     private String address;
     private String contactPhone;
 
+    private UserDTO manager = new UserDTO();
+
     public MerchantDTO() {
     }
 
     public MerchantDTO(Merchant merchant) {
         super(merchant);
+        this.manager = new UserDTO(merchant.getManager());
         this.name = merchant.getName();
         this.businessType = merchant.getBusinessType();
         this.level = merchant.getLevel();
@@ -180,5 +184,13 @@ public class MerchantDTO extends StatefulDTO {
 
     public String getTicketPrice() {
         return "80.00";
+    }
+
+    public UserDTO getManager() {
+        return manager;
+    }
+
+    public void setManager(UserDTO manager) {
+        this.manager = manager;
     }
 }

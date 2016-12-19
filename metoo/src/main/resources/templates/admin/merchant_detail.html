@@ -3,112 +3,50 @@
 <head>
     <meta charset="UTF-8"/>
     <title>商户</title>
-    <script type="text/javascript">
-        function addProductCategory(el) {
-            var merchantId = $(el).attr('data-id');
-            $.metoo.dialog({title: '添加商品分类', url: 'addProductCategory?merchantId=' + merchantId});
-        }
-        function editProductCategory(el) {
-            var productCategoryId = $(el).attr('data-id');
-            $.metoo.dialog({title: '编辑商品分类', url: 'editProductCategory?id=' + productCategoryId});
-        }
-        function productCategory(el) {
-            var merchantId = $(el).attr('data-id');
-            $.metoo.dialog({title: '商品分类', url: 'productCategory?merchantId=' + merchantId});
-        }
-        function addProduct(el) {
-            var merchantId = $(el).attr('data-id');
-            $.metoo.dialog({title: '添加商品', url: 'addProduct?merchantId=' + merchantId});
-        }
-        function editProduct(el) {
-            var productId = $(el).attr('data-id');
-            $.metoo.dialog({title: '编辑商品', url: 'editProduct?id=' + productId});
-        }
-    </script>
 </head>
 <body>
 <div layout:fragment="content">
-    <div th:if="${merchantDTO != null}">
-        <div>
-            <div class="form-group">
-                <label class="control-label col-2">名称</label>
-                <div class="col-4">
-                    <div class="form-control-static text-desc" th:text="${merchantDTO.name}"></div>
-                </div>
-                <label class="control-label col-2">业务类型</label>
-                <div class="col-4">
-                    <div class="form-control-static text-desc" th:text="${merchantDTO.businessType.label}"></div>
-                </div>
+    <div>
+        <div class="form-group">
+            <label class="control-label col-2">名称</label>
+            <div class="col-4">
+                <div class="form-control-static text-desc" th:text="${merchantDTO.name}"></div>
             </div>
-            <div class="form-group">
-                <label class="control-label col-2">介绍</label>
-                <div class="col-10">
-                    <div class="form-control-static text-desc" th:text="${merchantDTO.introduction}">Introduction</div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-2">特色</label>
-                <div class="col-10">
-                    <div class="form-control-static text-desc" th:text="${merchantDTO.specialty}">Specialty</div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-2">地址</label>
-                <div class="col-10">
-                    <div class="form-control-static text-desc" th:text="${merchantDTO.address}">Address</div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-2">联系电话</label>
-                <div class="col-10">
-                    <div class="form-control-static text-desc" th:text="${merchantDTO.contactPhone}">Contact phone</div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-2">服务</label>
-                <div class="col-10">
-                    <div class="form-control-static text-desc" th:each="feature:${merchantDTO.features}"><span th:class="${feature.className}" th:title="${feature.label}"></span></div>
-                </div>
+            <label class="control-label col-2">业务类型</label>
+            <div class="col-4">
+                <div class="form-control-static text-desc" th:text="${merchantDTO.businessType.label}"></div>
             </div>
         </div>
-        <div>
-            <p class="text-right">
-                <a class="btn btn-default" href="javascript:void(0)" onclick="productCategory(this)" th:attr="data-id=${merchantDTO.id}">商品分类</a>
-                <a class="btn btn-primary" href="javascript:void(0)" onclick="addProduct(this)" th:attr="data-id=${merchantDTO.id}">添加商品</a>
-            </p>
-            <div th:if="${not #lists.isEmpty(productDTOs)}">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>编号</th>
-                        <th>名称</th>
-                        <th>类型</th>
-                        <th>状态</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="productDTO:${productDTOs}">
-                        <td th:text="${productDTO.id}">Id</td>
-                        <td th:text="${productDTO.name}">Name</td>
-                        <td th:text="${productDTO.category.name}">Category name</td>
-                        <td th:text="${productDTO.status.label}">Status</td>
-                        <td>
-                            <a href="javascript:void(0)" onclick="editProduct(this)" th:attr="data-id=${productDTO.id}">编辑</a>
-                            <a href="javascript:void(0)" onclick="$(this).toggleStatus({action: 'toggleProduct'})"
-                               th:attr="data-id=${productDTO.id}" th:text="${productDTO.status.toggle.label}">Toggle status</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div th:if="${#lists.isEmpty(productDTOs)}">
-                <p class="text-center">没有数据</p>
+        <div class="form-group">
+            <label class="control-label col-2">介绍</label>
+            <div class="col-10">
+                <div class="form-control-static text-desc" th:text="${merchantDTO.introduction}">Introduction</div>
             </div>
         </div>
-    </div>
-    <div th:if="${merchantDTO == null}">
-        <p class="text-center">无效的商户</p>
+        <div class="form-group">
+            <label class="control-label col-2">特色</label>
+            <div class="col-10">
+                <div class="form-control-static text-desc" th:text="${merchantDTO.specialty}">Specialty</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-2">地址</label>
+            <div class="col-10">
+                <div class="form-control-static text-desc" th:text="${merchantDTO.address}">Address</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-2">联系电话</label>
+            <div class="col-10">
+                <div class="form-control-static text-desc" th:text="${merchantDTO.contactPhone}">Contact phone</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-2">服务</label>
+            <div class="col-10">
+                <div class="form-control-static text-desc" th:each="feature:${merchantDTO.features}"><span th:class="${feature.className}" th:title="${feature.label}"></span></div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

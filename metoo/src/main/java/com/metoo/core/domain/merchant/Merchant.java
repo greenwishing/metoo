@@ -1,6 +1,7 @@
 package com.metoo.core.domain.merchant;
 
 import com.metoo.core.domain.common.StatefulDomain;
+import com.metoo.core.domain.user.User;
 
 import javax.persistence.*;
 
@@ -76,7 +77,18 @@ public class Merchant extends StatefulDomain {
     @Column(name = "sales_volume")
     private Integer salesVolume = 0;
 
+    /**
+     * 商户管理员
+     */
+    @JoinColumn(name = "manager_id")
+    @ManyToOne(targetEntity = User.class)
+    private User manager;
+
     public Merchant() {
+    }
+
+    public Merchant(User manager) {
+        this.manager = manager;
     }
 
     public void update(String name, MerchantBusinessType businessType, Integer level, String introduction, String specialty, Integer features, String address, String contactPhone) {
@@ -140,5 +152,13 @@ public class Merchant extends StatefulDomain {
 
     public Integer getSalesVolume() {
         return salesVolume;
+    }
+
+    public User getManager() {
+        return manager;
+    }
+
+    public void setManager(User manager) {
+        this.manager = manager;
     }
 }

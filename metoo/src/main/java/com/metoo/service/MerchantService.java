@@ -22,23 +22,9 @@ public interface MerchantService {
 
     void toggleMerchantStatus(Long id);
 
-    List<ProductDTO> loadMerchantProducts(Long merchantId);
-
-    List<ProductCategoryDTO> loadProductCategories(Long merchantId);
-
-    void saveOrUpdateProduct(ProductDTO productDTO);
-
-    ProductDTO loadProductById(Long id);
-
-    void toggleProductStatus(Long id);
-
-    ProductCategoryDTO loadProductCategoryById(Long id);
-
-    void saveOrUpdateProductCategory(ProductCategoryDTO productCategoryDTO);
-
-    void toggleProductCategoryStatus(Long id);
-
     List<MerchantDTO> loadMerchantSaleRanking(int top);
 
     Page<MerchantDTO> loadMerchantByPage(MerchantBusinessType businessType, Pageable page);
+
+    MerchantDTO loadByManagerId(Long managerId);
 }

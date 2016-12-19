@@ -7,7 +7,8 @@ package com.metoo.core.domain.user;
  * Date: 2016/12/7
  */
 public enum UserType {
-    ADMINISTRATOR("管理员"),
+    ADMINISTRATOR("系统管理员"),
+    MERCHANT_MANAGER("商户管理员"),
     CUSTOMER("普通会员"),
     ;
 

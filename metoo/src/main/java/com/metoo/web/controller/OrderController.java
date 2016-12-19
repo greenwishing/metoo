@@ -18,7 +18,7 @@ import java.util.List;
  * Date: 2016/12/10
  */
 @Controller
-@RequestMapping("/admin/order")
+@RequestMapping("/merchant/order")
 public class OrderController {
 
     @Autowired
@@ -29,13 +29,13 @@ public class OrderController {
         List<OrderDTO> orderDTOs = orderService.loadOrders(status);
         model.put("statusList", OrderStatus.values());
         model.put("orderDTOs", orderDTOs);
-        return new ModelAndView("admin/order_list");
+        return new ModelAndView("merchant/order_list");
     }
 
     @RequestMapping("detail")
     public ModelAndView detail(@RequestParam Long id) {
         OrderDTO orderDTO = orderService.loadOrderById(id);
-        return new ModelAndView("admin/order_detail", "orderDTO", orderDTO);
+        return new ModelAndView("merchant/order_detail", "orderDTO", orderDTO);
     }
 
     @RequestMapping("success")

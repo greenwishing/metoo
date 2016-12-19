@@ -39,7 +39,7 @@
                 <td th:text="${productCategoryDTO.status.label}">Status</td>
                 <td>
                     <a href="javascript:void(0)" onclick="editProductCategory(this)" th:attr="data-id=${productCategoryDTO.id}">编辑</a>
-                    <a href="javascript:void(0)" onclick="$(this).toggleStatus({action: 'toggleProductCategory', scope: 'dialog'})"
+                    <a href="javascript:void(0)" onclick="$(this).toggleStatus({action: 'toggleCategory', scope: 'dialog'})"
                        th:attr="data-id=${productCategoryDTO.id}" th:text="${productCategoryDTO.status.toggle.label}">Toggle status</a>
                 </td>
             </tr>
