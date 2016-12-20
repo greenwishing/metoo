@@ -340,23 +340,25 @@ Slider.prototype = {
  */
 (function($){
     $.fn.toggleStatus = function(options) {
-        options = $.extend({}, {action: 'toggle', scope: 'page'}, options || {});
         var $el = $(this);
-        var id = $el.attr('data-id');
-        $.metoo.ajax({
-            url: options.action + '?id=' + id,
-            success: function(result) {
-                if (result.success) {
-                    if (options.scope == 'page') {
-                        reload();
-                    } else if (options.scope == 'dialog') {
-                        $.metoo.reloadDialog($el);
+        $.metoo.confirm('确定要' + $el.text() + '此记录？', {ok:function(){
+            options = $.extend({}, {action: 'toggle', scope: 'page'}, options || {});
+            var id = $el.attr('data-id');
+            $.metoo.ajax({
+                url: options.action + '?id=' + id,
+                success: function(result) {
+                    if (result.success) {
+                        if (options.scope == 'page') {
+                            reload();
+                        } else if (options.scope == 'dialog') {
+                            $.metoo.reloadDialog($el);
+                        }
+                    } else {
+                        $.metoo.alert(result.message);
                     }
-                } else {
-                    $.metoo.alert(result.message);
                 }
-            }
-        });
+            });
+        }});
     }
 })(jQuery);
 
