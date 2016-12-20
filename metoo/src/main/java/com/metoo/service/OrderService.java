@@ -10,7 +10,7 @@ import java.util.List;
  * Date: 2016/12/11
  */
 public interface OrderService {
-    List<OrderDTO> loadOrders(OrderStatus status);
+    List<OrderDTO> loadByMerchantId(Long merchantId, OrderStatus status);
 
     Long saveOrder(OrderDTO orderDTO);
 

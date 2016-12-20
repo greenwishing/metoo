@@ -3,6 +3,7 @@ package com.metoo.web.controller;
 import com.metoo.core.domain.order.OrderStatus;
 import com.metoo.dto.order.OrderDTO;
 import com.metoo.service.OrderService;
+import com.metoo.web.security.SecurityHolder;
 import com.metoo.web.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,8 @@ public class OrderController {
 
     @RequestMapping("list")
     public ModelAndView list(OrderStatus status, ModelMap model) {
-        List<OrderDTO> orderDTOs = orderService.loadOrders(status);
+        Long merchantId = SecurityHolder.get().getMerchantId();
+        List<OrderDTO> orderDTOs = orderService.loadByMerchantId(merchantId, status);
         model.put("statusList", OrderStatus.values());
         model.put("orderDTOs", orderDTOs);
         return new ModelAndView("merchant/order_list");

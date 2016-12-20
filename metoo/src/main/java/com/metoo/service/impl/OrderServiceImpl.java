@@ -36,15 +36,12 @@ public class OrderServiceImpl implements OrderService {
     private UserRepository userRepository;
 
     @Override
-    public List<OrderDTO> loadOrders(OrderStatus status) {
+    public List<OrderDTO> loadByMerchantId(Long merchantId, OrderStatus status) {
         List<Order> orders;
         if (status == null) {
-            orders = orderRepository.findAll();
+            orders = orderRepository.findByMerchantId(merchantId);
         } else {
-            orders = orderRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
-                criteriaQuery.where(criteriaBuilder.equal(root.get("status"), status));
-                return null;
-            });
+            orders = orderRepository.findByMerchantIdAndStatus(merchantId, status);
         }
         return OrderDTO.toDTOs(orders);
     }
