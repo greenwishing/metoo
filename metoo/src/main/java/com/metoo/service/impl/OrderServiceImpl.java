@@ -1,8 +1,7 @@
 package com.metoo.service.impl;
 
-import com.metoo.core.domain.merchant.Merchant;
-import com.metoo.core.domain.merchant.MerchantBusinessType;
-import com.metoo.core.domain.merchant.MerchantRepository;
+import com.metoo.core.domain.common.Status;
+import com.metoo.core.domain.merchant.*;
 import com.metoo.core.domain.order.*;
 import com.metoo.core.domain.product.Product;
 import com.metoo.core.domain.product.ProductRepository;
@@ -34,6 +33,8 @@ public class OrderServiceImpl implements OrderService {
     private ProductRepository<Product> productRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private MerchantUserRepository merchantUserRepository;
 
     @Override
     public List<OrderDTO> loadByMerchantId(Long merchantId, OrderStatus status) {
@@ -72,6 +73,15 @@ public class OrderServiceImpl implements OrderService {
         Long userId = orderDTO.getUser().getId();
         if (userId != null) {
             user = userRepository.findOne(userId);
+        }
+        MerchantUser merchantUser = merchantUserRepository.findByMerchantIdAndUserId(merchantId, userId);
+        if (merchantUser == null) {
+            merchantUser = new MerchantUser(merchant, user);
+            merchantUserRepository.save(merchantUser);
+        } else {
+            if (Status.DEACTIVATE == merchantUser.getStatus()) {
+                throw new MetooException(ErrorMap.INVALID_USER_STATUS);
+            }
         }
         Order order;
         MerchantBusinessType businessType = merchant.getBusinessType();

@@ -2,6 +2,7 @@ package com.metoo.service;
 
 import com.metoo.core.domain.merchant.MerchantBusinessType;
 import com.metoo.dto.merchant.MerchantDTO;
+import com.metoo.dto.merchant.MerchantUserDTO;
 import com.metoo.dto.product.ProductCategoryDTO;
 import com.metoo.dto.product.ProductDTO;
 import org.springframework.data.domain.Page;
@@ -30,4 +31,8 @@ public interface MerchantService {
     MerchantDTO loadByManagerId(Long managerId);
 
     String handlePictureUpload(MultipartFile picture) throws Exception;
+
+    List<MerchantUserDTO> loadByMerchantId(Long merchantId);
+
+    void toggleMerchantUserStatus(Long id);
 }

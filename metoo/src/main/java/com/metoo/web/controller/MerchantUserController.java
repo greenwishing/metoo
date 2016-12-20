@@ -1,8 +1,11 @@
 package com.metoo.web.controller;
 
 import com.metoo.core.domain.user.UserType;
+import com.metoo.dto.merchant.MerchantUserDTO;
 import com.metoo.dto.user.UserDTO;
+import com.metoo.service.MerchantService;
 import com.metoo.service.UserService;
+import com.metoo.web.security.SecurityHolder;
 import com.metoo.web.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,37 +26,18 @@ import java.util.List;
 public class MerchantUserController {
 
     @Autowired
-    private UserService userService;
+    private MerchantService merchantService;
 
     @RequestMapping("list")
     public ModelAndView list() {
-        List<UserDTO> userDTOs = userService.loadUsers();
-        return new ModelAndView("merchant/user_list", "userDTOs", userDTOs);
-    }
-
-    @RequestMapping("add")
-    public ModelAndView add(ModelMap model) {
-        model.put("userDTO", new UserDTO());
-        model.put("userTypes", UserType.values());
-        return new ModelAndView("merchant/user_form", model);
-    }
-
-    @RequestMapping("view")
-    public ModelAndView view(@RequestParam Long id, ModelMap model) {
-        UserDTO userDTO = userService.loadUserById(id);
-        model.put("userDTO", userDTO);
-        return new ModelAndView("merchant/user_detail", model);
-    }
-
-    @RequestMapping("save")
-    public ModelAndView save(@ModelAttribute UserDTO userDTO) {
-        userService.saveOrUpdateUser(userDTO);
-        return JsonResult.success();
+        Long merchantId = SecurityHolder.get().getMerchantId();
+        List<MerchantUserDTO> merchantUserDTOs = merchantService.loadByMerchantId(merchantId);
+        return new ModelAndView("merchant/merchant_user_list", "merchantUserDTOs", merchantUserDTOs);
     }
 
     @RequestMapping("toggle")
     public ModelAndView toggleUserStatus(@RequestParam Long id) {
-        userService.toggleUserStatus(id);
+        merchantService.toggleMerchantUserStatus(id);
         return JsonResult.success();
     }
 

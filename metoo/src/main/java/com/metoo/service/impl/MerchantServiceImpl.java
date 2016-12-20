@@ -2,9 +2,7 @@ package com.metoo.service.impl;
 
 import com.metoo.core.MetooSystem;
 import com.metoo.core.domain.common.DomainUtils;
-import com.metoo.core.domain.merchant.Merchant;
-import com.metoo.core.domain.merchant.MerchantBusinessType;
-import com.metoo.core.domain.merchant.MerchantRepository;
+import com.metoo.core.domain.merchant.*;
 import com.metoo.core.domain.product.Product;
 import com.metoo.core.domain.product.ProductCategoryRepository;
 import com.metoo.core.domain.product.ProductRepository;
@@ -12,6 +10,7 @@ import com.metoo.core.domain.user.User;
 import com.metoo.core.domain.user.UserRepository;
 import com.metoo.core.domain.user.UserType;
 import com.metoo.dto.merchant.MerchantDTO;
+import com.metoo.dto.merchant.MerchantUserDTO;
 import com.metoo.dto.user.UserDTO;
 import com.metoo.exception.ErrorMap;
 import com.metoo.exception.MetooException;
@@ -37,9 +36,7 @@ public class MerchantServiceImpl implements MerchantService {
     @Autowired
     private MerchantRepository merchantRepository;
     @Autowired
-    private ProductRepository<Product> productRepository;
-    @Autowired
-    private ProductCategoryRepository productCategoryRepository;
+    private MerchantUserRepository merchantUserRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -122,5 +119,16 @@ public class MerchantServiceImpl implements MerchantService {
             throw new MetooException(ErrorMap.INVALID_PICTURE_SIZE);
         }
         return FileuploadUtils.storePicture(picture, metooSystem);
+    }
+
+    @Override
+    public List<MerchantUserDTO> loadByMerchantId(Long merchantId) {
+        List<MerchantUser> merchantUsers = merchantUserRepository.findByMerchantId(merchantId);
+        return MerchantUserDTO.toDTOs(merchantUsers);
+    }
+
+    @Override
+    public void toggleMerchantUserStatus(Long id) {
+        DomainUtils.toggleStatus(merchantUserRepository, id);
     }
 }
