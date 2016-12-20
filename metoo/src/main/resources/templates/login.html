@@ -72,6 +72,7 @@
                                 </div>
                                 <div class="help-block text-highlight" th:if="${param.containsKey('code')}">
                                     <span th:if="${param.code[0] eq '-1002'}">验证码错误</span>
+                                    <span th:if="${param.code[0] eq '-4002'}">登录失败，您已被管理员列入黑名单</span>
                                 </div>
                             </div>
                         </div>

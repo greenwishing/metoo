@@ -1,8 +1,7 @@
 package com.metoo.core.domain.product;
 
+import com.metoo.core.domain.common.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -12,6 +11,5 @@ import java.util.List;
  */
 public interface ProductCategoryRepository extends JpaRepository<ProductCategory, Long> {
 
-    @Query("from ProductCategory c where c.merchant.id=:merchantId")
-    List<ProductCategory> findByMerchantId(@Param("merchantId") Long merchantId);
+    List<ProductCategory> findByMerchantIdAndStatus(Long merchantId, Status activated);
 }

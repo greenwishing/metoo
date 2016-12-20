@@ -1,6 +1,7 @@
 package com.metoo.service.impl;
 
 import com.metoo.core.domain.common.DomainUtils;
+import com.metoo.core.domain.common.Status;
 import com.metoo.core.domain.merchant.Merchant;
 import com.metoo.core.domain.merchant.MerchantRepository;
 import com.metoo.core.domain.product.*;
@@ -34,13 +35,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDTO> loadProducts(Long merchantId) {
-        List<Product> products = merchantRepository.loadMerchantProducts(merchantId);
+        List<Product> products = productRepository.findByMerchantIdAndStatus(merchantId, Status.ACTIVATED);
         return ProductDTO.toDTOs(products);
     }
 
     @Override
     public List<ProductCategoryDTO> loadProductCategories(Long merchantId) {
-        List<ProductCategory> categories = productCategoryRepository.findByMerchantId(merchantId);
+        List<ProductCategory> categories = productCategoryRepository.findByMerchantIdAndStatus(merchantId, Status.ACTIVATED);
         return ProductCategoryDTO.toDTOs(categories);
     }
 

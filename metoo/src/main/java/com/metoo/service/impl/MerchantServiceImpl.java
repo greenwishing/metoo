@@ -2,10 +2,8 @@ package com.metoo.service.impl;
 
 import com.metoo.core.MetooSystem;
 import com.metoo.core.domain.common.DomainUtils;
+import com.metoo.core.domain.common.Status;
 import com.metoo.core.domain.merchant.*;
-import com.metoo.core.domain.product.Product;
-import com.metoo.core.domain.product.ProductCategoryRepository;
-import com.metoo.core.domain.product.ProductRepository;
 import com.metoo.core.domain.user.User;
 import com.metoo.core.domain.user.UserRepository;
 import com.metoo.core.domain.user.UserType;
@@ -24,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.criteria.Predicate;
 import java.util.List;
 
 /**
@@ -100,7 +99,9 @@ public class MerchantServiceImpl implements MerchantService {
     @Override
     public Page<MerchantDTO> loadMerchantByPage(MerchantBusinessType businessType, Pageable page) {
         Page<Merchant> pageResult = merchantRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
-            criteriaQuery.where(criteriaBuilder.equal(root.get("businessType"), businessType));
+            Predicate businessTypePredicate = criteriaBuilder.equal(root.get("businessType"), businessType);
+            Predicate statusPredicate = criteriaBuilder.equal(root.get("status"), Status.ACTIVATED);
+            criteriaQuery.where(businessTypePredicate, statusPredicate);
             return null;
         }, page);
         List<MerchantDTO> merchantDTOs = MerchantDTO.toDTOs(pageResult.getContent());

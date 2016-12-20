@@ -2,6 +2,7 @@ package com.metoo.web.filter;
 
 import com.metoo.cache.SessionCodeHolder;
 import com.metoo.core.MetooSystem;
+import com.metoo.core.domain.common.Status;
 import com.metoo.core.domain.merchant.Merchant;
 import com.metoo.core.domain.user.UserType;
 import com.metoo.dto.merchant.MerchantDTO;
@@ -71,6 +72,9 @@ public class LoginFilter extends MetooFilter {
         UserDTO user = userService.loadUserByEmail(email);
         if (user == null) {
             throw new MetooLoginException(ErrorMap.EMAIL_NOT_FOUND);
+        }
+        if (Status.DEACTIVATE == user.getStatus()) {
+            throw new MetooLoginException(ErrorMap.INVALID_USER_STATUS);
         }
         HttpSession session = request.getSession();
         String cachedCode = SessionCodeHolder.get(session.getId());
