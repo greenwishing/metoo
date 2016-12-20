@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" layout:decorator="decorators/admin" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head>
     <meta charset="UTF-8"/>
     <title>编辑用户</title>
 </head>
 <body>
-<div layout:fragment="content">
-<form th:action="@{save}" th:object="${userDTO}" method="post">
+<div>
+<form id="user-form" th:action="@{save}" th:object="${userDTO}" method="post" onsubmit="return false">
     <div class="form-group">
         <label class="control-label col-2">邮箱<span class="data-required"></span></label>
         <div class="col-10">
@@ -38,8 +38,8 @@
     <div class="form-group">
         <div class="col-10 col-offset-2">
             <input type="hidden" th:field="*{id}"/>
-            <button class="btn btn-primary">保存</button>
-            <a class="btn btn-default" href="javascript:history.back();">返回</a>
+            <a class="btn btn-primary" href="javascript:void(0)" onclick="$('#user-form').submitWithAjax()">保存</a>
+            <a class="btn btn-default" href="javascript:void(0)" onclick="$.metoo.closeDialog(this)">关闭</a>
         </div>
     </div>
 </form>

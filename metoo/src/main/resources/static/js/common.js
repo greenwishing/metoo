@@ -418,6 +418,54 @@ Slider.prototype = {
     }
 })(jQuery);
 
+/**
+ * 文件上传
+ */
+(function($){
+    $.fn.fileUploader = function(options){
+        options = $.extend({}, {maxSize: -1, uploadUrl: '/upload', onSuccess: $.noop}, options || {});
+        var $file = $(this);
+        $file.on('change', function(e){
+            var files = e.target.files;
+            if (files.length) {
+                $.each(files, function(idx, file){
+                    console.log(file);
+                    if (file.size > 512 * 1000) {
+                        $.metoo.alert('图片不能超过512KB');
+                        $file.val(null);
+                        return false;
+                    }
+                    if (file.type != 'image/jpeg') {
+                        $.metoo.alert('请选择 JPG 类型的图片上传');
+                        $file.val(null);
+                        return false;
+                    }
+                    var data = new FormData();
+                    data.append('picture', file);
+                    $.metoo.ajax({
+                        url: '/upload',
+                        type: 'post',
+                        data: data,
+                        cache : false,
+                        contentType : false,
+                        processData : false,
+                        dataType : 'json',
+                        success: function(result){
+                            if (result.success) {
+                                options.onSuccess.apply($file, [result]);
+                            } else {
+                                $.metoo.alert(result.message);
+                            }
+                        }
+                    })
+                });
+            } else {
+                console.log('no files selected');
+            }
+        });
+    }
+})(jQuery);
+
 function isEmpty(text) {
     return !text || null == text || "" == text || "null" == text || "undefined" == text;
 }

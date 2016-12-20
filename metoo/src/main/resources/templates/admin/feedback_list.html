@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8"/>
     <title>反馈</title>
+    <script type="text/javascript">
+        function showFeedbackDetail(el) {
+            $.metoo.dialog({title: '反馈详情', url: 'detail?id='+ $(el).attr('data-id')});
+        }
+    </script>
 </head>
 <body>
 <div layout:fragment="content">
@@ -28,7 +33,7 @@
                     <div th:if="${feedbackDTO.email!=null}" th:text="${feedbackDTO.email}"></div>
                 </td>
                 <td>
-                    <a th:href="@{detail(id=${feedbackDTO.id})}">查看详情</a>
+                    <a href="javascript:void(0)" onclick="showFeedbackDetail(this)" th:attr="data-id=${feedbackDTO.id}">查看详情</a>
                 </td>
             </tr>
             </tbody>

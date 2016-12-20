@@ -32,6 +32,8 @@ public enum ErrorMap {
     ALREADY_IN_USE_PRODUCT_CATEGORY(-3003, "商品分类正在被使用，无法删除"),
     ALREADY_IN_USE_USER(-3003, "用户正在被使用，无法删除"),
 
+    ALREADY_EXISTS_EMAIL(-4001, "邮箱已被使用，试试其它的吧"),
+
     ;
 
     private Integer code;

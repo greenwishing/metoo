@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>用户详情</title>
+</head>
+<body>
+<div>
+<div>
+    <div class="form-group">
+        <label class="control-label col-2">邮箱<span class="data-required"></span></label>
+        <div class="col-10">
+            <p class="control-label-static" th:text="${userDTO.email}"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-2">姓名<span class="data-required"></span></label>
+        <div class="col-10">
+            <p class="control-label-static" th:text="${userDTO.username}"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-2">类型</label>
+        <div class="col-10">
+            <p class="control-label-static" th:text="${userDTO.type.label}"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-2">状态</label>
+        <div class="col-10">
+            <p class="control-label-static" th:text="${userDTO.status.label}"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-10 col-offset-2">
+            <a class="btn btn-default" href="javascript:void(0)" onclick="$.metoo.closeDialog(this)">关闭</a>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

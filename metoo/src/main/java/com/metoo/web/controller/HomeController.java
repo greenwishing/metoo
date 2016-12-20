@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -204,6 +205,22 @@ public class HomeController {
         ModelMap model = new ModelMap();
         model.put("success", true);
         model.put("message", "反馈提交成功，米途感谢您的支持！");
-        return new ModelAndView(new MappingJackson2JsonView(), model);
+        return JsonResult.success(model);
+    }
+
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public ModelAndView feedback_form(MultipartFile picture) {
+        if (picture == null) {
+            return JsonResult.error("没有文件");
+        }
+        try {
+            String pictureKey = merchantService.handlePictureUpload(picture);
+            ModelMap model = new ModelMap();
+            model.put("success", true);
+            model.put("pictureKey", pictureKey);
+            return JsonResult.success(model);
+        } catch (Exception e) {
+            return JsonResult.error("图片上传失败：" + e.getLocalizedMessage());
+        }
     }
 }

@@ -15,12 +15,14 @@ import com.metoo.dto.merchant.MerchantDTO;
 import com.metoo.dto.user.UserDTO;
 import com.metoo.exception.ErrorMap;
 import com.metoo.exception.MetooException;
+import com.metoo.exception.MetooFormException;
 import com.metoo.service.MerchantService;
 import com.metoo.utils.FileuploadUtils;
 import com.metoo.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -57,27 +59,18 @@ public class MerchantServiceImpl implements MerchantService {
 
     @Override
     public void saveOrUpdateMerchant(MerchantDTO merchantDTO) {
-        MultipartFile picture = merchantDTO.getPicture();
-        String pictureKey = null;
-        if (picture != null && picture.getSize() > 0) {
-            long size = picture.getSize();
-            if (size > 512 * 1024) {
-                throw new MetooException(ErrorMap.INVALID_PICTURE_SIZE);
-            }
-            try {
-                pictureKey = FileuploadUtils.storePicture(merchantDTO.getPicture(), metooSystem);
-                merchantDTO.setPictureKey(pictureKey);
-            } catch (Exception e) {
-                throw new MetooException(ErrorMap.INVALID_PICTURE);
-            }
-        }
         Long id = merchantDTO.getId();
         Merchant merchant;
         if (id != null) {
             merchant = merchantRepository.findOne(id);
         } else {
             UserDTO managerDTO = merchantDTO.getManager();
-            User manager = new User(managerDTO.getEmail());
+            String email = managerDTO.getEmail();
+            User exists = userRepository.findByEmail(email);
+            if (exists != null) {
+                throw new MetooFormException(ErrorMap.ALREADY_EXISTS_EMAIL);
+            }
+            User manager = new User(email);
             manager.setType(UserType.MERCHANT_MANAGER);
             manager.setUsername(managerDTO.getUsername());
             manager.setPassword(MD5Utils.encode(managerDTO.getPassword()));
@@ -85,7 +78,8 @@ public class MerchantServiceImpl implements MerchantService {
             merchant = new Merchant(manager);
         }
         merchantDTO.update(merchant);
-        if (pictureKey != null) {
+        String pictureKey = merchantDTO.getPictureKey();
+        if (StringUtils.hasText(pictureKey)) {
             merchant.updatePicture(pictureKey);
         }
         merchantRepository.save(merchant);
@@ -119,5 +113,14 @@ public class MerchantServiceImpl implements MerchantService {
     @Override
     public MerchantDTO loadByManagerId(Long managerId) {
         return merchantRepository.findMerchantByManagerId(managerId);
+    }
+
+    @Override
+    public String handlePictureUpload(MultipartFile picture) throws Exception {
+        long size = picture.getSize();
+        if (size > 512 * 1024) {
+            throw new MetooException(ErrorMap.INVALID_PICTURE_SIZE);
+        }
+        return FileuploadUtils.storePicture(picture, metooSystem);
     }
 }

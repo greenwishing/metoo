@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8"/>
     <title>用户</title>
+    <script type="text/javascript">
+        function viewUser(el) {
+            $.metoo.dialog({title: '用户详情', url: 'view?id='+ $(el).attr('data-id')});
+        }
+    </script>
 </head>
 <body>
 <div layout:fragment="content">
-    <p class="text-right">
-        <a class="btn btn-primary" href="add">Add</a>
-    </p>
     <div th:if="${not #lists.isEmpty(userDTOs)}">
         <table class="table">
             <thead>
@@ -29,7 +31,7 @@
                 <td th:text="${userDTO.creationTime}">Creation time</td>
                 <td th:text="${userDTO.status.label}">Status</td>
                 <td>
-                    <a th:href="@{edit(id=${userDTO.id})}">编辑</a>
+                    <a href="javascript:void(0)" onclick="viewUser(this)" th:attr="data-id=${userDTO.id}">查看</a>
                     <a href="javascript:void(0)" onclick="$(this).toggleStatus()"
                        th:attr="data-id=${userDTO.id}" th:text="${userDTO.status.toggle.label}">Toggle status</a>
                 </td>

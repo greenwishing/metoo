@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8"/>
     <title>用户</title>
+    <script type="text/javascript">
+        function addUser() {
+            $.metoo.dialog({title: '新增用户', url: 'add'});
+        }
+        function editUser(el) {
+            $.metoo.dialog({title: '编辑用户', url: 'edit?id='+ $(el).attr('data-id')});
+        }
+    </script>
 </head>
 <body>
 <div layout:fragment="content">
     <p class="text-right">
-        <a class="btn btn-primary" href="add">Add</a>
+        <a class="btn btn-primary" href="javascript:void(0)" onclick="addUser()">新用户</a>
     </p>
     <div th:if="${not #lists.isEmpty(userDTOs)}">
         <table class="table">
@@ -29,7 +37,7 @@
                 <td th:text="${userDTO.creationTime}">Creation time</td>
                 <td th:text="${userDTO.status.label}">Status</td>
                 <td>
-                    <a th:href="@{edit(id=${userDTO.id})}">编辑</a>
+                    <a href="javascript:void(0)" onclick="editUser(this)" th:attr="data-id=${userDTO.id}">编辑</a>
                     <a href="javascript:void(0)" onclick="$(this).toggleStatus()"
                        th:attr="data-id=${userDTO.id}" th:text="${userDTO.status.toggle.label}">Toggle status</a>
                 </td>

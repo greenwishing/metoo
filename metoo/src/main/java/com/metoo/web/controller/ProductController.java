@@ -6,6 +6,7 @@ import com.metoo.dto.product.ProductDTO;
 import com.metoo.service.MerchantService;
 import com.metoo.service.ProductService;
 import com.metoo.web.security.SecurityHolder;
+import com.metoo.web.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -100,13 +101,13 @@ public class ProductController {
     @RequestMapping("saveCategory")
     public ModelAndView saveProductCategory(@ModelAttribute ProductCategoryDTO productCategoryDTO) {
         productService.saveOrUpdateProductCategory(productCategoryDTO);
-        return new ModelAndView(new MappingJackson2JsonView(), "success", true);
+        return JsonResult.success();
     }
 
     @RequestMapping("toggleCategory")
     public ModelAndView toggleProductCategoryStatus(@RequestParam Long id) {
         productService.toggleProductCategoryStatus(id);
-        return new ModelAndView(new MappingJackson2JsonView(), "success", true);
+        return JsonResult.success();
     }
 
 

@@ -3,13 +3,13 @@ package com.metoo.web.controller;
 import com.metoo.core.domain.order.OrderStatus;
 import com.metoo.dto.order.OrderDTO;
 import com.metoo.service.OrderService;
+import com.metoo.web.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.List;
 
@@ -41,13 +41,13 @@ public class OrderController {
     @RequestMapping("success")
     public ModelAndView success(@RequestParam Long id) {
         orderService.changeOrderStatus(id, OrderStatus.SUCCESS);
-        return new ModelAndView(new MappingJackson2JsonView(), "success", true);
+        return JsonResult.success();
     }
 
     @RequestMapping("cancel")
     public ModelAndView cancel(@RequestParam Long id) {
         orderService.changeOrderStatus(id, OrderStatus.CANCELED);
-        return new ModelAndView(new MappingJackson2JsonView(), "success", true);
+        return JsonResult.success();
     }
 
 }

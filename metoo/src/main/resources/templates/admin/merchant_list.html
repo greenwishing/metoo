@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8"/>
     <title>商户</title>
+    <script type="text/javascript">
+        function addMerchant() {
+            $.metoo.dialog({title: '新增商户', url: 'add'});
+        }
+        function editMerchant(el) {
+            $.metoo.dialog({title: '编辑商户', url: 'edit?id='+ $(el).attr('data-id')});
+        }
+    </script>
 </head>
 <body>
 <div layout:fragment="content">
     <p class="text-right">
-        <a class="btn btn-primary" href="add">Add</a>
+        <a class="btn btn-primary" href="javascript:void(0)" onclick="addMerchant()">新增商户</a>
     </p>
     <div th:if="${not #lists.isEmpty(merchantDTOs)}">
         <table class="table">
@@ -27,9 +35,8 @@
                 <td th:text="${merchantDTO.businessType.label}">Business type</td>
                 <td th:text="${merchantDTO.status.label}">Status</td>
                 <td>
-                    <a th:href="@{edit(id=${merchantDTO.id})}">编辑</a>
-                    <a th:href="@{detail(id=${merchantDTO.id})}">管理</a>
-                    <a href="javascript:void(0)" onclick="$(this).toggleStatus({action: 'toggleMerchant'})"
+                    <a href="javascript:void(0)" onclick="editMerchant(this)" th:attr="data-id=${merchantDTO.id}">编辑</a>
+                    <a href="javascript:void(0)" onclick="$(this).toggleStatus()"
                        th:attr="data-id=${merchantDTO.id}" th:text="${merchantDTO.status.toggle.label}">Toggle status</a>
                 </td>
             </tr>

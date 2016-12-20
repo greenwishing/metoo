@@ -4,6 +4,8 @@ import com.metoo.core.domain.common.DomainUtils;
 import com.metoo.core.domain.user.User;
 import com.metoo.core.domain.user.UserRepository;
 import com.metoo.dto.user.UserDTO;
+import com.metoo.exception.ErrorMap;
+import com.metoo.exception.MetooFormException;
 import com.metoo.service.UserService;
 import com.metoo.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +47,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveOrUpdateUser(UserDTO userDTO) {
         Long id = userDTO.getId();
+        String email = userDTO.getEmail();
+        User exists = userRepository.findByEmail(email);
+
         User user;
         if (id != null) {
             user = userRepository.findOne(id);
+            if (exists != null && !email.equals(user.getEmail())) {
+                throw new MetooFormException(ErrorMap.ALREADY_EXISTS_EMAIL);
+            }
         } else {
             user = new User();
+            if (exists != null) {
+                throw new MetooFormException(ErrorMap.ALREADY_EXISTS_EMAIL);
+            }
         }
+
+        user.setEmail(email);
         user.setType(userDTO.getType());
-        user.setEmail(userDTO.getEmail());
         user.setUsername(userDTO.getUsername());
         userRepository.save(user);
     }

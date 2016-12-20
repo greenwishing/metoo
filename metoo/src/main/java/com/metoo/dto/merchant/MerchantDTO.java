@@ -5,12 +5,9 @@ import com.metoo.core.domain.merchant.Merchant;
 import com.metoo.core.domain.merchant.MerchantBusinessType;
 import com.metoo.dto.StatefulDTO;
 import com.metoo.dto.user.UserDTO;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * User: Zhang xiaomei
@@ -21,7 +18,6 @@ public class MerchantDTO extends StatefulDTO {
     private String name;
     private MerchantBusinessType businessType;
     private Integer level;
-    private MultipartFile picture;
     private String pictureKey;
     private String introduction;
     private String specialty;
@@ -168,14 +164,6 @@ public class MerchantDTO extends StatefulDTO {
             features += feature.getVal();
         }
         merchant.update(name, businessType, level, introduction, specialty, features, address, contactPhone);
-    }
-
-    public MultipartFile getPicture() {
-        return picture;
-    }
-
-    public void setPicture(MultipartFile picture) {
-        this.picture = picture;
     }
 
     public String getMinConsumption() {

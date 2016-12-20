@@ -4,6 +4,7 @@ import com.metoo.core.domain.merchant.Feature;
 import com.metoo.core.domain.merchant.MerchantBusinessType;
 import com.metoo.dto.merchant.MerchantDTO;
 import com.metoo.service.MerchantService;
+import com.metoo.web.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.List;
 
@@ -60,13 +60,13 @@ public class MerchantController {
     @RequestMapping("save")
     public ModelAndView save(@ModelAttribute MerchantDTO merchantDTO) {
         merchantService.saveOrUpdateMerchant(merchantDTO);
-        return new ModelAndView("redirect:list");
+        return JsonResult.success();
     }
 
-    @RequestMapping("toggleMerchant")
+    @RequestMapping("toggle")
     public ModelAndView toggleMerchantStatus(@RequestParam Long id) {
         merchantService.toggleMerchantStatus(id);
-        return new ModelAndView(new MappingJackson2JsonView(), "success", true);
+        return JsonResult.success();
     }
 
 }

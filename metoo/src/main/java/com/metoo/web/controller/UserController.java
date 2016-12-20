@@ -3,6 +3,7 @@ package com.metoo.web.controller;
 import com.metoo.core.domain.user.UserType;
 import com.metoo.dto.user.UserDTO;
 import com.metoo.service.UserService;
+import com.metoo.web.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.List;
 
@@ -49,13 +49,13 @@ public class UserController {
     @RequestMapping("save")
     public ModelAndView save(@ModelAttribute UserDTO userDTO) {
         userService.saveOrUpdateUser(userDTO);
-        return new ModelAndView("redirect:list");
+        return JsonResult.success();
     }
 
     @RequestMapping("toggle")
     public ModelAndView toggleUserStatus(@RequestParam Long id) {
         userService.toggleUserStatus(id);
-        return new ModelAndView(new MappingJackson2JsonView(), "success", true);
+        return JsonResult.success();
     }
 
 }
