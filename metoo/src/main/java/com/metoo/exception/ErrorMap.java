@@ -34,6 +34,7 @@ public enum ErrorMap {
 
     ALREADY_EXISTS_EMAIL(-4001, "邮箱已被使用，试试其它的吧"),
     INVALID_USER_STATUS(-4002, "操作失败，您已被商家加入黑名单！"),
+    INVALID_EMAIL(-4003, "邮箱格式不正确，请检查"),
 
     ;
 

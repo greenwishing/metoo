@@ -8,6 +8,7 @@ import com.metoo.exception.ErrorMap;
 import com.metoo.exception.MetooFormException;
 import com.metoo.service.UserService;
 import com.metoo.utils.MD5Utils;
+import com.metoo.web.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +49,9 @@ public class UserServiceImpl implements UserService {
     public void saveOrUpdateUser(UserDTO userDTO) {
         Long id = userDTO.getId();
         String email = userDTO.getEmail();
+        if (!email.matches("^\\w+([-_.]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,6})+$")) {
+            throw new MetooFormException(ErrorMap.INVALID_EMAIL);
+        }
         User exists = userRepository.findByEmail(email);
 
         User user;

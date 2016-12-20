@@ -3,6 +3,7 @@ package com.metoo.web.controller;
 import com.metoo.cache.SessionCodeHolder;
 import com.metoo.cache.SessionEmailHolder;
 import com.metoo.core.MetooSystem;
+import com.metoo.core.domain.common.Status;
 import com.metoo.dto.user.UserDTO;
 import com.metoo.exception.ErrorMap;
 import com.metoo.exception.MetooException;
@@ -26,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,11 +68,11 @@ public class AccountController {
             return JsonResult.error("请输入邮箱");
         } else {
             if (!email.matches("^\\w+([-_.]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,6})+$")) {
-                return JsonResult.error("邮箱格式不正确");
+                return JsonResult.error(ErrorMap.INVALID_EMAIL);
             }
             UserDTO exists = userService.loadUserByEmail(email);
             if (exists != null) {
-                return JsonResult.error("邮箱已被注册，换一个试试吧");
+                return JsonResult.error(ErrorMap.ALREADY_EXISTS_EMAIL);
             }
         }
         String username = userDTO.getUsername();
@@ -93,7 +93,7 @@ public class AccountController {
         }
         String cachedCode = SessionCodeHolder.get(session.getId());
         if (!code.equalsIgnoreCase(cachedCode)) {
-            return JsonResult.error("验证码输入不正确");
+            return JsonResult.error(ErrorMap.INVALID_CODE);
         }
         SessionCodeHolder.remove(session.getId());
         userService.saveUser(userDTO);
@@ -113,11 +113,14 @@ public class AccountController {
         HttpSession session = request.getSession();
         String cachedCode = SessionCodeHolder.get(session.getId());
         if (!code.equalsIgnoreCase(cachedCode)) {
-            return JsonResult.error("验证码输入不正确");
+            return JsonResult.error(ErrorMap.INVALID_CODE);
         }
         UserDTO userDTO = userService.loadUserByEmail(email);
         if (userDTO == null) {
-            return JsonResult.error("邮箱未注册，请检查您输入的邮箱是否有误");
+            return JsonResult.error(ErrorMap.EMAIL_NOT_FOUND);
+        }
+        if (Status.DEACTIVATE == userDTO.getStatus()) {
+            return JsonResult.error(ErrorMap.INVALID_USER_STATUS);
         }
         String mailTo = userDTO.getEmail();
         String hostname = "http://" + request.getServerName() + ":" + (request.getServerPort()==80 ? "" : request.getServerPort());
@@ -164,6 +167,9 @@ public class AccountController {
         UserDTO userDTO = userService.loadUserByEmail(email);
         if (userDTO == null) {
             return JsonResult.error(ErrorMap.EXPIRED_LINK);
+        }
+        if (Status.DEACTIVATE == userDTO.getStatus()) {
+            return JsonResult.error(ErrorMap.INVALID_USER_STATUS);
         }
         if (!StringUtils.hasLength(password)) {
             return JsonResult.error("请输入密码");
