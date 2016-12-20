@@ -17,12 +17,10 @@ import com.metoo.service.MerchantService;
 import com.metoo.utils.FileuploadUtils;
 import com.metoo.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.criteria.Predicate;
 import java.util.List;
 
 /**
@@ -87,25 +85,15 @@ public class MerchantServiceImpl implements MerchantService {
     }
 
     @Override
-    public List<MerchantDTO> loadMerchantSaleRanking(int top) {
-        Sort.Order salesVolumeDesc = new Sort.Order(Sort.Direction.DESC, "salesVolume");
-        Sort.Order idDesc = new Sort.Order(Sort.Direction.DESC, "id");
-        PageRequest pageRequest = new PageRequest(0, top, new Sort(salesVolumeDesc, idDesc));
-        Page<Merchant> page = merchantRepository.findAll(pageRequest);
-        List<Merchant> content = page.getContent();
-        return MerchantDTO.toDTOs(content);
+    public List<MerchantDTO> loadTop5Merchants() {
+        List<Merchant> merchants = merchantRepository.findTop4ByStatusOrderBySalesVolumeDescIdDesc(Status.ACTIVATED);
+        return MerchantDTO.toDTOs(merchants);
     }
 
     @Override
-    public Page<MerchantDTO> loadMerchantByPage(MerchantBusinessType businessType, Pageable page) {
-        Page<Merchant> pageResult = merchantRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
-            Predicate businessTypePredicate = criteriaBuilder.equal(root.get("businessType"), businessType);
-            Predicate statusPredicate = criteriaBuilder.equal(root.get("status"), Status.ACTIVATED);
-            criteriaQuery.where(businessTypePredicate, statusPredicate);
-            return null;
-        }, page);
-        List<MerchantDTO> merchantDTOs = MerchantDTO.toDTOs(pageResult.getContent());
-        return new PageImpl<>(merchantDTOs);
+    public List<MerchantDTO> loadMerchantByBusinessType(MerchantBusinessType businessType) {
+        List<Merchant> merchants = merchantRepository.findByBusinessTypeAndStatus(businessType, Status.ACTIVATED);
+        return MerchantDTO.toDTOs(merchants);
     }
 
     @Override

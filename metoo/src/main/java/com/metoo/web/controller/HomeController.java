@@ -14,10 +14,7 @@ import com.metoo.service.OrderService;
 import com.metoo.service.ProductService;
 import com.metoo.web.filter.LoginFilter;
 import com.metoo.web.utils.JsonResult;
-import com.sun.istack.internal.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -27,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -52,17 +48,15 @@ public class HomeController {
 
     @RequestMapping({"/", "/index"})
     public ModelAndView index(ModelMap model) {
-        List<MerchantDTO> merchantDTOs = merchantService.loadMerchantSaleRanking(4);
+        List<MerchantDTO> merchantDTOs = merchantService.loadTop5Merchants();
         model.put("merchantDTOs", merchantDTOs);
         return new ModelAndView("index");
     }
 
     @RequestMapping("/food")
-    public ModelAndView food(@Nullable Integer pageNumber, ModelMap model) {
-        if (pageNumber == null) pageNumber = 1;
-        PageRequest pageRequest = new PageRequest(pageNumber - 1, 15);
-        Page<MerchantDTO> page = merchantService.loadMerchantByPage(MerchantBusinessType.FOOD, pageRequest);
-        model.put("page", page);
+    public ModelAndView food(ModelMap model) {
+        List<MerchantDTO> merchantDTOs = merchantService.loadMerchantByBusinessType(MerchantBusinessType.FOOD);
+        model.put("merchantDTOs", merchantDTOs);
         return new ModelAndView("food");
     }
 
@@ -98,11 +92,9 @@ public class HomeController {
     }
 
     @RequestMapping("/hotel")
-    public ModelAndView hotel(@Nullable Integer pageNumber, ModelMap model) {
-        if (pageNumber == null) pageNumber = 1;
-        PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-        Page<MerchantDTO> page = merchantService.loadMerchantByPage(MerchantBusinessType.HOTEL, pageRequest);
-        model.put("page", page);
+    public ModelAndView hotel(ModelMap model) {
+        List<MerchantDTO> merchantDTOs = merchantService.loadMerchantByBusinessType(MerchantBusinessType.HOTEL);
+        model.put("merchantDTOs", merchantDTOs);
         return new ModelAndView("hotel");
     }
 
@@ -116,11 +108,9 @@ public class HomeController {
     }
 
     @RequestMapping("/scenery")
-    public ModelAndView scenery(@Nullable Integer pageNumber, ModelMap model) {
-        if (pageNumber == null) pageNumber = 1;
-        PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-        Page<MerchantDTO> page = merchantService.loadMerchantByPage(MerchantBusinessType.SCENERY, pageRequest);
-        model.put("page", page);
+    public ModelAndView scenery(ModelMap model) {
+        List<MerchantDTO> merchantDTOs = merchantService.loadMerchantByBusinessType(MerchantBusinessType.SCENERY);
+        model.put("merchantDTOs", merchantDTOs);
         return new ModelAndView("scenery");
     }
 
