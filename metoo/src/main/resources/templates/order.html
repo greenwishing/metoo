@@ -24,7 +24,7 @@
                 <p class="box-body-desc" th:text="${productDTO.description}"></p>
             </div>
         </div>
-		<form id="order-form" th:action="@{feedback}" th:object="${orderDTO}" method="post" onsubmit="return $('#order-form').submitForm();">
+		<form id="order-form" th:action="@{saveOrder}" th:object="${orderDTO}" method="post" onsubmit="return $('#order-form').submitForm();">
             <div class="form-group">
                 <label class="control-label col-2" for="quantity" th:if="${productDTO.type eq 'Food'}">购买数量<span class="data-required"></span></label>
                 <label class="control-label col-2" for="quantity" th:if="${productDTO.type eq 'Hotel'}">房间数量<span class="data-required"></span></label>
