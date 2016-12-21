@@ -2,6 +2,23 @@
 <html lang="en" layout:decorator="decorators/homepage" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head>
 	<title>订单详情</title>
+    <script type="text/javascript">
+        function userCancelOrder(el) {
+            $.metoo.alert('确定要取消此订单？', {ok: function(){
+                var orderId = $(el).attr('data-id');
+                $.metoo.ajax({
+                    url: '/order/cancel?id=' + orderId,
+                    success: function(result) {
+                        if (result.success) {
+                            $.metoo.alert('订单取消成功！', function(){
+                                reload();
+                            })
+                        }
+                    }
+                })
+            }});
+        }
+    </script>
 </head>
 <body>
 	<div layout:fragment="content">
@@ -59,7 +76,9 @@
             </div>
             <div class="form-group">
                 <div class="col-10 col-offset-2">
-                    <a class="btn btn-primary" href="/index">返回首页</a>
+                    <a class="btn btn-default" href="javascript:void(0)" th:if="${orderDTO.status.value ne 'CANCELED'}" onclick="userCancelOrder(this)" th:attr="data-id=${orderDTO.id}">取消订单</a>
+                    <a class="btn btn-default" th:href="@{/order/{id}(id=${orderDTO.product.id})}">再次购买</a>
+                    <a class="btn btn-default" href="/index">看看其他</a>
                 </div>
             </div>
         </div>

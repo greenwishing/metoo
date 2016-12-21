@@ -132,6 +132,47 @@ header nav li > span {
     color: #fff;
 }
 
+.menu-hover {
+    z-index: 3;
+    position: relative;
+}
+
+.menu-hover > ul {
+    z-index: 5;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 120px;
+    padding: 0 10px;
+    display: none;
+    background-color: #fff;
+    box-shadow: 0 0 12px rgba(0,0,0,.3);
+}
+
+.menu-hover > ul li {
+    float: none;
+    clear: both;
+    display: block;
+}
+
+.menu-hover > ul li + li {
+    border-top: 1px solid #f3f3f3;
+}
+
+.menu-hover > ul li a {
+    text-decoration: none;
+}
+
+.menu-hover > ul li a:hover,
+.menu-hover > ul li a:active {
+    border-top: 1px solid #e8e8e8;
+    text-decoration: none;
+}
+
+.menu-hover:hover > ul {
+    display: block;
+}
+
 .container {
     position: relative;
     padding-left: 15px;
@@ -209,6 +250,17 @@ header nav li > span {
     float: right;
     width: 20%;
     text-align: center;
+}
+
+.caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 4px solid;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
 }
 
 .menu-nav {
@@ -1200,10 +1252,7 @@ a.tag, a.tag:hover, a.tag:focus, a.tag:active {
     text-shadow: 1px 1px 1px rgba(255,255,255,.3);
 }
 
-[role="admin"] > .container {
-    min-height: 450px;
-}
-
+[role="merchant"] > header,
 [role="admin"] > header {
     z-index: 2;
     position: fixed;
@@ -1211,6 +1260,7 @@ a.tag, a.tag:hover, a.tag:focus, a.tag:active {
     left: 0;
     right: 0;
 }
+[role="merchant"] > .container,
 [role="admin"] > .container {
     z-index: 1;
     position: relative;

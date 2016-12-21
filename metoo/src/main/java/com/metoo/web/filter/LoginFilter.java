@@ -3,7 +3,6 @@ package com.metoo.web.filter;
 import com.metoo.cache.SessionCodeHolder;
 import com.metoo.core.MetooSystem;
 import com.metoo.core.domain.common.Status;
-import com.metoo.core.domain.merchant.Merchant;
 import com.metoo.core.domain.user.UserType;
 import com.metoo.dto.merchant.MerchantDTO;
 import com.metoo.dto.user.UserDTO;
@@ -13,6 +12,7 @@ import com.metoo.service.MerchantService;
 import com.metoo.service.UserService;
 import com.metoo.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 
 import javax.servlet.FilterChain;
@@ -103,13 +103,18 @@ public class LoginFilter extends MetooFilter {
         }
     }
 
-    private void onLoginSuccess(HttpServletRequest request, HttpServletResponse response, UserDTO user) throws IOException {
+    private void onLoginSuccess(HttpServletRequest request, HttpServletResponse response, UserDTO user) throws IOException, ServletRequestBindingException {
+        String redirectUrl = ServletRequestUtils.getStringParameter(request, "redirectUrl");
         request.getSession().setAttribute(METOO_USER_SESSION_KEY, user);
         UserType type = user.getType();
         String loginSuccessUrl;
         switch (type) {
             case ADMINISTRATOR:
-                loginSuccessUrl = metooSystem.getAdminLoginSuccessUrl();
+                if (redirectUrl != null && redirectUrl.startsWith("/admin/")) {
+                    loginSuccessUrl = redirectUrl;
+                } else {
+                    loginSuccessUrl = metooSystem.getAdminLoginSuccessUrl();
+                }
                 break;
             case MERCHANT_MANAGER:
                 Long managerId = user.getId();
@@ -118,10 +123,18 @@ public class LoginFilter extends MetooFilter {
                     throw new MetooLoginException("管理员未关联有效的商户：" + user.getEmail());
                 }
                 user.update(merchantDTO.getId(), merchantDTO.getName(), merchantDTO.getBusinessType());
-                loginSuccessUrl = metooSystem.getManagerLoginSuccessUrl();
+                if (redirectUrl != null && redirectUrl.startsWith("/merchant/")) {
+                    loginSuccessUrl = redirectUrl;
+                } else {
+                    loginSuccessUrl = metooSystem.getManagerLoginSuccessUrl();
+                }
                 break;
             case CUSTOMER:
-                loginSuccessUrl = metooSystem.getCustomLoginSuccessUrl();
+                if (redirectUrl != null && !redirectUrl.startsWith("/admin/") && !redirectUrl.startsWith("/merchant/")) {
+                    loginSuccessUrl = redirectUrl;
+                } else {
+                    loginSuccessUrl = metooSystem.getCustomLoginSuccessUrl();
+                }
                 break;
             default:
                 throw new MetooLoginException("不支持的用户类型：" + type.getLabel());

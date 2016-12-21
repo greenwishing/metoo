@@ -1,18 +1,18 @@
 package com.metoo.web.controller;
 
 import com.metoo.cache.SessionCodeHolder;
+import com.metoo.core.domain.common.Status;
 import com.metoo.core.domain.merchant.MerchantBusinessType;
+import com.metoo.core.domain.order.OrderStatus;
 import com.metoo.dto.feedback.FeedbackDTO;
 import com.metoo.dto.merchant.MerchantDTO;
 import com.metoo.dto.order.OrderDTO;
 import com.metoo.dto.product.ProductDTO;
 import com.metoo.dto.user.UserDTO;
 import com.metoo.exception.ErrorMap;
-import com.metoo.service.FeedbackService;
-import com.metoo.service.MerchantService;
-import com.metoo.service.OrderService;
-import com.metoo.service.ProductService;
+import com.metoo.service.*;
 import com.metoo.web.filter.LoginFilter;
+import com.metoo.web.security.SecurityHolder;
 import com.metoo.web.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,9 +25,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -45,6 +44,8 @@ public class HomeController {
     private ProductService productService;
     @Autowired
     private FeedbackService feedbackService;
+    @Autowired
+    private UserService userService;
 
     @RequestMapping({"/", "/index"})
     public ModelAndView index(ModelMap model) {
@@ -130,24 +131,38 @@ public class HomeController {
         return new ModelAndView("order");
     }
 
-    @RequestMapping("/order/saveOrder")
+    @RequestMapping("/order/save")
     public ModelAndView saveOrder(@ModelAttribute OrderDTO orderDTO) {
         Long orderId = orderService.saveOrder(orderDTO);
         return new ModelAndView("redirect:/detail/" + orderId);
     }
 
+    @RequestMapping("/order/cancel")
+    public ModelAndView cancelOrder(Long id) {
+        orderService.changeOrderStatus(id, OrderStatus.CANCELED);
+        return JsonResult.success();
+    }
+
     @RequestMapping("/detail/{id}")
     public ModelAndView saveOrder(@PathVariable Long id) {
+        UserDTO user = SecurityHolder.get();
+        if (user == null || user.getId() == null) {
+            return new ModelAndView("redirect:/login?redirectUrl=/detail/" + id);
+        }
         OrderDTO orderDTO = orderService.loadOrderById(id);
+        if (orderDTO == null) {
+            return new ModelAndView("redirect:/orders");
+        } else if (!user.getId().equals(orderDTO.getUser().getId())) {
+            return new ModelAndView("error", "message", "无效的订单");
+        }
         return new ModelAndView("order_detail", "orderDTO", orderDTO);
     }
 
     @RequestMapping("/orders")
-    public ModelAndView saveOrder(HttpSession session, HttpServletResponse response) throws IOException {
-        UserDTO userDTO = (UserDTO) session.getAttribute(LoginFilter.METOO_USER_SESSION_KEY);
-        if (userDTO == null) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return null;
+    public ModelAndView saveOrder() {
+        UserDTO userDTO = SecurityHolder.get();
+        if (userDTO == null || userDTO.getId() == null) {
+            return new ModelAndView("redirect:/login?redirectUrl=/orders");
         }
         List<OrderDTO> orderDTOs = orderService.loadOrderByUserId(userDTO.getId());
         return new ModelAndView("order_list", "orderDTOs", orderDTOs);
@@ -212,5 +227,64 @@ public class HomeController {
         } catch (Exception e) {
             return JsonResult.error("图片上传失败：" + e.getLocalizedMessage());
         }
+    }
+
+    @RequestMapping(value = "/passwordModify", method = RequestMethod.GET)
+    public ModelAndView passwordModifyForm() {
+        UserDTO userDTO = SecurityHolder.get();
+        if (userDTO == null || userDTO.getId() == null) {
+            return JsonResult.error("页面已过期，请刷新页面再试");
+        }
+        return new ModelAndView("password_modify", "userDTO", userDTO);
+    }
+
+    @RequestMapping(value = "/passwordModify", method = RequestMethod.POST)
+    public ModelAndView passwordModify(HttpServletRequest request, @ModelAttribute UserDTO userDTO) {
+        Long id = userDTO.getId();
+        if (id == null) {
+            return JsonResult.error(ErrorMap.NOT_LOGIN);
+        }
+        if (Status.DEACTIVATE == userDTO.getStatus()) {
+            return JsonResult.error(ErrorMap.INVALID_USER_STATUS);
+        }
+        String password = userDTO.getPassword();
+        if (!StringUtils.hasLength(password)) {
+            return JsonResult.error("请输入密码");
+        }
+        String confirmPassword = userDTO.getConfirmPassword();
+        if (!password.equals(confirmPassword)) {
+            return JsonResult.error("两次输入密码不一致，请检查后重新输入");
+        }
+        String code = userDTO.getCode();
+        HttpSession session = request.getSession();
+        String cachedCode = SessionCodeHolder.get(session.getId());
+        if (!code.equalsIgnoreCase(cachedCode)) {
+            return JsonResult.error(ErrorMap.INVALID_CODE);
+        }
+        userService.modifyPassword(id, password);
+        return JsonResult.success("message", "密码修改成功，下次登录请使用新密码");
+    }
+
+    @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
+    public ModelAndView userInfoForm() {
+        UserDTO userDTO = SecurityHolder.get();
+        if (userDTO == null || userDTO.getId() == null) {
+            return JsonResult.error("页面已过期，请刷新页面再试");
+        }
+        return new ModelAndView("user_edit", "userDTO", userDTO);
+    }
+
+    @RequestMapping(value = "/userInfo", method = RequestMethod.POST)
+    public ModelAndView userInfo(@ModelAttribute UserDTO userDTO, HttpSession session) {
+        Long id = userDTO.getId();
+        if (id == null) {
+            return JsonResult.error(ErrorMap.NOT_LOGIN);
+        }
+        if (Status.DEACTIVATE == userDTO.getStatus()) {
+            return JsonResult.error(ErrorMap.INVALID_USER_STATUS);
+        }
+        userDTO = userService.saveUserInfo(userDTO);
+        session.setAttribute(LoginFilter.METOO_USER_SESSION_KEY, userDTO);
+        return JsonResult.success("message", "信息已修改");
     }
 }

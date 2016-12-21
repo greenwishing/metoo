@@ -74,10 +74,14 @@
                                     <span th:if="${param.code[0] eq '-1002'}">验证码错误</span>
                                     <span th:if="${param.code[0] eq '-4002'}">登录失败，您已被管理员列入黑名单</span>
                                 </div>
+                                <div class="help-block text-highlight" th:if="${param.containsKey('redirectUrl')}">
+                                    <span>请登录后继续</span>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-10 col-offset-2">
+                                <input type="hidden" name="redirectUrl" th:if="${param.containsKey('redirectUrl')}" th:value="${param.redirectUrl[0]}"/>
                                 <button class="btn btn-highlight btn-large" type="submit">登录</button>
                                 <a href="/register"><b>立即注册</b></a>
                                 <a href="/forgot_password">忘记密码？</a>

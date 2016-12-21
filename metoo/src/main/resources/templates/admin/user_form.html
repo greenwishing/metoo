@@ -19,20 +19,20 @@
             <input class="form-control" type="text" th:field="*{username}"/>
         </div>
     </div>
-    <div class="form-group" th:if="${id == null}">
+    <div class="form-group" th:if="${userDTO.id == null}">
         <label class="control-label col-2">用户类型<span class="data-required"></span></label>
         <div class="col-10">
             <select class="form-control" th:field="*{type}">
                 <option th:each="userType:${userTypes}"
-                        th:value="${userType.value}" th:selected="${userType.value eq type}"
+                        th:value="${userType.value}" th:selected="${userType == userDTO.type}"
                         th:text="${userType.label}">User Type</option>
             </select>
         </div>
     </div>
-    <div class="form-group" th:if="${id != null}">
+    <div class="form-group" th:if="${userDTO.id != null}">
         <label class="control-label col-2">用户类型</label>
         <div class="col-10">
-            <p class="control-label-static" th:text="${type.label}"></p>
+            <div class="control-label-static" th:text="${userDTO.type.label}"></div>
         </div>
     </div>
     <div class="form-group">

@@ -22,4 +22,8 @@ public interface UserService {
     UserDTO loadUserByEmail(String email);
 
     void changePassword(String email, String password);
+
+    void modifyPassword(Long userId, String password);
+
+    UserDTO saveUserInfo(UserDTO userDTO);
 }

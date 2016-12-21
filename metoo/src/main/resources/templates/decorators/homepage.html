@@ -30,8 +30,14 @@
         </nav>
         <nav class="pull-right">
             <ul>
-                <li><a href="/index">我的米途</a></li>
-                <li><a href="/orders">我的订单</a></li>
+                <li class="menu-hover" th:if="${session.METOO_USER != null}">
+                    <a href="javascript:void(0)">我的米途 <span class="caret"></span></a>
+                    <ul>
+                        <li><a href="javascript:void(0)" onclick="userInfo()">我的信息</a></li>
+                        <li><a href="/orders">我的订单</a></li>
+                        <li><a href="javascript:void(0)" onclick="modifyPassword()">修改密码</a></li>
+                    </ul>
+                </li>
                 <li><span>咨询电话:4007-972-156</span></li>
             </ul>
         </nav>

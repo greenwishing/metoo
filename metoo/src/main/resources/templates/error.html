@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" layout:decorator="decorators/homepage"  xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head>
     <meta charset="UTF-8"/>
     <title>提示</title>
 </head>
 <body>
-<h1 th:text="${exception.message}"></h1>
-<!--<div th:text="${url}"></div>
-<div th:text="${exception.message}"></div>-->
+<div layout:fragment="content">
+    <p th:if="${exception != null}" th:text="${exception.message}"></p>
+    <p th:if="${message != null}" th:text="${message}"></p>
+    <a class="btn btn-default" href="javascript:void(0)" onclick="history.back()">返回</a>
+</div>
 </body>
 </html>
