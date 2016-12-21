@@ -581,14 +581,14 @@ function logout() {
 function userInfo() {
     $.metoo.dialog({
         title: '编辑个人信息',
-        url: 'userInfo'
+        url: '/userInfo'
     })
 }
 
 function modifyPassword() {
     $.metoo.dialog({
         title: '修改密码',
-        url: 'passwordModify'
+        url: '/passwordModify'
     })
 }
 

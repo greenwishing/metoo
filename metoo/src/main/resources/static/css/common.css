@@ -143,7 +143,6 @@ header nav li > span {
     top: 100%;
     left: 0;
     width: 120px;
-    padding: 0 10px;
     display: none;
     background-color: #fff;
     box-shadow: 0 0 12px rgba(0,0,0,.3);
@@ -153,6 +152,11 @@ header nav li > span {
     float: none;
     clear: both;
     display: block;
+    padding: 0 15px;
+}
+
+.menu-hover > ul li:hover {
+    background-color: #f3f3f3;
 }
 
 .menu-hover > ul li + li {
@@ -160,12 +164,13 @@ header nav li > span {
 }
 
 .menu-hover > ul li a {
+    display: block;
+    padding: 10px 0;
     text-decoration: none;
 }
 
 .menu-hover > ul li a:hover,
 .menu-hover > ul li a:active {
-    border-top: 1px solid #e8e8e8;
     text-decoration: none;
 }
 
