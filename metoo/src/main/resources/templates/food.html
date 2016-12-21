@@ -6,7 +6,7 @@
 <body>
 	<div layout:fragment="content">
         <div class="row">
-            <div class="col-4" th:each="merchantDTO:${page.content}">
+            <div class="col-4" th:each="merchantDTO:${merchantDTOs}">
                 <a class="box box-scale" th:href="@{/{location}/{id}(id=${merchantDTO.id},location=${merchantDTO.location})}">
                     <div class="box-pic">
                         <img title="山姆老爹牛排自助馆" th:src="@{/picture/{pictureKey}(pictureKey=${merchantDTO.pictureKey})}" th:title="${merchantDTO.name}"/>

@@ -5,7 +5,7 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<div class="box box-full box-scale" th:each="merchantDTO:${page.content}">
+		<div class="box box-full box-scale" th:each="merchantDTO:${merchantDTOs}">
 			<div class="box-pic">
 				<img title="如家快捷酒店(成都春熙路太古里书院街店)" th:src="@{/picture/{pictureKey}(pictureKey=${merchantDTO.pictureKey})}" th:title="${merchantDTO.name}"/>
 			</div>

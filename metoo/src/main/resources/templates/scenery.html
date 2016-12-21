@@ -5,7 +5,7 @@
 </head>
 <body>
 	<section layout:fragment="content">
-        <div class="box box-full box-scale" th:each="merchantDTO:${page.content}">
+        <div class="box box-full box-scale" th:each="merchantDTO:${merchantDTOs}">
             <div class="box-pic">
                 <img title="花舞人间" th:src="@{/picture/{pictureKey}(pictureKey=${merchantDTO.pictureKey})}" th:title="${merchantDTO.name}"/>
             </div>
