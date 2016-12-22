@@ -3,6 +3,7 @@ package com.metoo.service.impl;
 import com.metoo.core.domain.common.DomainUtils;
 import com.metoo.core.domain.user.User;
 import com.metoo.core.domain.user.UserRepository;
+import com.metoo.core.domain.user.UserType;
 import com.metoo.dto.user.UserDTO;
 import com.metoo.exception.ErrorMap;
 import com.metoo.exception.MetooFormException;
@@ -67,7 +68,6 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setEmail(email);
-        user.setType(userDTO.getType());
         user.setUsername(userDTO.getUsername());
         userRepository.save(user);
     }
